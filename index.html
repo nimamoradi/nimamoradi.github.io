@@ -182,7 +182,7 @@
                                         <p><span> Name</span> Nima Moradi </p>
                                     </li>
                                     <li>
-                                        <p><span> Age</span> 23 Years </p>
+                                          <p><span> Age</span> <p id="my-age">23</p> Years </p>
                                     </li>
                                     <li>
                                         <p><span> Location</span> Mashhad, Iran </p>
@@ -413,6 +413,7 @@
     function onSubmit(token) {
         document.getElementById("demo-form").submit();
     }
+      document.getElementById('my-age').innerHTML = moment().diff(moment('20120507', 'YYYYMMDD'), 'years');
 </script>
 <div style="position: absolute; left: 0px; top: -2px; height: 1px; overflow: hidden; visibility: hidden; width: 1px;">
     <span style="position: absolute; font-size: 300px; width: auto; height: auto; margin: 0px; padding: 0px; font-family: Roboto, Arial, sans-serif;">BESbswy</span>
