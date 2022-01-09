@@ -191,7 +191,7 @@
                                         <p><span> Experience</span> 3 Years </p>
                                     </li>
                                     <li>
-                                        <p><span> Degree</span> MBA </p>
+                                        <p><span> Degree</span> MS </p>
                                     </li>
                                     <li>
                                         <p><span> E-mail</span> <button class="g-recaptcha"
@@ -413,7 +413,8 @@
     function onSubmit(token) {
         document.getElementById("demo-form").submit();
     }
-      document.getElementById('my-age').innerHTML = moment().diff(moment('20120507', 'YYYYMMDD'), 'years');
+    var getAge = birthDate => Math.floor((new Date() - new Date(birthDate).getTime()) / 3.15576e+10)
+    document.getElementById('my-age').innerHTML = getAge('1996-10-23') ;
 </script>
 <div style="position: absolute; left: 0px; top: -2px; height: 1px; overflow: hidden; visibility: hidden; width: 1px;">
     <span style="position: absolute; font-size: 300px; width: auto; height: auto; margin: 0px; padding: 0px; font-family: Roboto, Arial, sans-serif;">BESbswy</span>
