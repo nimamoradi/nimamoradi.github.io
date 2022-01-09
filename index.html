@@ -270,7 +270,7 @@
                                                     <p><span> Name</span> Nima Moradi </p>
                                                 </li>
                                                 <li>
-                                                    <p><span> Age</span> 23 Years </p>
+                                                      <p><span> Age</span> <p id="my-age-1">23</p> Years </p>
                                                 </li>
                                                 <li>
                                                     <p><span> Location</span> Mashhad, Iran </p>
@@ -412,6 +412,7 @@
     }
     var getAge = birthDate => Math.floor((new Date() - new Date(birthDate).getTime()) / 3.15576e+10)
     document.getElementById('my-age').innerHTML = getAge('1996-10-23') ;
+    document.getElementById('my-age-1').innerHTML = getAge('1996-10-23') ;
 </script>
 <div style="position: absolute; left: 0px; top: -2px; height: 1px; overflow: hidden; visibility: hidden; width: 1px;">
     <span style="position: absolute; font-size: 300px; width: auto; height: auto; margin: 0px; padding: 0px; font-family: Roboto, Arial, sans-serif;">BESbswy</span>
