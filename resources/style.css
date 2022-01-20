@@ -258,8 +258,7 @@ h5.tittle {
 	border-bottom: 1px solid red !important;
 }
 .contact .error:before {
-	content: "\f071";
-	font-family: 'FontAwesome';
+
 	position: absolute;
 	color: red;
 }
