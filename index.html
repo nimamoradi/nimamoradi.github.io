@@ -82,11 +82,12 @@
     <!-- StyleSheets -->
     <link rel="stylesheet" href="./resources/ionicons.min.css">
     <link rel="stylesheet" href="./resources/bootstrap.min.css">
-<script src="https://kit.fontawesome.com/cec7b7c21f.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/cec7b7c21f.js" crossorigin="anonymous"></script>
 
     <link rel="stylesheet" href="./resources/main.css">
     <link rel="stylesheet" href="./resources/style.css">
     <link rel="stylesheet" href="./resources/responsive.css">
+    <link rel="stylesheet" href="./resources/carousel.css" >
 
     <!-- FontsOnline -->
     <link href="./resources/css" rel="stylesheet">
@@ -116,6 +117,7 @@
     <script type="text/javascript" charset="UTF-8" src="./resources/AuthenticationService.Authenticate"></script>
 
     <script src="https://www.google.com/recaptcha/api.js"></script>
+    <script src="./resources/carousel.js"></script>
 </head>
 <body data-gr-c-s-loaded="true">
 
@@ -337,6 +339,14 @@
                                             </div>
 
                                         </section>
+                                        <!-- Flickity HTML init -->
+                                        <div class="gallery js-flickity"
+                                        data-flickity='{ "imagesLoaded": true, "percentPosition": false }'>
+                                        <img class="gallery-cell"  src="./images/1.png" alt="cat nose" />
+                                          <img class="gallery-cell"  src="./images/2.png" alt="cat nose" />
+                                          <img class="gallery-cell"  src="./images/3.png" alt="cat nose" />
+                                            <img class="gallery-cell"  src="./images/4.png" alt="cat nose" />
+                                      </div>
                                     </div>
                                 </div>
 
