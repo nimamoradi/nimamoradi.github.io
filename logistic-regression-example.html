@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content="Pelican" />
     <meta name="description" content="Nima Moradi Personal blog Blog Posts">
-    <title>Tacotron 2 For Persian language</title>
+    <title>Logistic Regression Example</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
     <link rel="stylesheet" type="text/css" href="./theme/css/main.css" />
@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="./theme/css/stork.css">
     <link rel="stylesheet" media="screen and (prefers-color-scheme: dark)"
         href="./theme/css/stork-dark.css">
-<meta name="description" content="Pytorch implementation of DeepMind's Tacotron-2 for Persian" />
+<meta name="description" content="An example of logistic regression using python" />
 </head>
 
 <body class="min-h-screen flex flex-col max-w-7xl lg:max-w-none text-zinc-800 bg-neutral-100 
@@ -92,10 +92,10 @@
 
 <main>
   <header>
-    <h1 class="font-semibold text-3xl my-2">Tacotron 2 For Persian language</h1>
+    <h1 class="font-semibold text-3xl my-2">Logistic Regression Example</h1>
     <footer class="flex text-sm text-zinc-800 dark:text-zinc-400">
       <div class="flex text-xs text-zinc-800 dark:text-zinc-400">
-        <time>January 09, 2021</time>
+        <time>June 10, 2019</time>
         <div>
           <span>&nbsp;·&nbsp;1 min read</span>
         </div>
@@ -108,7 +108,7 @@
   <details class="flex flex-col my-6 p-4 bg-zinc-200 dark:bg-zinc-800 rounded-lg">
     <summary class="text-lg font-bold">Table of contents</summary>
     <div class="mx-4 px-4 underline">
-      <div id="toc"><ul><li><a class="toc-href" href="#tacotron-2" title="Tacotron 2">Tacotron 2</a><ul><li><a class="toc-href" href="#folder-structure" title="Folder Structure">Folder Structure</a></li><li><a class="toc-href" href="#setup" title="Setup">Setup</a></li><li><a class="toc-href" href="#audio-samples" title="Audio samples">Audio samples</a></li><li><a class="toc-href" href="#model" title="Model">Model</a></li></ul></li></ul></div>
+      <div id="toc"><ul><li><a class="toc-href" href="#logistic-regression" title="Logistic Regression">Logistic Regression</a><ul><li><a class="toc-href" href="#we-will-classifiy-liris-with-logistic-regression" title="we will classifiy liris with logistic regression">we will classifiy liris with logistic regression</a></li><li><a class="toc-href" href="#for-working-better-with-data" title="For working better with data">For working better with data</a></li><li><a class="toc-href" href="#for-visualizeing-data" title="For visualizeing data">For visualizeing data</a></li><li><a class="toc-href" href="#loading-dataset" title="Loading dataset">Loading dataset</a></li><li><a class="toc-href" href="#splitting-dataset-into-training-and-testing" title="Splitting dataset into training and testing">Splitting dataset into training and testing</a></li><li><a class="toc-href" href="#define-and-fit-model" title="define and fit model">define and fit model</a></li><li><a class="toc-href" href="#predicting-the-test-set-results" title="Predicting the Test set results">Predicting the Test set results</a></li></ul></li></ul></div>
     </div>
   </details>
   <div class="max-w-7xl container mx-auto my-8 text-zinc-800 dark:text-zinc-300  
@@ -128,61 +128,87 @@
               prose-img:rounded-md
               sm:text-left md:text-justify
               ">
-    <h1 id="tacotron-2">Tacotron 2</h1>
-<p>Pytorch implementation of DeepMind's Tacotron-2 : <a href="https://arxiv.org/pdf/1712.05884.pdf">Natural TTS synthesis by conditioning Wavenet on MEL spectogram predictions</a></p>
-<h2 id="folder-structure">Folder Structure</h2>
+    <h1 id="logistic-regression">Logistic Regression</h1>
+<p>Logistic Regression is a binary classification algorithm that predicts with the given input how much is probable that output is either 1 or 0. Regression analysis is a method that wants to find a relation between one independent variable and one dependent variable.</p>
+<p>for instance, we are the owner of a gym club and we want to have weight loss program for are attendants we have gathered data of exercise hour and weight loss in a single month and we want to predict how much time is a need for our newcomer john to loss 5 pounds in a month.
+<img alt="here is an approach to the problem" src="https://raw.githubusercontent.com/nimamoradi/ML-notebook/5fb934ad6fd19a4f17e96be2dd7a72b33d323851/classification/images/linear-regression.jpg"/>
+gym owner will try to draw a line we yield to least sum of squares to find a pattern to between weight loss and exercise hour
+as we can we this equation can be modeled using a linear equation</p>
+<p>&ycirc; = b0 + b1x
+<br/>
+<br/>
+the problem that we have is gym owner wants to predict that John could achieve more than 5-pound loss with 20 hours a month for probability value should be always between 0 up to 1 whereas weight loss can be any number here we look logistic regression that uses sigmoid function in order to bound linear regression to 0 or 1</p>
+<p><img alt="sigmoid function diagram" src="https://github.com/nimamoradi/ML-notebook/blob/master/classification/images/sigmoid.jpg?raw=1"/></p>
+<p>&ycirc; = &sigma;(b0 + b1x)</p>
+<h3 id="we-will-classifiy-liris-with-logistic-regression">we will classifiy liris with logistic regression</h3>
 <pre>
-&boxur;&boxh;&boxh;&boxh;tacotron2
-    &boxvr;&boxh;&boxh;&boxh;content
-    &boxv;   &boxur;&boxh;&boxh;&boxh;tacotron2
-    &boxv;       &boxur;&boxh;&boxh;&boxh;filelists
-    &boxvr;&boxh;&boxh;&boxh;filelists
-    &boxvr;&boxh;&boxh;&boxh;outdir
-    &boxv;   &boxur;&boxh;&boxh;&boxh;logdir
-    &boxvr;&boxh;&boxh;&boxh;text
-    &boxv;   &boxvr;&boxh;&boxh;&boxh;data_prepare
-    &boxv;   &boxur;&boxh;&boxh;&boxh;__pycache__
-    &boxur;&boxh;&boxh;&boxh;waveglow
-    </pre>
-<h2 id="setup">Setup</h2>
-<ul>
-<li>Step <strong>(0)</strong>: Get your dataset; for persain lauguge the only open source dataset is <a href="https://voice.mozilla.org/en/datasets">Mozilla common voice</a>.</li>
-<li>
-<p>Step <strong>(0.1)</strong>:note you can use our own dataset too here is <a href="https://www.kaggle.com/moradi/persian-texttospeech-audio">kaggle link</a></p>
-</li>
-<li>
-<p>Step <strong>(1)</strong>: add your own test and train data parameters in <code>filelists/</code>.
-because mozilla audio is more than 211 h of audio we procced only small portion of it, convert to wave and remove files more than 10 seconds in length, you can see them in <a href="/tacotron2/filelists">filelists</a>.</p>
-</li>
-<li>Step <strong>(2)</strong>:  Install python requirements or build docker image <ul>
-<li>Install python requirements: <code>pip install -r requirements.txt</code></li>
-</ul>
-</li>
-<li>Step <strong>(3)</strong>: Install cuda and pytorch 1.0 .</li>
-<li>Step <strong>(4)</strong>: Train the model using this command.</li>
-</ul>
-<pre>
-<code>python train.py --output_directory='/content/tts-engine/gdrive/My Drive/outdir' --log_directory='/content/tts-engine/gdrive/My Drive/logdir'</code>
+<code>
+from sklearn.linear_model import LogisticRegression
+
+from sklearn.model_selection  import train_test_split
+from sklearn.metrics import accuracy_score
+</code>
 </pre>
-<ul>
-<li>Step <strong>(5)</strong>: Synthesize audio using <code>tts-engine/tacotron2/inference.ipynb</code>.</li>
-</ul>
-<h2 id="audio-samples">Audio samples</h2>
-<p>I listed some of audio the model genarated you can listen them in <a href="https://soundcloud.com/nima-moradi-78715897/sets/tacotron-2-audio-persian">soundcloud</a>.</p>
-<h2 id="model">Model</h2>
-<p align="center">
-<img src="images/arc.png" width="75%"/>
-</p>
-<p>The model described by the authors can be divided in two parts:
-- Spectrogram prediction network
-- Wavenet vocoder</p>
+<h3 id="for-working-better-with-data">For working better with data</h3>
+<pre>
+<code>
+import pandas as pd
+import numpy as np 
+</code>
+</pre>
+<h3 id="for-visualizeing-data">For visualizeing data</h3>
+<pre>
+<code>
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+</code>
+</pre>
+<h3 id="loading-dataset">Loading dataset</h3>
+<p>sklearn has a built-in tool for loading common datasets for educational purposes we used direct loading from CSV</p>
+<pre>
+<code>
+dataset = pd.read_csv('./datasets/Iris.csv')
+X = dataset.iloc[:, 0:4 ].values
+Y = dataset.iloc[:, 4].values
+</code>
+</pre>
+<h3 id="splitting-dataset-into-training-and-testing">Splitting dataset into training and testing</h3>
+<pre>
+<code>
+X_train, X_test, y_train, y_test = train_test_split(X, Y, 
+                                                    test_size=0.25, 
+                                                    random_state=0)
+</code>
+</pre>
+<h3 id="define-and-fit-model">define and fit model</h3>
+<pre>
+<code>
+clf = LogisticRegression(random_state=0, solver='lbfgs',
+                          multi_class='multinomial').fit(X_train, y_train)
+print(clf.score(X, Y))
+</code>
+</pre>
+<h3 id="predicting-the-test-set-results">Predicting the Test set results</h3>
+<pre>
+<code>
+y_pred = clf.predict(X_test)
+print(y_pred)
+
+# accuracy on test set
+accuracy_score(y_test, y_pred, normalize=True, sample_weight=None)
+</code>
+</pre>
     <!-- <div class="aspect-w-16 aspect-h-9 mx-auto"></div> CSS placeholder -->
   </div>
   <footer class="flex flex-col mt-10 ">
     <ul class="flex flex-wrap">
         <li
           class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
-          <a href="./tag/ai.html">AI</a>
+          <a href="./tag/logic.html">Logic</a>
+        </li>
+        <li
+          class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
+          <a href="./tag/machine-learning.html">Machine Learning</a>
         </li>
         <li
           class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
@@ -190,28 +216,19 @@ because mozilla audio is more than 211 h of audio we procced only small portion 
         </li>
         <li
           class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
-          <a href="./tag/persian.html">Persian</a>
-        </li>
-        <li
-          class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
           <a href="./tag/python.html">Python</a>
         </li>
         <li
           class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
-          <a href="./tag/tacotron-2.html">Tacotron 2</a>
-        </li>
-        <li
-          class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
-          <a href="./tag/tts.html">TTS</a>
+          <a href="./tag/regression.html">Regression</a>
         </li>
     </ul>
     <div class="flex w-full my-2 bg-zinc-200 dark:bg-zinc-700 rounded-lg">
-      <div class="w-1/2 rounded-l-lg"></div>
-      <div class="w-1/2 hover:bg-zinc-300 dark:hover:bg-zinc-800 rounded-r-lg ">
-        <a class="flex flex-col" href="./logistic-regression-example.html">
-          <div class="text-right mx-4 py-2">
-            <p class="text-zinc-600 dark:text-zinc-300 text-sm">NEXT PAGE »</p>
-            <p class="text-right py-1 hover:underline">Logistic Regression Example</p>
+      <div class="w-1/2 hover:bg-zinc-300 dark:hover:bg-zinc-800 rounded-l-lg">
+        <a class="flex flex-col pr-2" href="./tacotron-2-for-persian-language.html">
+          <div class="mx-4 py-2 text-left">
+            <p class="text-zinc-600 dark:text-zinc-300 text-sm">« PREV PAGE</p>
+            <p class="text-left py-1 hover:underline">Tacotron 2 For Persian language</p>
           </div>
         </a>
       </div>
@@ -220,7 +237,7 @@ because mozilla audio is more than 211 h of audio we procced only small portion 
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="twitter" aria-label="share Features on twitter"
-            href="https://twitter.com/intent/tweet/?text=Features&amp;url=./tacotron-2-for-persian-language.html">
+            href="https://twitter.com/intent/tweet/?text=Features&amp;url=./logistic-regression-example.html">
             <i class="fab fa-twitter fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -228,7 +245,7 @@ because mozilla audio is more than 211 h of audio we procced only small portion 
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="linkedin" aria-label="share Features on linkedin"
-            href="https://www.linkedin.com/sharing/share-offsite/?url=./tacotron-2-for-persian-language.html">
+            href="https://www.linkedin.com/sharing/share-offsite/?url=./logistic-regression-example.html">
             <i class="fab fa-linkedin fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -236,7 +253,7 @@ because mozilla audio is more than 211 h of audio we procced only small portion 
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="reddit" aria-label="share Features on reddit"
-            href="https://reddit.com/submit?url=./tacotron-2-for-persian-language.html">
+            href="https://reddit.com/submit?url=./logistic-regression-example.html">
             <i class="fab fa-reddit fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -244,7 +261,7 @@ because mozilla audio is more than 211 h of audio we procced only small portion 
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="facebook" aria-label="share Features on facebook"
-            href="https://facebook.com/sharer/sharer.php?u=./tacotron-2-for-persian-language.html">
+            href="https://facebook.com/sharer/sharer.php?u=./logistic-regression-example.html">
             <i class="fab fa-facebook fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -252,7 +269,7 @@ because mozilla audio is more than 211 h of audio we procced only small portion 
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="whatsapp" aria-label="share Features on whatsapp"
-            href="https://api.whatsapp.com/send?text=Features - ./tacotron-2-for-persian-language.html">
+            href="https://api.whatsapp.com/send?text=Features - ./logistic-regression-example.html">
             <i class="fab fa-whatsapp fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -260,7 +277,7 @@ because mozilla audio is more than 211 h of audio we procced only small portion 
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="telegram" aria-label="share Features on telegram"
-            href="https://telegram.me/share/url?text=Features&amp;url=./tacotron-2-for-persian-language.html">
+            href="https://telegram.me/share/url?text=Features&amp;url=./logistic-regression-example.html">
             <i class="fab fa-telegram fa-2x" aria-hidden="true"></i>
           </a>
         </li>

@@ -11,3 +11,8 @@ title = "About me"
 path = "tacotron-2-for-persian-language.html"
 url = "/tacotron-2-for-persian-language.html"
 title = "Tacotron 2 For Persian language"
+
+[[input.files]]
+path = "logistic-regression-example.html"
+url = "/logistic-regression-example.html"
+title = "Logistic Regression Example"
