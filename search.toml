@@ -13,6 +13,16 @@ url = "/tacotron-2-for-persian-language.html"
 title = "Tacotron 2 For Persian language"
 
 [[input.files]]
+path = "bag-of-words-example.html"
+url = "/bag-of-words-example.html"
+title = "Bag of Words Example"
+
+[[input.files]]
 path = "logistic-regression-example.html"
 url = "/logistic-regression-example.html"
 title = "Logistic Regression Example"
+
+[[input.files]]
+path = "k-means-clustering-example.html"
+url = "/k-means-clustering-example.html"
+title = "K-Means Clustering Example"

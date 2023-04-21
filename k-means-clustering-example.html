@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content="Pelican" />
     <meta name="description" content="Nima Moradi Personal blog Blog Posts">
-    <title>Tacotron 2 For Persian language</title>
+    <title>K-Means Clustering Example</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
     <link rel="stylesheet" type="text/css" href="./theme/css/main.css" />
@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="./theme/css/stork.css">
     <link rel="stylesheet" media="screen and (prefers-color-scheme: dark)"
         href="./theme/css/stork-dark.css">
-<meta name="description" content="Pytorch implementation of DeepMind's Tacotron-2 for Persian" />
+<meta name="description" content="An example of K-Means using python" />
 </head>
 
 <body class="min-h-screen flex flex-col max-w-7xl lg:max-w-none text-zinc-800 bg-neutral-100 
@@ -81,7 +81,7 @@
                     </svg>
                 </li>
                 <li class="flex items-center">
-                    <a href="./category/research.html">Research</a>
+                    <a href="./category/guide.html">Guide</a>
                     <svg class="fill-current w-3 h-3 mr-2 ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
                         <path
                             d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z" />
@@ -92,12 +92,12 @@
 
 <main>
   <header>
-    <h1 class="font-semibold text-3xl my-2">Tacotron 2 For Persian language</h1>
+    <h1 class="font-semibold text-3xl my-2">K-Means Clustering Example</h1>
     <footer class="flex text-sm text-zinc-800 dark:text-zinc-400">
       <div class="flex text-xs text-zinc-800 dark:text-zinc-400">
-        <time>January 09, 2021</time>
+        <time>June 04, 2019</time>
         <div>
-          <span>&nbsp;·&nbsp;1 min read</span>
+          <span>&nbsp;·&nbsp;4 min read</span>
         </div>
         <div>
           <span>&nbsp;·&nbsp;Nima Moradi</span>
@@ -108,7 +108,7 @@
   <details class="flex flex-col my-6 p-4 bg-zinc-200 dark:bg-zinc-800 rounded-lg">
     <summary class="text-lg font-bold">Table of contents</summary>
     <div class="mx-4 px-4 underline">
-      <div id="toc"><ul><li><a class="toc-href" href="#tacotron-2" title="Tacotron 2">Tacotron 2</a><ul><li><a class="toc-href" href="#folder-structure" title="Folder Structure">Folder Structure</a></li><li><a class="toc-href" href="#setup" title="Setup">Setup</a></li><li><a class="toc-href" href="#audio-samples" title="Audio samples">Audio samples</a></li><li><a class="toc-href" href="#model" title="Model">Model</a></li></ul></li></ul></div>
+      <div id="toc"><ul><li><a class="toc-href" href="#_1" title=""></a><ul><li><a class="toc-href" href="#k-means-clustering" title="K-Means Clustering">K-Means Clustering</a></li></ul></li></ul></div>
     </div>
   </details>
   <div class="max-w-7xl container mx-auto my-8 text-zinc-800 dark:text-zinc-300  
@@ -128,61 +128,93 @@
               prose-img:rounded-md
               sm:text-left md:text-justify
               ">
-    <h1 id="tacotron-2">Tacotron 2</h1>
-<p>Pytorch implementation of DeepMind's Tacotron-2 : <a href="https://arxiv.org/pdf/1712.05884.pdf">Natural TTS synthesis by conditioning Wavenet on MEL spectogram predictions</a></p>
-<h2 id="folder-structure">Folder Structure</h2>
-<pre>
-&boxur;&boxh;&boxh;&boxh;tacotron2
-    &boxvr;&boxh;&boxh;&boxh;content
-    &boxv;   &boxur;&boxh;&boxh;&boxh;tacotron2
-    &boxv;       &boxur;&boxh;&boxh;&boxh;filelists
-    &boxvr;&boxh;&boxh;&boxh;filelists
-    &boxvr;&boxh;&boxh;&boxh;outdir
-    &boxv;   &boxur;&boxh;&boxh;&boxh;logdir
-    &boxvr;&boxh;&boxh;&boxh;text
-    &boxv;   &boxvr;&boxh;&boxh;&boxh;data_prepare
-    &boxv;   &boxur;&boxh;&boxh;&boxh;__pycache__
-    &boxur;&boxh;&boxh;&boxh;waveglow
-    </pre>
-<h2 id="setup">Setup</h2>
-<ul>
-<li>Step <strong>(0)</strong>: Get your dataset; for persain lauguge the only open source dataset is <a href="https://voice.mozilla.org/en/datasets">Mozilla common voice</a>.</li>
-<li>
-<p>Step <strong>(0.1)</strong>:note you can use our own dataset too here is <a href="https://www.kaggle.com/moradi/persian-texttospeech-audio">kaggle link</a></p>
-</li>
-<li>
-<p>Step <strong>(1)</strong>: add your own test and train data parameters in <code>filelists/</code>.
-because mozilla audio is more than 211 h of audio we procced only small portion of it, convert to wave and remove files more than 10 seconds in length, you can see them in <a href="/tacotron2/filelists">filelists</a>.</p>
-</li>
-<li>Step <strong>(2)</strong>:  Install python requirements or build docker image <ul>
-<li>Install python requirements: <code>pip install -r requirements.txt</code></li>
-</ul>
-</li>
-<li>Step <strong>(3)</strong>: Install cuda and pytorch 1.0 .</li>
-<li>Step <strong>(4)</strong>: Train the model using this command.</li>
-</ul>
-<pre>
-<code>python train.py --output_directory='/content/tts-engine/gdrive/My Drive/outdir' --log_directory='/content/tts-engine/gdrive/My Drive/logdir'</code>
-</pre>
-<ul>
-<li>Step <strong>(5)</strong>: Synthesize audio using <code>tts-engine/tacotron2/inference.ipynb</code>.</li>
-</ul>
-<h2 id="audio-samples">Audio samples</h2>
-<p>I listed some of audio the model genarated you can listen them in <a href="https://soundcloud.com/nima-moradi-78715897/sets/tacotron-2-audio-persian">soundcloud</a>.</p>
-<h2 id="model">Model</h2>
-<p align="center">
-<img src="images/arc.png" width="75%"/>
-</p>
-<p>The model described by the authors can be divided in two parts:
-- Spectrogram prediction network
-- Wavenet vocoder</p>
+    <h1 id="_1"></h1>
+<h2 id="k-means-clustering">K-Means Clustering</h2>
+<p>K-Means is one of the simplest clustering algorithms that aim to cluster data by assigning fix number of centers
+it first tries to assign random centers and then fit them by minimizing the sum of square</p>
+<p>this algorithm is easy to implement and understand</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># this library is implemented in sklearn</span>
+<span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="kn">import</span> <span class="n">KMeans</span>
+<span class="c1"># for working better with data</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> 
+<span class="c1"># for visualizeing data</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="kn">import</span> <span class="n">Axes3D</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1">#loading dataset</span>
+<span class="c1">#sklearn has a built-in tool for loading common datasets for educational purposes we used direct loading from CSV</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'./datasets/Iris.csv'</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">4</span> <span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">4</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># for making training process repeatable we use constant seed</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="n">wcss</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="c1"># we are using diffrent cluster size to find best fit clustering</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">):</span>    
+    <span class="n">kmeans</span> <span class="o">=</span> <span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span> <span class="o">=</span> <span class="n">i</span><span class="p">,</span> <span class="n">init</span> <span class="o">=</span> <span class="s1">'k-means++'</span><span class="p">,</span> <span class="n">max_iter</span> <span class="o">=</span> <span class="mi">256</span><span class="p">,</span> <span class="n">n_init</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">kmeans</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="c1">#     this we give fit score</span>
+    <span class="n">wcss</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">kmeans</span><span class="o">.</span><span class="n">inertia_</span><span class="p">)</span>
+
+<span class="c1">#Plotting wcss results </span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="n">wcss</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'best cluster size'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Number of clusters'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'WCSS'</span><span class="p">)</span> <span class="c1">#within cluster sum of squares</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+<p><img alt="png" src="Copy%20of%20K-Means%20Clustering_files/Copy%20of%20K-Means%20Clustering_5_0.png"/></p>
+<div class="highlight"><pre><span></span><code><span class="c1">#sum of squares show as we increase the number of clusters we will have better result, </span>
+<span class="c1"># but from more than 3 centers we won't have a significant increase and we can 3 center  </span>
+
+<span class="n">kmeans</span> <span class="o">=</span> <span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">init</span> <span class="o">=</span> <span class="s1">'k-means++'</span><span class="p">,</span> <span class="n">max_iter</span> <span class="o">=</span> <span class="mi">350</span><span class="p">,</span> <span class="n">n_init</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">kmeans</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="n">Y</span> <span class="o">=</span> <span class="n">kmeans</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">Y</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+       1, 1, 1, 1, 1, 1, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 2, 2, 2, 0, 2, 2, 2,
+       2, 2, 2, 0, 0, 2, 2, 2, 2, 0, 2, 0, 2, 0, 2, 2, 0, 0, 2, 2, 2, 2,
+       2, 0, 2, 2, 2, 2, 0, 2, 2, 2, 0, 2, 2, 2, 0, 2, 2, 0])
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1">#Visualising the clusters</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">Y</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="n">Y</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">s</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="s1">'red'</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">'setosa'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">Y</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="n">Y</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">s</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="s1">'blue'</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">'versicolour'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">Y</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="n">Y</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">s</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="s1">'green'</span><span class="p">,</span>  <span class="n">label</span> <span class="o">=</span> <span class="s1">'virginica'</span><span class="p">)</span>
+
+<span class="c1">#Plotting the centroids of the clusters</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">kmeans</span><span class="o">.</span><span class="n">cluster_centers_</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">kmeans</span><span class="o">.</span><span class="n">cluster_centers_</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">s</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="s1">'cyan'</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">'Centroids'</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>&lt;matplotlib.legend.Legend at 0x14e022af748&gt;
+</code></pre></div>
+<p><img alt="png" src="Copy%20of%20K-Means%20Clustering_files/Copy%20of%20K-Means%20Clustering_8_1.png"/></p>
+<div class="highlight"><pre><span></span><code><span class="c1"># nima moradi 4/6/2019</span>
+</code></pre></div>
     <!-- <div class="aspect-w-16 aspect-h-9 mx-auto"></div> CSS placeholder -->
   </div>
   <footer class="flex flex-col mt-10 ">
     <ul class="flex flex-wrap">
         <li
           class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
-          <a href="./tag/ai.html">AI</a>
+          <a href="./tag/clustering.html">Clustering</a>
+        </li>
+        <li
+          class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
+          <a href="./tag/k-means.html">K-Means</a>
+        </li>
+        <li
+          class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
+          <a href="./tag/machine-learning.html">Machine Learning</a>
         </li>
         <li
           class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
@@ -190,28 +222,15 @@ because mozilla audio is more than 211 h of audio we procced only small portion 
         </li>
         <li
           class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
-          <a href="./tag/persian.html">Persian</a>
-        </li>
-        <li
-          class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
           <a href="./tag/python.html">Python</a>
-        </li>
-        <li
-          class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
-          <a href="./tag/tacotron-2.html">Tacotron 2</a>
-        </li>
-        <li
-          class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
-          <a href="./tag/tts.html">TTS</a>
         </li>
     </ul>
     <div class="flex w-full my-2 bg-zinc-200 dark:bg-zinc-700 rounded-lg">
-      <div class="w-1/2 rounded-l-lg"></div>
-      <div class="w-1/2 hover:bg-zinc-300 dark:hover:bg-zinc-800 rounded-r-lg ">
-        <a class="flex flex-col" href="./bag-of-words-example.html">
-          <div class="text-right mx-4 py-2">
-            <p class="text-zinc-600 dark:text-zinc-300 text-sm">NEXT PAGE »</p>
-            <p class="text-right py-1 hover:underline">Bag of Words Example</p>
+      <div class="w-1/2 hover:bg-zinc-300 dark:hover:bg-zinc-800 rounded-l-lg">
+        <a class="flex flex-col pr-2" href="./logistic-regression-example.html">
+          <div class="mx-4 py-2 text-left">
+            <p class="text-zinc-600 dark:text-zinc-300 text-sm">« PREV PAGE</p>
+            <p class="text-left py-1 hover:underline">Logistic Regression Example</p>
           </div>
         </a>
       </div>
@@ -220,7 +239,7 @@ because mozilla audio is more than 211 h of audio we procced only small portion 
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="twitter" aria-label="share Features on twitter"
-            href="https://twitter.com/intent/tweet/?text=Features&amp;url=./tacotron-2-for-persian-language.html">
+            href="https://twitter.com/intent/tweet/?text=Features&amp;url=./k-means-clustering-example.html">
             <i class="fab fa-twitter fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -228,7 +247,7 @@ because mozilla audio is more than 211 h of audio we procced only small portion 
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="linkedin" aria-label="share Features on linkedin"
-            href="https://www.linkedin.com/sharing/share-offsite/?url=./tacotron-2-for-persian-language.html">
+            href="https://www.linkedin.com/sharing/share-offsite/?url=./k-means-clustering-example.html">
             <i class="fab fa-linkedin fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -236,7 +255,7 @@ because mozilla audio is more than 211 h of audio we procced only small portion 
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="reddit" aria-label="share Features on reddit"
-            href="https://reddit.com/submit?url=./tacotron-2-for-persian-language.html">
+            href="https://reddit.com/submit?url=./k-means-clustering-example.html">
             <i class="fab fa-reddit fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -244,7 +263,7 @@ because mozilla audio is more than 211 h of audio we procced only small portion 
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="facebook" aria-label="share Features on facebook"
-            href="https://facebook.com/sharer/sharer.php?u=./tacotron-2-for-persian-language.html">
+            href="https://facebook.com/sharer/sharer.php?u=./k-means-clustering-example.html">
             <i class="fab fa-facebook fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -252,7 +271,7 @@ because mozilla audio is more than 211 h of audio we procced only small portion 
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="whatsapp" aria-label="share Features on whatsapp"
-            href="https://api.whatsapp.com/send?text=Features - ./tacotron-2-for-persian-language.html">
+            href="https://api.whatsapp.com/send?text=Features - ./k-means-clustering-example.html">
             <i class="fab fa-whatsapp fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -260,7 +279,7 @@ because mozilla audio is more than 211 h of audio we procced only small portion 
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="telegram" aria-label="share Features on telegram"
-            href="https://telegram.me/share/url?text=Features&amp;url=./tacotron-2-for-persian-language.html">
+            href="https://telegram.me/share/url?text=Features&amp;url=./k-means-clustering-example.html">
             <i class="fab fa-telegram fa-2x" aria-hidden="true"></i>
           </a>
         </li>
