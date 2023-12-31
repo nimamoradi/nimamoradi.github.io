@@ -8,11 +8,6 @@ url = "/pages/about-me.html"
 title = "About me"
 
 [[input.files]]
-path = "pages/my-cv.html"
-url = "/pages/my-cv.html"
-title = "My CV"
-
-[[input.files]]
 path = "tacotron-2-for-persian-language.html"
 url = "/tacotron-2-for-persian-language.html"
 title = "Tacotron 2 For Persian language"

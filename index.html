@@ -46,7 +46,6 @@
         </div>
         <ul class="flex flex-wrap lg:mr-24 md:pt-0">
             <li class="mr-4 pt-6"><a  href="./pages/about-me.html">About me</a></li>
-            <li class="mr-4 pt-6"><a  href="./pages/my-cv.html">My CV</a></li>
             <li class="mr-4 pt-6"><a  href="./archives.html">Archive</a></li>
             <li class="mr-4 pt-6"><a                     href="./categories.html">Categories</a></li>
             <li class="mr-4 pt-6"><a  href="./tags.html">Tags</a></li>
@@ -58,30 +57,36 @@
 <div class="my-12 md:my-24 text-zinc-800 dark:text-zinc-300">
   <h1 class="mb-6 text-3xl font-bold">Nima Moradi</h1>
   <p class="mb-8 text-zinc-600 dark:text-zinc-400"> 
-<b>Bachelor of Science in Computer engineering - Ferdowsi University
-</b>
-<br>
-Mashhad - Iran
-<br>
-2015 - 2020
-<br>
-<br>
-<b>
-Master Degree in Computer Science - Bishop's University
-</b>
-<br>
-Sherbrooke - Canada
-<br>
-<br>
 
+
+Master Degree in Computer Science - Bishop's University
+Sherbrooke - Canada
+2021 - 2024
+<b>Bachelor of Science in Computer Engineering - Ferdowsi University
+Mashhad - Iran
+2015 - 2020
+[Read more...](#more-info)
+
+<div id="more-info" style="display:none;">
 I have a keen interest in the fields of Deep Learning, Natural Language Processing, Software Development, and Android App Development. In particular, I am fascinated by the potential of these technologies to solve complex problems and create innovative solutions. I am always eager to learn more and stay up-to-date with the latest advancements in these fields.
-<br>
-<pre>
+
 Country: Canada
 Email: me[at]ni-moradi[dot]com,
     ni.moradi96[at]gmail[dot]com
-</pre>
-<br>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', (event) => {
+  document.querySelector('a[href="#more-info"]').addEventListener('click', function(e) {
+    e.preventDefault();
+    var moreInfoDiv = document.querySelector('#more-info');
+    if (moreInfoDiv.style.display === 'none') {
+      moreInfoDiv.style.display = 'block';
+    } else {
+      moreInfoDiv.style.display = 'none';
+    }
+  });
+});
+</script>
 </p>
   <ul class="flex px-2 space-x-4 text-lg">
     <li><a href="https://www.linkedin.com/in/nima-moradi/" target="_blank" rel="noopener noreferrer" title="Linkedin"
