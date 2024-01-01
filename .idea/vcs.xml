@@ -2,16 +2,9 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/Peli-Kiera" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/pelican-plugins" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/pelican-plugins/pelican-toc" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/themes" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/themes/BT3-Flat" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/themes/Casper2Pelican" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/themes/Flex" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/themes/MinimalXY" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/themes/Nuja" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/themes/Papyrus" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/themes/Peli-Kiera" vcs="Git" />
   </component>
 </project>

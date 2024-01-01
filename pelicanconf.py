@@ -21,13 +21,11 @@ GITHUB_URL = 'https://github.com/nimamoradi'
 
 # Social widget
 SOCIAL = (
-    ('twitter', 'https://twitter.com/ni_moradi'),
     ('linkedin', 'https://www.linkedin.com/in/nima-moradi/'),
     ('github', 'https://github.com/nimamoradi'),
     ('gitlab', 'https://gitlab.com/ni_moradi'),
     ('stackoverflow', 'https://stackoverflow.com/users/6138345/nima-moradi'),
     ('medium', 'https://medium.com/@ni.moradi96'),
-    ('instagram', 'https://instagram.com/ni_moradi'),
 )
 
 # Uncomment following line if you want document-relative URLs when developing
@@ -41,29 +39,31 @@ PLUGINS = ['readtime', 'search', 'neighbors', 'pelican-toc']
 
 SUBTITLE = 'Nima Moradi'
 SUBTEXT = '''
-<b>Bachelor of Science in Computer engineering - Ferdowsi University
-</b>
-<br>
-Mashhad - Iran
-<br>
-2015 - 2020
-<br>
-<br>
-<b>
-Master Degree in Computer Science - Bishop's University
-</b>
-<br>
-Sherbrooke - Canada
-<br>
-<br>
+<details>
+  <summary><b>About Me</b></summary>
+  <p>
+    <b>Master of Science in Computer Science - Bishop's University</b>
+    <br>
+    Sherbrooke - Canada
+    <br>
+    2021 - 2023
+    <br><br>
+    <b>Bachelor of Science in Computer Engineering - Ferdowsi University</b>
+    <br>
+    Mashhad - Iran
+    <br>
+    2015 - 2019
+    <br><br>
+    I have a keen interest in the fields of Deep Learning, Natural Language Processing, Software Development, and Android App Development. In particular, I am fascinated by the potential of these technologies to solve complex problems and create innovative solutions. I am always eager to learn more and stay up-to-date with the latest advancements in these fields.
+    <br>
+    Country: Canada
+    <br>
+    Email: <a href="mailto:me@ni-moradi.com">me@ni-moradi.com</a>, 
+    <a href="mailto:ni.moradi96@gmail.com">ni.moradi96@gmail.com</a>
+    <a href="/pages/about-me.html">Read More</a>
+  </p>
+</details>
 
-I have a keen interest in the fields of Deep Learning, Natural Language Processing, Software Development, and Android App Development. In particular, I am fascinated by the potential of these technologies to solve complex problems and create innovative solutions. I am always eager to learn more and stay up-to-date with the latest advancements in these fields.
-<br>
-<pre>
-Country: Canada
-Email: me[at]ni-moradi[dot]com, ni.moradi96[at]gmail[dot]com
-</pre>
-<br>
 '''
 
 DISPLAY_PAGES_ON_MENU = True
@@ -94,7 +94,7 @@ SHARE = (
     ("telegram", "https://telegram.me/share/url?text=Features&amp;url="),
 )
 EXTRA_PATH_METADATA = {
-    'extra/favicon.jpg': {'path': 'favicon.jpg'},  # and this
+    'extra/favicon.jpg': {'path': './content/images/favicon.jpg'},  # and this
     'extra/CNAME': {'path': 'CNAME'},
     'extra/LICENSE': {'path': 'LICENSE'}
 }
