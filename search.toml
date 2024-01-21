@@ -8,6 +8,11 @@ url = "/pages/about-me.html"
 title = "About me"
 
 [[input.files]]
+path = "streamlining-api-integration-with-kiota.html"
+url = "/streamlining-api-integration-with-kiota.html"
+title = "Streamlining API Integration with Kiota"
+
+[[input.files]]
 path = "tacotron-2-for-persian-language.html"
 url = "/tacotron-2-for-persian-language.html"
 title = "Tacotron 2 For Persian language"
