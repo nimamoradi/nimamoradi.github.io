@@ -13,6 +13,11 @@ url = "/streamlining-api-integration-with-kiota.html"
 title = "Streamlining API Integration with Kiota"
 
 [[input.files]]
+path = "crisp-dm-series-mastering-data-mining-in-football-analytics.html"
+url = "/crisp-dm-series-mastering-data-mining-in-football-analytics.html"
+title = "CRISP-DM Series: Mastering Data Mining in Football Analytics"
+
+[[input.files]]
 path = "tacotron-2-for-persian-language.html"
 url = "/tacotron-2-for-persian-language.html"
 title = "Tacotron 2 For Persian language"
