@@ -5,231 +5,231 @@ xmlns:xhtml="http://www.w3.org/1999/xhtml"
 xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
-<loc>ni-moradi.com/</loc>
+<loc>https://ni-moradi.com/</loc>
 <lastmod>2024-02-05T21:29:56-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>ni-moradi.com/archives.html</loc>
+<loc>https://ni-moradi.com/archives.html</loc>
 <lastmod>2024-02-05T21:29:56-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>ni-moradi.com/author/nima-moradi.html</loc>
+<loc>https://ni-moradi.com/author/nima-moradi.html</loc>
 <lastmod>2024-02-05T21:29:56-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>ni-moradi.com/bag-of-words-example.html</loc>
+<loc>https://ni-moradi.com/bag-of-words-example.html</loc>
 <lastmod>2019-07-21T00:00:00-04:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>ni-moradi.com/categories.html</loc>
+<loc>https://ni-moradi.com/categories.html</loc>
 <lastmod>2024-02-05T21:29:56-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>ni-moradi.com/category/guide.html</loc>
+<loc>https://ni-moradi.com/category/guide.html</loc>
 <lastmod>2024-02-05T21:29:56-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>ni-moradi.com/category/research.html</loc>
+<loc>https://ni-moradi.com/category/research.html</loc>
 <lastmod>2024-02-05T21:29:56-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>ni-moradi.com/category/review.html</loc>
+<loc>https://ni-moradi.com/category/review.html</loc>
 <lastmod>2024-02-05T21:29:56-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>ni-moradi.com/crisp-dm-series-mastering-data-mining-in-football-analytics.html</loc>
+<loc>https://ni-moradi.com/crisp-dm-series-mastering-data-mining-in-football-analytics.html</loc>
 <lastmod>2024-02-04T00:00:00-05:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>ni-moradi.com/k-means-clustering-example.html</loc>
+<loc>https://ni-moradi.com/k-means-clustering-example.html</loc>
 <lastmod>2019-06-04T00:00:00-04:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>ni-moradi.com/logistic-regression-example.html</loc>
+<loc>https://ni-moradi.com/logistic-regression-example.html</loc>
 <lastmod>2019-06-10T00:00:00-04:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>ni-moradi.com/pages/about-me.html</loc>
+<loc>https://ni-moradi.com/pages/about-me.html</loc>
 <lastmod>2023-12-24T00:00:00-05:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>ni-moradi.com/search.html</loc>
+<loc>https://ni-moradi.com/search.html</loc>
 <lastmod>2024-02-05T21:29:56-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>ni-moradi.com/streamlining-api-integration-with-kiota.html</loc>
+<loc>https://ni-moradi.com/streamlining-api-integration-with-kiota.html</loc>
 <lastmod>2023-05-09T00:00:00-04:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>ni-moradi.com/tacotron-2-for-persian-language.html</loc>
+<loc>https://ni-moradi.com/tacotron-2-for-persian-language.html</loc>
 <lastmod>2021-01-09T00:00:00-05:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>ni-moradi.com/tag/ai.html</loc>
+<loc>https://ni-moradi.com/tag/ai.html</loc>
 <lastmod>2024-02-05T21:29:56-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>ni-moradi.com/tag/api.html</loc>
+<loc>https://ni-moradi.com/tag/api.html</loc>
 <lastmod>2024-02-05T21:29:56-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>ni-moradi.com/tag/bog.html</loc>
+<loc>https://ni-moradi.com/tag/bog.html</loc>
 <lastmod>2024-02-05T21:29:56-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>ni-moradi.com/tag/clustering.html</loc>
+<loc>https://ni-moradi.com/tag/clustering.html</loc>
 <lastmod>2024-02-05T21:29:56-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>ni-moradi.com/tag/crisp.html</loc>
+<loc>https://ni-moradi.com/tag/crisp.html</loc>
 <lastmod>2024-02-05T21:29:56-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>ni-moradi.com/tag/data-mining.html</loc>
+<loc>https://ni-moradi.com/tag/data-mining.html</loc>
 <lastmod>2024-02-05T21:29:56-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>ni-moradi.com/tag/k-means.html</loc>
+<loc>https://ni-moradi.com/tag/k-means.html</loc>
 <lastmod>2024-02-05T21:29:56-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>ni-moradi.com/tag/kiota.html</loc>
+<loc>https://ni-moradi.com/tag/kiota.html</loc>
 <lastmod>2024-02-05T21:29:56-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>ni-moradi.com/tag/logic.html</loc>
+<loc>https://ni-moradi.com/tag/logic.html</loc>
 <lastmod>2024-02-05T21:29:56-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>ni-moradi.com/tag/machine-learning.html</loc>
+<loc>https://ni-moradi.com/tag/machine-learning.html</loc>
 <lastmod>2024-02-05T21:29:56-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>ni-moradi.com/tag/nima-moradi.html</loc>
+<loc>https://ni-moradi.com/tag/nima-moradi.html</loc>
 <lastmod>2024-02-05T21:29:56-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>ni-moradi.com/tag/persian.html</loc>
+<loc>https://ni-moradi.com/tag/persian.html</loc>
 <lastmod>2024-02-05T21:29:56-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>ni-moradi.com/tag/python.html</loc>
+<loc>https://ni-moradi.com/tag/python.html</loc>
 <lastmod>2024-02-05T21:29:56-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>ni-moradi.com/tag/regression.html</loc>
+<loc>https://ni-moradi.com/tag/regression.html</loc>
 <lastmod>2024-02-05T21:29:56-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>ni-moradi.com/tag/swagger.html</loc>
+<loc>https://ni-moradi.com/tag/swagger.html</loc>
 <lastmod>2024-02-05T21:29:56-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>ni-moradi.com/tag/tacotron-2.html</loc>
+<loc>https://ni-moradi.com/tag/tacotron-2.html</loc>
 <lastmod>2024-02-05T21:29:56-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>ni-moradi.com/tag/tts.html</loc>
+<loc>https://ni-moradi.com/tag/tts.html</loc>
 <lastmod>2024-02-05T21:29:56-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>ni-moradi.com/tags.html</loc>
+<loc>https://ni-moradi.com/tags.html</loc>
 <lastmod>2024-02-05T21:29:56-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
