@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content="Pelican" />
     <meta name="description" content="Nima Moradi Personal blog Blog Posts">
-    <title>Tacotron 2 For Persian language</title>
+    <title>Shortcomings of Android DRM wrapper</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
     <link rel="stylesheet" type="text/css" href="./theme/css/main.css" />
@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="./theme/css/stork.css">
     <link rel="stylesheet" media="screen and (prefers-color-scheme: dark)"
         href="./theme/css/stork-dark.css">
-<meta name="description" content="Pytorch implementation of DeepMind's Tacotron-2 for Persian" />
+<meta name="description" content="I will security issues of Android DRM wrappers" />
 </head>
 
 <body class="min-h-screen flex flex-col max-w-7xl lg:max-w-none text-zinc-800 bg-neutral-100 
@@ -81,7 +81,7 @@
                     </svg>
                 </li>
                 <li class="flex items-center">
-                    <a href="./category/research.html">Research</a>
+                    <a href="./category/guide.html">Guide</a>
                     <svg class="fill-current w-3 h-3 mr-2 ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
                         <path
                             d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z" />
@@ -92,12 +92,12 @@
 
 <main>
   <header>
-    <h1 class="font-semibold text-3xl my-2">Tacotron 2 For Persian language</h1>
+    <h1 class="font-semibold text-3xl my-2">Shortcomings of Android DRM wrapper</h1>
     <footer class="flex text-sm text-zinc-800 dark:text-zinc-400">
       <div class="flex text-xs text-zinc-800 dark:text-zinc-400">
-        <time>January 09, 2021</time>
+        <time>December 25, 2022</time>
         <div>
-          <span>&nbsp;·&nbsp;1 min read</span>
+          <span>&nbsp;·&nbsp;2 min read</span>
         </div>
         <div>
           <span>&nbsp;·&nbsp;Nima Moradi</span>
@@ -108,7 +108,7 @@
   <details class="flex flex-col my-6 p-4 bg-zinc-200 dark:bg-zinc-800 rounded-lg">
     <summary class="text-lg font-bold">Table of contents</summary>
     <div class="mx-4 px-4 underline">
-      <div id="toc"><ul><li><a class="toc-href" href="#tacotron-2" title="Tacotron 2">Tacotron 2</a><ul><li><a class="toc-href" href="#folder-structure" title="Folder Structure">Folder Structure</a></li><li><a class="toc-href" href="#setup" title="Setup">Setup</a></li><li><a class="toc-href" href="#audio-samples" title="Audio samples">Audio samples</a></li><li><a class="toc-href" href="#model" title="Model">Model</a></li></ul></li></ul></div>
+      <div id="toc"><ul><li><a class="toc-href" href="#amazon-appstore" title="Amazon Appstore">Amazon Appstore</a></li><li><a class="toc-href" href="#another-wrapper-mistake" title="Another Wrapper Mistake">Another Wrapper Mistake</a></li><li><a class="toc-href" href="#conclusion" title="Conclusion">Conclusion</a></li></ul></div>
     </div>
   </details>
   <div class="max-w-7xl container mx-auto my-8 text-zinc-800 dark:text-zinc-300  
@@ -128,61 +128,58 @@
               prose-img:rounded-md
               sm:text-left md:text-justify
               ">
-    <h1 id="tacotron-2">Tacotron 2</h1>
-<p>Pytorch implementation of DeepMind's Tacotron-2 : <a href="https://arxiv.org/pdf/1712.05884.pdf">Natural TTS synthesis by conditioning Wavenet on MEL spectogram predictions</a></p>
-<h2 id="folder-structure">Folder Structure</h2>
-<pre>
-&boxur;&boxh;&boxh;&boxh;tacotron2
-    &boxvr;&boxh;&boxh;&boxh;content
-    &boxv;   &boxur;&boxh;&boxh;&boxh;tacotron2
-    &boxv;       &boxur;&boxh;&boxh;&boxh;filelists
-    &boxvr;&boxh;&boxh;&boxh;filelists
-    &boxvr;&boxh;&boxh;&boxh;outdir
-    &boxv;   &boxur;&boxh;&boxh;&boxh;logdir
-    &boxvr;&boxh;&boxh;&boxh;text
-    &boxv;   &boxvr;&boxh;&boxh;&boxh;data_prepare
-    &boxv;   &boxur;&boxh;&boxh;&boxh;__pycache__
-    &boxur;&boxh;&boxh;&boxh;waveglow
-    </pre>
-<h2 id="setup">Setup</h2>
-<ul>
-<li>Step <strong>(0)</strong>: Get your dataset; for persain lauguge the only open source dataset is <a href="https://voice.mozilla.org/en/datasets">Mozilla common voice</a>.</li>
-<li>
-<p>Step <strong>(0.1)</strong>:note you can use our own dataset too here is <a href="https://www.kaggle.com/moradi/persian-texttospeech-audio">kaggle link</a></p>
-</li>
-<li>
-<p>Step <strong>(1)</strong>: add your own test and train data parameters in <code>filelists/</code>.
-because mozilla audio is more than 211 h of audio we procced only small portion of it, convert to wave and remove files more than 10 seconds in length, you can see them in <a href="/tacotron2/filelists">filelists</a>.</p>
-</li>
-<li>Step <strong>(2)</strong>:  Install python requirements or build docker image <ul>
-<li>Install python requirements: <code>pip install -r requirements.txt</code></li>
-</ul>
-</li>
-<li>Step <strong>(3)</strong>: Install cuda and pytorch 1.0 .</li>
-<li>Step <strong>(4)</strong>: Train the model using this command.</li>
-</ul>
-<pre>
-<code>python train.py --output_directory='/content/tts-engine/gdrive/My Drive/outdir' --log_directory='/content/tts-engine/gdrive/My Drive/logdir'</code>
-</pre>
-<ul>
-<li>Step <strong>(5)</strong>: Synthesize audio using <code>tts-engine/tacotron2/inference.ipynb</code>.</li>
-</ul>
-<h2 id="audio-samples">Audio samples</h2>
-<p>I listed some of audio the model genarated you can listen them in <a href="https://soundcloud.com/nima-moradi-78715897/sets/tacotron-2-audio-persian">soundcloud</a>.</p>
-<h2 id="model">Model</h2>
-<p align="center">
-<img src="images/arc.png" width="75%"/>
-</p>
-<p>The model described by the authors can be divided in two parts:
-- Spectrogram prediction network
-- Wavenet vocoder</p>
+    <p>Android applications can be installed without using a marketplace easily if a paid app is accessed it can be mass distributed, to address that stores and application developers take some measures to safeguard the app. But most available wrappers are not sufficient for protecting the apk file. In one year that I have been designing and developing wrappers for DRM management and statics reports here are some problems that I saw.</p>
+<p>Let's see how some stores enforce DRM.</p>
+<h2 id="amazon-appstore">Amazon Appstore</h2>
+<p>Amazon Appstore is one of the oldest android app store with about half a million different applications providing service for android phones, tablets, and fire-tablet. For pre-paid applications and free applications yet its protection method is very simple to crack.</p>
+<p>I have purchased one app for testing, if AppStore is not installed the program will inform me with a dialog to install the AppStore.</p>
+<p>First, we should extract the apk</p>
+<p>you can use adb to find the location.</p>
+<p><code>adb shell pm path com.example.someapp</code></p>
+<p>then pull the apk</p>
+<p><code>adb pull /data/app/com.example.someapp-2.apk path/to/desired/destination</code></p>
+<p>or use many free app extractors that are available(which are doing something similar).</p>
+<p>Secondly, decompile the apk using apktools</p>
+<p><code>apktool d  -f --use-aapt2 -v  -o GAME_APK_FILE GAME_APK_EXTRACTED_DIST</code></p>
+<p>The two common ways that the wrappers work on android are by changing the initial activity to provide the subscription check and etc. or by changing the activity or application class parent.</p>
+<p>so let us look at the <b>manifest</b></p>
+<p>here is the application class.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;application</span><span class="w"> </span><span class="na">android:name=</span><span class="s">"androidx.multidex.MultiDexApplication"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;activity</span><span class="w"> </span><span class="na">android:name=</span><span class="s">"com.company.not.aws"</span><span class="w"> </span><span class="nt">&gt;</span>
+<span class="w">            </span><span class="nt">&lt;intent-filter&gt;</span>
+<span class="w">                </span><span class="nt">&lt;action</span><span class="w"> </span><span class="na">android:name=</span><span class="s">"android.intent.action.MAIN"</span><span class="nt">/&gt;</span>
+<span class="w">                </span><span class="nt">&lt;category</span><span class="w"> </span><span class="na">android:name=</span><span class="s">"android.intent.category.LAUNCHER"</span><span class="nt">/&gt;</span>
+<span class="w">            </span><span class="nt">&lt;/intent-filter&gt;</span>
+<span class="w">        </span><span class="nt">&lt;/activity&gt;</span>
+<span class="nt">&lt;/application&gt;</span>
+</code></pre></div>
+<p>As you can see amazon has not changed the initial activity class or has added/swapped the from its own, this is very common and most wrappers do that.</p>
+<p>So lets see if any activity parent has changed or the code injected.</p>
+<div class="highlight"><pre><span></span><code><span class="k">.class</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="kt">L</span>com/company/app/<span class="nc">Activity</span>;
+<span class="k">.super</span><span class="w"> </span><span class="kt">L</span>com/amazon/android/activity/<span class="nc">AmazonActivity</span>;
+</code></pre></div>
+<p>So here is the part the Amazon has injected the code and changed the activity class to inherit from its own activity.</p>
+<p>removing the functionality of dialog and checking will make the app without protection which is at this point easy to do.</p>
+<p>you only rebuild the app with apktool.</p>
+<h2 id="another-wrapper-mistake">Another Wrapper Mistake</h2>
+<p>This is error come from other company Which I come across.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;activity</span><span class="w"> </span><span class="na">android:configChanges=</span><span class="s">"keyboardHidden|orientation"</span><span class="w"> </span>
+<span class="w">    </span><span class="na">android:name=</span><span class="s">"com.***.***.old_launcher"</span><span class="w"> </span>
+<span class="w">    </span><span class="na">android:screenOrientation=</span><span class="s">"portrait"</span><span class="w"> </span>
+<span class="w">    </span><span class="na">android:exported=</span><span class="s">"true"</span>
+<span class="nt">/&gt;</span>
+</code></pre></div>
+<p>here after the original app launcher has been replaced the developer forgot to make its exported false so we can bypass this and bypass the activity even without rewrap(you can call activity if it&rsquo;s exported from other apps).</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Protecting the app is very important and the wrapper is a good way to do that but it should be done correctly. The wrapper should be able to protect the app from being cracked and should not be easy to bypass. </p>
+<p>Contact me if you want to review your app security or provide a better soulution.</p>
     <!-- <div class="aspect-w-16 aspect-h-9 mx-auto"></div> CSS placeholder -->
   </div>
   <footer class="flex flex-col mt-10 ">
     <ul class="flex flex-wrap">
         <li
           class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
-          <a href="./tag/ai.html">AI</a>
+          <a href="./tag/kotlin.html">Kotlin</a>
         </li>
         <li
           class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
@@ -190,35 +187,27 @@ because mozilla audio is more than 211 h of audio we procced only small portion 
         </li>
         <li
           class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
-          <a href="./tag/persian.html">Persian</a>
+          <a href="./tag/process.html">process</a>
         </li>
         <li
           class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
           <a href="./tag/python.html">Python</a>
         </li>
-        <li
-          class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
-          <a href="./tag/tacotron-2.html">Tacotron 2</a>
-        </li>
-        <li
-          class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
-          <a href="./tag/tts.html">TTS</a>
-        </li>
     </ul>
     <div class="flex w-full my-2 bg-zinc-200 dark:bg-zinc-700 rounded-lg">
       <div class="w-1/2 hover:bg-zinc-300 dark:hover:bg-zinc-800 rounded-l-lg">
-        <a class="flex flex-col pr-2" href="./shortcomings-of-android-drm-wrapper.html">
+        <a class="flex flex-col pr-2" href="./streamlining-api-integration-with-kiota.html">
           <div class="mx-4 py-2 text-left">
             <p class="text-zinc-600 dark:text-zinc-300 text-sm">« PREV PAGE</p>
-            <p class="text-left py-1 hover:underline">Shortcomings of Android DRM wrapper</p>
+            <p class="text-left py-1 hover:underline">Streamlining API Integration with Kiota</p>
           </div>
         </a>
       </div>
       <div class="w-1/2 hover:bg-zinc-300 dark:hover:bg-zinc-800 rounded-r-lg ">
-        <a class="flex flex-col" href="./bag-of-words-example.html">
+        <a class="flex flex-col" href="./tacotron-2-for-persian-language.html">
           <div class="text-right mx-4 py-2">
             <p class="text-zinc-600 dark:text-zinc-300 text-sm">NEXT PAGE »</p>
-            <p class="text-right py-1 hover:underline">Bag of Words Example</p>
+            <p class="text-right py-1 hover:underline">Tacotron 2 For Persian language</p>
           </div>
         </a>
       </div>
@@ -227,7 +216,7 @@ because mozilla audio is more than 211 h of audio we procced only small portion 
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="twitter" aria-label="share Features on twitter"
-            href="https://twitter.com/intent/tweet/?text=Features&amp;url=./tacotron-2-for-persian-language.html">
+            href="https://twitter.com/intent/tweet/?text=Features&amp;url=./shortcomings-of-android-drm-wrapper.html">
             <i class="fab fa-twitter fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -235,7 +224,7 @@ because mozilla audio is more than 211 h of audio we procced only small portion 
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="linkedin" aria-label="share Features on linkedin"
-            href="https://www.linkedin.com/sharing/share-offsite/?url=./tacotron-2-for-persian-language.html">
+            href="https://www.linkedin.com/sharing/share-offsite/?url=./shortcomings-of-android-drm-wrapper.html">
             <i class="fab fa-linkedin fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -243,7 +232,7 @@ because mozilla audio is more than 211 h of audio we procced only small portion 
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="reddit" aria-label="share Features on reddit"
-            href="https://reddit.com/submit?url=./tacotron-2-for-persian-language.html">
+            href="https://reddit.com/submit?url=./shortcomings-of-android-drm-wrapper.html">
             <i class="fab fa-reddit fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -251,7 +240,7 @@ because mozilla audio is more than 211 h of audio we procced only small portion 
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="facebook" aria-label="share Features on facebook"
-            href="https://facebook.com/sharer/sharer.php?u=./tacotron-2-for-persian-language.html">
+            href="https://facebook.com/sharer/sharer.php?u=./shortcomings-of-android-drm-wrapper.html">
             <i class="fab fa-facebook fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -259,7 +248,7 @@ because mozilla audio is more than 211 h of audio we procced only small portion 
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="whatsapp" aria-label="share Features on whatsapp"
-            href="https://api.whatsapp.com/send?text=Features - ./tacotron-2-for-persian-language.html">
+            href="https://api.whatsapp.com/send?text=Features - ./shortcomings-of-android-drm-wrapper.html">
             <i class="fab fa-whatsapp fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -267,7 +256,7 @@ because mozilla audio is more than 211 h of audio we procced only small portion 
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="telegram" aria-label="share Features on telegram"
-            href="https://telegram.me/share/url?text=Features&amp;url=./tacotron-2-for-persian-language.html">
+            href="https://telegram.me/share/url?text=Features&amp;url=./shortcomings-of-android-drm-wrapper.html">
             <i class="fab fa-telegram fa-2x" aria-hidden="true"></i>
           </a>
         </li>

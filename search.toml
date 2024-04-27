@@ -23,6 +23,11 @@ url = "/streamlining-api-integration-with-kiota.html"
 title = "Streamlining API Integration with Kiota"
 
 [[input.files]]
+path = "shortcomings-of-android-drm-wrapper.html"
+url = "/shortcomings-of-android-drm-wrapper.html"
+title = "Shortcomings of Android DRM wrapper"
+
+[[input.files]]
 path = "tacotron-2-for-persian-language.html"
 url = "/tacotron-2-for-persian-language.html"
 title = "Tacotron 2 For Persian language"
