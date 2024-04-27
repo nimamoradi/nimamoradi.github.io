@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content="Pelican" />
     <meta name="description" content="Nima Moradi Personal blog Blog Posts">
-    <title>CRISP-DM Series: Mastering Data Mining in Football Analytics</title>
+    <title>OverView of Coroutines</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
     <link rel="stylesheet" type="text/css" href="./theme/css/main.css" />
@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="./theme/css/stork.css">
     <link rel="stylesheet" media="screen and (prefers-color-scheme: dark)"
         href="./theme/css/stork-dark.css">
-<meta name="description" content="An example of CRISP-Data Mining using python" />
+<meta name="description" content="An overView of Coroutines in Python and Kotlin" />
 </head>
 
 <body class="min-h-screen flex flex-col max-w-7xl lg:max-w-none text-zinc-800 bg-neutral-100 
@@ -92,10 +92,10 @@
 
 <main>
   <header>
-    <h1 class="font-semibold text-3xl my-2">CRISP-DM Series: Mastering Data Mining in Football Analytics</h1>
+    <h1 class="font-semibold text-3xl my-2">OverView of Coroutines</h1>
     <footer class="flex text-sm text-zinc-800 dark:text-zinc-400">
       <div class="flex text-xs text-zinc-800 dark:text-zinc-400">
-        <time>February 04, 2024</time>
+        <time>April 27, 2024</time>
         <div>
           <span>&nbsp;·&nbsp;3 min read</span>
         </div>
@@ -108,7 +108,7 @@
   <details class="flex flex-col my-6 p-4 bg-zinc-200 dark:bg-zinc-800 rounded-lg">
     <summary class="text-lg font-bold">Table of contents</summary>
     <div class="mx-4 px-4 underline">
-      <div id="toc"><ul><li><a class="toc-href" href="#what-is-crisp-dm" title="What is CRISP-DM?">What is CRISP-DM?</a></li><li><a class="toc-href" href="#introduction-to-crisp-dm" title="Introduction to CRISP-DM">Introduction to CRISP-DM</a><ul><li><a class="toc-href" href="#defining-the-objective-business-understanding" title="Defining the Objective (Business Understanding)">Defining the Objective (Business Understanding)</a></li><li><a class="toc-href" href="#gathering-data" title="Gathering Data">Gathering Data</a></li></ul></li></ul></div>
+      <div id="toc"><ul><li><a class="toc-href" href="#introduction" title="Introduction">Introduction</a><ul><li><a class="toc-href" href="#key-concepts" title="Key Concepts">Key Concepts</a></li><li><a class="toc-href" href="#syntax-and-structure" title="Syntax and Structure">Syntax and Structure</a><ul><li><a class="toc-href" href="#structured-concurrency" title="Structured Concurrency">Structured Concurrency</a></li></ul></li></ul></li></ul></div>
     </div>
   </details>
   <div class="max-w-7xl container mx-auto my-8 text-zinc-800 dark:text-zinc-300  
@@ -128,88 +128,129 @@
               prose-img:rounded-md
               sm:text-left md:text-justify
               ">
-    <p>Welcome to our CRISP-DM series, where we explore the Cross-Industry Standard Process for Data Mining through the lens of football analytics. This series is designed for aspiring data scientists and analytics enthusiasts who wish to deepen their understanding of data mining processes, from business understanding to deployment, using the exciting world of football as a case study.
-<img alt="Image Placeholder: CRISP" src="../images/crisp.png"/></p>
-<h2 id="what-is-crisp-dm">What is CRISP-DM?</h2>
-<p>The CRISP-DM (Cross-Industry Standard Process for Data Mining) framework offers a structured methodology to navigate data analysts and scientists through the entirety of a project, from inception to completion. Originating from a seminal paper in 2000, its adoption and utility have remained steadfast. Numerous discussions, such as certain articles, attest to its effectiveness in refining the capabilities of data scientists. Its significance extends beyond the technical team, advocating for a comprehensive understanding among all project participants, including stakeholders and managers. For those intrigued by the domain, delving into CRISP-DM is highly recommended as a foundational resource.</p>
-<h2 id="introduction-to-crisp-dm">Introduction to CRISP-DM</h2>
-<p>In this series, we'll dive deep into each phase of the CRISP-DM methodology, applying its principles to football analytics. Our goal is to not only uncover insights into creating the most potent attacking line-up but also to equip you with the skills and knowledge to tackle any data mining project with confidence.</p>
-<h3 id="defining-the-objective-business-understanding">Defining the Objective (Business Understanding)</h3>
-<p>Our journey begins with a clear objective for this example
-I will use football data to predict the most effective attacking lineup in football teams. This objective will guide our data mining process, 
-ensuring that our efforts are aligned with a strategic goal.</p>
-<h3 id="gathering-data">Gathering Data</h3>
-<p>We leveraged Python's pandas and BS Soup library to programmatically collect data from fbref.com, focusing on key performance metrics like goals, assists, and shots on target.
-It can be used on different leagues and seasons In here only showcase English Premier League 2015/16 season data.</p>
-<h4>Extracting Table Data with BeautifulSoup</h4>
-<p>Before diving into the pandas DataFrame creation, 
-it's essential to capture the table data from the webpage.
-BeautifulSoup excels in parsing HTML and XML documents,
-making it an invaluable tool for web scraping tasks.
-Here's how we can use it to pinpoint the table containing our desired data:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
-<span class="kn">import</span> <span class="nn">requests</span>
+    <h1 id="introduction">Introduction</h1>
+<p>Coroutines are a powerful control flow mechanism that enable asynchronous programming without dramatically restructuring code like traditional callback-based approaches.
+Both Python and Kotlin provide native support for coroutines, offering developers elegant solutions for tasks like:</p>
+<ul>
+<li>Network I/O: Handling multiple network requests concurrently.</li>
+<li>File I/O: Efficient reading and writing of files.</li>
+<li>Long-running Computations: Breaking down complex tasks into smaller, manageable units that can pause and resume.</li>
+<li>Other Asynchronous Scenarios: Wherever non-blocking operations are needed.</li>
+</ul>
+<h2 id="key-concepts">Key Concepts</h2>
+<h4>Suspending Functions:</h4>
+<ul>
+<li>Python: Functions declared using the async keyword. They use the await keyword to suspend execution and wait for the result of another coroutine.</li>
+<li>Kotlin: Functions declared using the suspend keyword. Similarly, use various suspend functions to pause execution without blocking a thread.</li>
+</ul>
+<h4>Event Loop:</h4>
+<ul>
+<li>Python: The asyncio library manages an event loop, responsible for scheduling and executing coroutines.
+<br/></li>
+<li>Kotlin: The kotlinx coroutines library provides coroutine builders and an underlying mechanism for their management. But here we use the Android's coroutine library.
+Syntax and Structure</li>
+</ul>
+<h2 id="syntax-and-structure">Syntax and Structure</h2>
+<p>On Android, coroutines help to manage long-running tasks that might otherwise block the main thread and cause your app to become unresponsive.
+In this example we send a request to database using kotlin, the io-request should always be done in background thread, so we use the coroutine to handle this task.</p>
+<div class="highlight"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="nn">android.os.AsyncTask</span>
+<span class="k">import</span><span class="w"> </span><span class="nn">kotlinx.coroutines.*</span>
 
-<span class="c1"># Fetch the webpage content</span>
-<span class="n">url</span> <span class="o">=</span> <span class="s2">"https://fbref.com/en/players/002d06bb/matchlogs/2015-2016/Sylvain-Distin-Match-Logs"</span>
-<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-<span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">'html.parser'</span><span class="p">)</span>
+<span class="c1">// Simulate a simple database interaction </span>
+<span class="kd">class</span><span class="w"> </span><span class="nc">MyDatabase</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">suspend</span><span class="w"> </span><span class="kd">fun</span><span class="w"> </span><span class="nf">fetchData</span><span class="p">(</span><span class="n">query</span><span class="p">:</span><span class="w"> </span><span class="kt">String</span><span class="p">):</span><span class="w"> </span><span class="kt">String</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">delay</span><span class="p">(</span><span class="m">2000L</span><span class="p">)</span><span class="w"> </span><span class="c1">// Simulate database operation delay</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="s">"Result for query: </span><span class="si">$</span><span class="n">query</span><span class="s">"</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
 
-<span class="c1"># Locate the table by its tag or class (example shown uses tag)</span>
-<span class="n">table</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'table'</span><span class="p">)</span>
+<span class="kd">class</span><span class="w"> </span><span class="nc">MyActivity</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">AppCompatActivity</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// Assuming you are in an Activity context</span>
+
+<span class="w">    </span><span class="kd">override</span><span class="w"> </span><span class="kd">fun</span><span class="w"> </span><span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">:</span><span class="w"> </span><span class="n">Bundle?)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">super</span><span class="p">.</span><span class="na">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">)</span>
+
+<span class="w">        </span><span class="n">lifecycleScope</span><span class="p">.</span><span class="na">launch</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// Launch coroutine within the Activity's lifecycle</span>
+<span class="w">            </span><span class="kd">val</span><span class="w"> </span><span class="nv">result1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fetchDataFromDB</span><span class="p">(</span><span class="s">"SELECT * FROM table1"</span><span class="p">)</span>
+<span class="w">            </span><span class="kd">val</span><span class="w"> </span><span class="nv">result2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fetchDataFromDB</span><span class="p">(</span><span class="s">"SELECT * FROM table2"</span><span class="p">)</span>
+<span class="w">           </span><span class="c1">// update ui</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">suspend</span><span class="w"> </span><span class="kd">fun</span><span class="w"> </span><span class="nf">fetchDataFromDB</span><span class="p">(</span><span class="n">query</span><span class="p">:</span><span class="w"> </span><span class="kt">String</span><span class="p">):</span><span class="w"> </span><span class="kt">String</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">withContext</span><span class="p">(</span><span class="n">Dispatchers</span><span class="p">.</span><span class="na">IO</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">MyDatabase</span><span class="p">().</span><span class="na">fetchData</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
-<h4>Creating a DataFrame from Table Data</h4>
-<p>While pandas can directly read tables from HTML pages, 
-this method often misses crucial parts of the data, such as links embedded 
-in table cells. To overcome this limitation,
-we custom-define a function that meticulously extracts both text and hyperlinks 
-from each cell, ensuring no data point is overlooked:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<h4>Explanation</h4>
+<p>lifecycleScope.launch: Launches the coroutine in the context of the Activity's lifecycle, ensuring cancellation when the Activity is destroyed.
+<code>withContext(Dispatchers.IO)</code>: Switches the coroutine to a background thread suitable for database operations. 
+This is crucial to avoid blocking the main thread.</p>
+<p>In Python we can use the asyncio library to handle the coroutine, here is an example of how to use the asyncio library to request from database.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">import</span> <span class="nn">mysql.connector</span>
 
-<span class="k">def</span> <span class="nf">dataframe_from_html_table</span><span class="p">(</span><span class="n">table</span><span class="p">):</span>
-    <span class="c1"># Initialize an empty list to store your data</span>
-    <span class="c1"># Extract headers</span>
-    <span class="n">headers</span> <span class="o">=</span> <span class="p">[</span><span class="n">header</span><span class="o">.</span><span class="n">get_text</span><span class="p">(</span><span class="n">strip</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">for</span> <span class="n">header</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">'th'</span><span class="p">)]</span>
-    <span class="c1"># Initialize an empty list to store your data</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="c1"># Iterate over the table rows, skipping the header row</span>
-    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">'tr'</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]:</span>
-        <span class="n">row_data</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">for</span> <span class="n">header</span><span class="p">,</span> <span class="n">cell</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">headers</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">find_all</span><span class="p">([</span><span class="s1">'th'</span><span class="p">,</span> <span class="s1">'td'</span><span class="p">])):</span>
-            <span class="c1"># Get text content and hyperlink</span>
-            <span class="n">text</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">get_text</span><span class="p">(</span><span class="n">strip</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-            <span class="n">link</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'a'</span><span class="p">)</span>
-            <span class="n">href</span> <span class="o">=</span> <span class="n">link</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'href'</span><span class="p">)</span> <span class="k">if</span> <span class="n">link</span> <span class="k">else</span> <span class="kc">None</span>
+<span class="n">mydb</span> <span class="o">=</span> <span class="n">mysql</span><span class="o">.</span><span class="n">connector</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+    <span class="n">host</span><span class="o">=</span><span class="s2">"your_database_host"</span><span class="p">,</span>
+    <span class="n">user</span><span class="o">=</span><span class="s2">"your_username"</span><span class="p">,</span>
+    <span class="n">password</span><span class="o">=</span><span class="s2">"your_password"</span><span class="p">,</span>
+    <span class="n">database</span><span class="o">=</span><span class="s2">"your_database_name"</span>
+<span class="p">)</span>
 
-            <span class="c1"># Add text and hyperlink to the row data</span>
-            <span class="k">if</span> <span class="n">header</span> <span class="o">==</span> <span class="s1">'Date'</span><span class="p">:</span>
-                <span class="n">row_data</span><span class="p">[</span><span class="n">header</span><span class="p">]</span> <span class="o">=</span> <span class="n">text</span>
-            <span class="k">elif</span> <span class="n">href</span><span class="p">:</span>
-                <span class="n">row_data</span><span class="p">[</span><span class="n">header</span><span class="p">]</span> <span class="o">=</span> <span class="n">href</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">row_data</span><span class="p">[</span><span class="n">header</span><span class="p">]</span> <span class="o">=</span> <span class="n">text</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">fetch_data</span><span class="p">(</span><span class="n">query</span><span class="p">):</span>
+    <span class="n">cursor</span> <span class="o">=</span> <span class="n">mydb</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
 
-        <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row_data</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>  <span class="c1"># Fetch all results (adjust as needed)</span>
+    <span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>  <span class="c1"># Close the cursor</span>
 
-    <span class="c1"># Create a DataFrame</span>
-    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span> 
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="c1"># Example usage</span>
+    <span class="n">result1</span> <span class="o">=</span> <span class="k">await</span> <span class="n">fetch_data</span><span class="p">(</span><span class="s2">"SELECT * FROM table1"</span><span class="p">)</span> 
+    <span class="nb">print</span><span class="p">(</span><span class="n">result1</span><span class="p">)</span>
+
+<span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
 </code></pre></div>
-<p>To be Continued in Part 2</p>
+<h3 id="structured-concurrency">Structured Concurrency</h3>
+<p>Handling coroutine lifecycles and errors is critical:</p>
+<ul>
+<li>Python: Structured concurrency is primarily done using asyncio.gather and asyncio.wait to manage concurrent tasks, along with try-except blocks.</li>
+<li>Kotlin: Provides coroutineScope and supervisorScope for creating structured hierarchies of coroutines, enabling fine-grained error handling and cancellation.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Feature</th>
+<th style="text-align: center;">Python</th>
+<th style="text-align: right;">Kotlin</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Keyword</td>
+<td style="text-align: center;">async</td>
+<td style="text-align: right;">suspend</td>
+</tr>
+<tr>
+<td style="text-align: left;">Event Loop</td>
+<td style="text-align: center;">Lib    asyncio k</td>
+<td style="text-align: right;">otlinx.coroutines</td>
+</tr>
+<tr>
+<td style="text-align: left;">Starting Point</td>
+<td style="text-align: center;">asyncio.run(...)</td>
+<td class=".." style="text-align: right;">runBlocking</td>
+</tr>
+</tbody>
+</table>
     <!-- <div class="aspect-w-16 aspect-h-9 mx-auto"></div> CSS placeholder -->
   </div>
   <footer class="flex flex-col mt-10 ">
     <ul class="flex flex-wrap">
         <li
           class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
-          <a href="./tag/crisp.html">CRISP</a>
-        </li>
-        <li
-          class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
-          <a href="./tag/data-mining.html">Data Mining</a>
-        </li>
-        <li
-          class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
-          <a href="./tag/machine-learning.html">Machine Learning</a>
+          <a href="./tag/kotlin.html">Kotlin</a>
         </li>
         <li
           class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
@@ -217,23 +258,20 @@ from each cell, ensuring no data point is overlooked:</p>
         </li>
         <li
           class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
+          <a href="./tag/process.html">process</a>
+        </li>
+        <li
+          class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
           <a href="./tag/python.html">Python</a>
         </li>
     </ul>
     <div class="flex w-full my-2 bg-zinc-200 dark:bg-zinc-700 rounded-lg">
-      <div class="w-1/2 hover:bg-zinc-300 dark:hover:bg-zinc-800 rounded-l-lg">
-        <a class="flex flex-col pr-2" href="./overview-of-coroutines.html">
-          <div class="mx-4 py-2 text-left">
-            <p class="text-zinc-600 dark:text-zinc-300 text-sm">« PREV PAGE</p>
-            <p class="text-left py-1 hover:underline">OverView of Coroutines</p>
-          </div>
-        </a>
-      </div>
+      <div class="w-1/2 rounded-l-lg"></div>
       <div class="w-1/2 hover:bg-zinc-300 dark:hover:bg-zinc-800 rounded-r-lg ">
-        <a class="flex flex-col" href="./streamlining-api-integration-with-kiota.html">
+        <a class="flex flex-col" href="./crisp-dm-series-mastering-data-mining-in-football-analytics.html">
           <div class="text-right mx-4 py-2">
             <p class="text-zinc-600 dark:text-zinc-300 text-sm">NEXT PAGE »</p>
-            <p class="text-right py-1 hover:underline">Streamlining API Integration with Kiota</p>
+            <p class="text-right py-1 hover:underline">CRISP-DM Series: Mastering Data Mining in Football Analytics</p>
           </div>
         </a>
       </div>
@@ -242,7 +280,7 @@ from each cell, ensuring no data point is overlooked:</p>
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="twitter" aria-label="share Features on twitter"
-            href="https://twitter.com/intent/tweet/?text=Features&amp;url=./crisp-dm-series-mastering-data-mining-in-football-analytics.html">
+            href="https://twitter.com/intent/tweet/?text=Features&amp;url=./overview-of-coroutines.html">
             <i class="fab fa-twitter fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -250,7 +288,7 @@ from each cell, ensuring no data point is overlooked:</p>
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="linkedin" aria-label="share Features on linkedin"
-            href="https://www.linkedin.com/sharing/share-offsite/?url=./crisp-dm-series-mastering-data-mining-in-football-analytics.html">
+            href="https://www.linkedin.com/sharing/share-offsite/?url=./overview-of-coroutines.html">
             <i class="fab fa-linkedin fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -258,7 +296,7 @@ from each cell, ensuring no data point is overlooked:</p>
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="reddit" aria-label="share Features on reddit"
-            href="https://reddit.com/submit?url=./crisp-dm-series-mastering-data-mining-in-football-analytics.html">
+            href="https://reddit.com/submit?url=./overview-of-coroutines.html">
             <i class="fab fa-reddit fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -266,7 +304,7 @@ from each cell, ensuring no data point is overlooked:</p>
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="facebook" aria-label="share Features on facebook"
-            href="https://facebook.com/sharer/sharer.php?u=./crisp-dm-series-mastering-data-mining-in-football-analytics.html">
+            href="https://facebook.com/sharer/sharer.php?u=./overview-of-coroutines.html">
             <i class="fab fa-facebook fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -274,7 +312,7 @@ from each cell, ensuring no data point is overlooked:</p>
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="whatsapp" aria-label="share Features on whatsapp"
-            href="https://api.whatsapp.com/send?text=Features - ./crisp-dm-series-mastering-data-mining-in-football-analytics.html">
+            href="https://api.whatsapp.com/send?text=Features - ./overview-of-coroutines.html">
             <i class="fab fa-whatsapp fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -282,7 +320,7 @@ from each cell, ensuring no data point is overlooked:</p>
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="telegram" aria-label="share Features on telegram"
-            href="https://telegram.me/share/url?text=Features&amp;url=./crisp-dm-series-mastering-data-mining-in-football-analytics.html">
+            href="https://telegram.me/share/url?text=Features&amp;url=./overview-of-coroutines.html">
             <i class="fab fa-telegram fa-2x" aria-hidden="true"></i>
           </a>
         </li>

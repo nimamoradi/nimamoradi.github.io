@@ -8,6 +8,11 @@ url = "/pages/about-me.html"
 title = "About me"
 
 [[input.files]]
+path = "overview-of-coroutines.html"
+url = "/overview-of-coroutines.html"
+title = "OverView of Coroutines"
+
+[[input.files]]
 path = "crisp-dm-series-mastering-data-mining-in-football-analytics.html"
 url = "/crisp-dm-series-mastering-data-mining-in-football-analytics.html"
 title = "CRISP-DM Series: Mastering Data Mining in Football Analytics"
