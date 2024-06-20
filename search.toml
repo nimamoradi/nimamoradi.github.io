@@ -8,6 +8,11 @@ url = "/pages/about-me.html"
 title = "About me"
 
 [[input.files]]
+path = "shortcomings-of-android-drm-wrappers.html"
+url = "/shortcomings-of-android-drm-wrappers.html"
+title = "Shortcomings of Android DRM Wrappers"
+
+[[input.files]]
 path = "overview-of-coroutines.html"
 url = "/overview-of-coroutines.html"
 title = "OverView of Coroutines"
@@ -21,11 +26,6 @@ title = "CRISP-DM Series: Mastering Data Mining in Football Analytics"
 path = "streamlining-api-integration-with-kiota.html"
 url = "/streamlining-api-integration-with-kiota.html"
 title = "Streamlining API Integration with Kiota"
-
-[[input.files]]
-path = "shortcomings-of-android-drm-wrapper.html"
-url = "/shortcomings-of-android-drm-wrapper.html"
-title = "Shortcomings of Android DRM wrapper"
 
 [[input.files]]
 path = "tacotron-2-for-persian-language.html"

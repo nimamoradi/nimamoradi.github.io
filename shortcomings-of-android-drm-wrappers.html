@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content="Pelican" />
     <meta name="description" content="Nima Moradi Personal blog Blog Posts">
-    <title>Shortcomings of Android DRM wrapper</title>
+    <title>Shortcomings of Android DRM Wrappers</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
     <link rel="stylesheet" type="text/css" href="./theme/css/main.css" />
@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="./theme/css/stork.css">
     <link rel="stylesheet" media="screen and (prefers-color-scheme: dark)"
         href="./theme/css/stork-dark.css">
-<meta name="description" content="I will security issues of Android DRM wrappers" />
+<meta name="description" content="An overView of Coroutines in Python and Kotlin" />
 </head>
 
 <body class="min-h-screen flex flex-col max-w-7xl lg:max-w-none text-zinc-800 bg-neutral-100 
@@ -92,10 +92,10 @@
 
 <main>
   <header>
-    <h1 class="font-semibold text-3xl my-2">Shortcomings of Android DRM wrapper</h1>
+    <h1 class="font-semibold text-3xl my-2">Shortcomings of Android DRM Wrappers</h1>
     <footer class="flex text-sm text-zinc-800 dark:text-zinc-400">
       <div class="flex text-xs text-zinc-800 dark:text-zinc-400">
-        <time>December 25, 2022</time>
+        <time>June 20, 2024</time>
         <div>
           <span>&nbsp;·&nbsp;2 min read</span>
         </div>
@@ -108,7 +108,7 @@
   <details class="flex flex-col my-6 p-4 bg-zinc-200 dark:bg-zinc-800 rounded-lg">
     <summary class="text-lg font-bold">Table of contents</summary>
     <div class="mx-4 px-4 underline">
-      <div id="toc"><ul><li><a class="toc-href" href="#amazon-appstore" title="Amazon Appstore">Amazon Appstore</a></li><li><a class="toc-href" href="#another-wrapper-mistake" title="Another Wrapper Mistake">Another Wrapper Mistake</a></li><li><a class="toc-href" href="#conclusion" title="Conclusion">Conclusion</a></li></ul></div>
+      <div id="toc"><ul><li><a class="toc-href" href="#amazon-appstore" title="Amazon Appstore">Amazon Appstore</a><ul><li><a class="toc-href" href="#extracting-the-apk" title="Extracting the APK">Extracting the APK</a></li><li><a class="toc-href" href="#decompiling-the-apk" title="Decompiling the APK">Decompiling the APK</a></li><li><a class="toc-href" href="#manifest-examination" title="Manifest Examination">Manifest Examination</a></li></ul></li><li><a class="toc-href" href="#another-wrapper-mistake_1" title="Another Wrapper Mistake">Another Wrapper Mistake</a></li><li><a class="toc-href" href="#conclusion" title="Conclusion">Conclusion</a></li></ul></div>
     </div>
   </details>
   <div class="max-w-7xl container mx-auto my-8 text-zinc-800 dark:text-zinc-300  
@@ -128,51 +128,59 @@
               prose-img:rounded-md
               sm:text-left md:text-justify
               ">
-    <p>Android applications can be installed without using a marketplace easily if a paid app is accessed it can be mass distributed, to address that stores and application developers take some measures to safeguard the app. But most available wrappers are not sufficient for protecting the apk file. In one year that I have been designing and developing wrappers for DRM management and statics reports here are some problems that I saw.</p>
-<p>Let's see how some stores enforce DRM.</p>
+    <p>Android applications can be easily installed without using a marketplace, which poses a risk for mass distribution of paid apps. To counter this, stores and application developers implement various measures to safeguard apps. However, most available wrappers are insufficient for protecting the APK file. After a year of designing and developing wrappers for DRM management and statistics reports, here are some problems I observed.</p>
+<p><br/>
+Let's examine how some stores enforce DRM.</p>
+<p><img alt="Image Placeholder: DRM Logo" src="../images/drm.jpg"/></p>
 <h2 id="amazon-appstore">Amazon Appstore</h2>
-<p>Amazon Appstore is one of the oldest android app store with about half a million different applications providing service for android phones, tablets, and fire-tablet. For pre-paid applications and free applications yet its protection method is very simple to crack.</p>
-<p>I have purchased one app for testing, if AppStore is not installed the program will inform me with a dialog to install the AppStore.</p>
-<p>First, we should extract the apk</p>
-<p>you can use adb to find the location.</p>
-<p><code>adb shell pm path com.example.someapp</code></p>
+<p>The Amazon Appstore, one of the oldest Android app stores, hosts about half a million different applications for Android phones, tablets, and Fire tablets. Despite its long-standing presence, its protection method for pre-paid and free applications is surprisingly simple to crack.</p>
+<p>For testing purposes, I purchased an app and noticed that if the Amazon Appstore is not installed, the program prompts with a dialog to install it.</p>
+<h3 id="extracting-the-apk">Extracting the APK</h3>
+<p>First, we should extract the apk
+you can use adb to find the location.</p>
+<div class="highlight"><pre><span></span><code>adb<span class="w"> </span>shell<span class="w"> </span>pm<span class="w"> </span>path<span class="w"> </span>com.example.someapp
+</code></pre></div>
 <p>then pull the apk</p>
-<p><code>adb pull /data/app/com.example.someapp-2.apk path/to/desired/destination</code></p>
+<div class="highlight"><pre><span></span><code>adb<span class="w"> </span>pull<span class="w"> </span>/data/app/com.example.someapp-2.apk<span class="w"> </span>path/to/desired/destination
+</code></pre></div>
 <p>or use many free app extractors that are available(which are doing something similar).</p>
-<p>Secondly, decompile the apk using apktools</p>
-<p><code>apktool d  -f --use-aapt2 -v  -o GAME_APK_FILE GAME_APK_EXTRACTED_DIST</code></p>
-<p>The two common ways that the wrappers work on android are by changing the initial activity to provide the subscription check and etc. or by changing the activity or application class parent.</p>
-<p>so let us look at the <b>manifest</b></p>
-<p>here is the application class.</p>
+<h3 id="decompiling-the-apk">Decompiling the APK</h3>
+<p>Next, decompile the APK using <b>apktool</b>:</p>
+<div class="highlight"><pre><span></span><code>apktool<span class="w"> </span>d<span class="w">  </span>-f<span class="w"> </span>--use-aapt2<span class="w"> </span>-v<span class="w">  </span>-o<span class="w"> </span>GAME_APK_FILE<span class="w"> </span>GAME_APK_EXTRACTED_DIST
+</code></pre></div>
+<p>The two common methods that wrappers use on Android involve changing the initial activity to provide subscription checks or modifying the parent class of an activity or application.</p>
+<p>Let's examine the <code>AndroidManifest.xml</code> file.</p>
+<h3 id="manifest-examination">Manifest Examination</h3>
+<p>Here is the application class.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">&lt;application</span><span class="w"> </span><span class="na">android:name=</span><span class="s">"androidx.multidex.MultiDexApplication"</span><span class="nt">&gt;</span>
-<span class="nt">&lt;activity</span><span class="w"> </span><span class="na">android:name=</span><span class="s">"com.company.not.aws"</span><span class="w"> </span><span class="nt">&gt;</span>
-<span class="w">            </span><span class="nt">&lt;intent-filter&gt;</span>
-<span class="w">                </span><span class="nt">&lt;action</span><span class="w"> </span><span class="na">android:name=</span><span class="s">"android.intent.action.MAIN"</span><span class="nt">/&gt;</span>
-<span class="w">                </span><span class="nt">&lt;category</span><span class="w"> </span><span class="na">android:name=</span><span class="s">"android.intent.category.LAUNCHER"</span><span class="nt">/&gt;</span>
-<span class="w">            </span><span class="nt">&lt;/intent-filter&gt;</span>
-<span class="w">        </span><span class="nt">&lt;/activity&gt;</span>
+<span class="w">    </span><span class="nt">&lt;activity</span><span class="w"> </span><span class="na">android:name=</span><span class="s">"com.company.not.aws"</span><span class="w"> </span><span class="nt">&gt;</span>
+<span class="w">        </span><span class="nt">&lt;intent-filter&gt;</span>
+<span class="w">            </span><span class="nt">&lt;action</span><span class="w"> </span><span class="na">android:name=</span><span class="s">"android.intent.action.MAIN"</span><span class="nt">/&gt;</span>
+<span class="w">            </span><span class="nt">&lt;category</span><span class="w"> </span><span class="na">android:name=</span><span class="s">"android.intent.category.LAUNCHER"</span><span class="nt">/&gt;</span>
+<span class="w">        </span><span class="nt">&lt;/intent-filter&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/activity&gt;</span>
 <span class="nt">&lt;/application&gt;</span>
 </code></pre></div>
-<p>As you can see amazon has not changed the initial activity class or has added/swapped the from its own.</p>
-<p>So lets see if any activity parent has changed or the code injected.</p>
+<p>As you can see, Amazon has not changed the initial activity class or added/swapped its own.</p>
+<p>Let's check if any activity parent has changed or if code has been injected:</p>
 <div class="highlight"><pre><span></span><code><span class="k">.class</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="kt">L</span>com/company/app/<span class="nc">Activity</span>;
 <span class="k">.super</span><span class="w"> </span><span class="kt">L</span>com/amazon/android/activity/<span class="nc">AmazonActivity</span>;
 </code></pre></div>
-<p>So here is the part the Amazon has injected the code and changed the activity class to inherit from its own activity.</p>
-<p><b>removing the functionality of dialog and checking will make the app without protection which is at this point easy to do.</b></p>
-<p>you only rebuild the app with apktool.</p>
-<h2 id="another-wrapper-mistake">Another Wrapper Mistake</h2>
-<p>This is error come from other company Which I come across. This wrapper is used by millions of users all around the Europe.</p>
+<p>Here, Amazon has injected code and changed the activity class to inherit from its own activity.</p>
+<p>By removing the functionality of the dialog and checking mechanisms, the app can be left unprotected, which at this point is easy to achieve.</p>
+<p>You can then rebuild the app using <b>apktool</b>.</p>
+<h2 id="another-wrapper-mistake_1">Another Wrapper Mistake</h2>
+<p>I encountered another example where I cannot disclose the company's name, but their services were for many mobile network providers in Europe, serving millions of users daily.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">&lt;activity</span><span class="w"> </span><span class="na">android:configChanges=</span><span class="s">"keyboardHidden|orientation"</span><span class="w"> </span>
 <span class="w">    </span><span class="na">android:name=</span><span class="s">"com.***.***.old_launcher"</span><span class="w"> </span>
 <span class="w">    </span><span class="na">android:screenOrientation=</span><span class="s">"portrait"</span><span class="w"> </span>
 <span class="w">    </span><span class="na">android:exported=</span><span class="s">"true"</span>
 <span class="nt">/&gt;</span>
 </code></pre></div>
-<p>here after the original app launcher has been replaced the developer forgot to make its exported false so we can bypass this and bypass the activity even without rewrap(you can call activity if it&rsquo;s exported from other apps).</p>
+<p>In this case, the developer replaced the original app launcher but forgot to set <code>exported</code> to <code>false</code>, allowing the activity to be bypassed without rewrapping. 
+This means you can call the activity from other apps if it's exported.</p>
 <h2 id="conclusion">Conclusion</h2>
-<p>Protecting the app is very important and the wrapper is a good way to do that but it should be done correctly. The wrapper should be able to protect the app from being cracked and should not be easy to bypass. </p>
-<p>Contact me if you want to review your app security or provide a better soulution.</p>
+<p>In summary, while DRM wrappers are designed to protect Android applications, many current implementations fall short of providing robust security. </p>
     <!-- <div class="aspect-w-16 aspect-h-9 mx-auto"></div> CSS placeholder -->
   </div>
   <footer class="flex flex-col mt-10 ">
@@ -195,19 +203,12 @@
         </li>
     </ul>
     <div class="flex w-full my-2 bg-zinc-200 dark:bg-zinc-700 rounded-lg">
-      <div class="w-1/2 hover:bg-zinc-300 dark:hover:bg-zinc-800 rounded-l-lg">
-        <a class="flex flex-col pr-2" href="./streamlining-api-integration-with-kiota.html">
-          <div class="mx-4 py-2 text-left">
-            <p class="text-zinc-600 dark:text-zinc-300 text-sm">« PREV PAGE</p>
-            <p class="text-left py-1 hover:underline">Streamlining API Integration with Kiota</p>
-          </div>
-        </a>
-      </div>
+      <div class="w-1/2 rounded-l-lg"></div>
       <div class="w-1/2 hover:bg-zinc-300 dark:hover:bg-zinc-800 rounded-r-lg ">
-        <a class="flex flex-col" href="./tacotron-2-for-persian-language.html">
+        <a class="flex flex-col" href="./overview-of-coroutines.html">
           <div class="text-right mx-4 py-2">
             <p class="text-zinc-600 dark:text-zinc-300 text-sm">NEXT PAGE »</p>
-            <p class="text-right py-1 hover:underline">Tacotron 2 For Persian language</p>
+            <p class="text-right py-1 hover:underline">OverView of Coroutines</p>
           </div>
         </a>
       </div>
@@ -216,7 +217,7 @@
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="twitter" aria-label="share Features on twitter"
-            href="https://twitter.com/intent/tweet/?text=Features&amp;url=./shortcomings-of-android-drm-wrapper.html">
+            href="https://twitter.com/intent/tweet/?text=Features&amp;url=./shortcomings-of-android-drm-wrappers.html">
             <i class="fab fa-twitter fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -224,7 +225,7 @@
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="linkedin" aria-label="share Features on linkedin"
-            href="https://www.linkedin.com/sharing/share-offsite/?url=./shortcomings-of-android-drm-wrapper.html">
+            href="https://www.linkedin.com/sharing/share-offsite/?url=./shortcomings-of-android-drm-wrappers.html">
             <i class="fab fa-linkedin fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -232,7 +233,7 @@
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="reddit" aria-label="share Features on reddit"
-            href="https://reddit.com/submit?url=./shortcomings-of-android-drm-wrapper.html">
+            href="https://reddit.com/submit?url=./shortcomings-of-android-drm-wrappers.html">
             <i class="fab fa-reddit fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -240,7 +241,7 @@
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="facebook" aria-label="share Features on facebook"
-            href="https://facebook.com/sharer/sharer.php?u=./shortcomings-of-android-drm-wrapper.html">
+            href="https://facebook.com/sharer/sharer.php?u=./shortcomings-of-android-drm-wrappers.html">
             <i class="fab fa-facebook fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -248,7 +249,7 @@
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="whatsapp" aria-label="share Features on whatsapp"
-            href="https://api.whatsapp.com/send?text=Features - ./shortcomings-of-android-drm-wrapper.html">
+            href="https://api.whatsapp.com/send?text=Features - ./shortcomings-of-android-drm-wrappers.html">
             <i class="fab fa-whatsapp fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -256,7 +257,7 @@
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="telegram" aria-label="share Features on telegram"
-            href="https://telegram.me/share/url?text=Features&amp;url=./shortcomings-of-android-drm-wrapper.html">
+            href="https://telegram.me/share/url?text=Features&amp;url=./shortcomings-of-android-drm-wrappers.html">
             <i class="fab fa-telegram fa-2x" aria-hidden="true"></i>
           </a>
         </li>
