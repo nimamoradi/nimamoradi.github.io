@@ -8,11 +8,6 @@ url = "/pages/about-me.html"
 title = "About me"
 
 [[input.files]]
-path = "shortcomings-of-android-drm-wrappers.html"
-url = "/shortcomings-of-android-drm-wrappers.html"
-title = "Shortcomings of Android DRM Wrappers"
-
-[[input.files]]
 path = "overview-of-coroutines.html"
 url = "/overview-of-coroutines.html"
 title = "OverView of Coroutines"
