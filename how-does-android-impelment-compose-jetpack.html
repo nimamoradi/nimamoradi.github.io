@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content="Pelican" />
     <meta name="description" content="Nima Moradi Personal blog Blog Posts">
-    <title>OverView of Coroutines</title>
+    <title>How does Android impelment Compose Jetpack</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
     <link rel="stylesheet" type="text/css" href="./theme/css/main.css" />
@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="./theme/css/stork.css">
     <link rel="stylesheet" media="screen and (prefers-color-scheme: dark)"
         href="./theme/css/stork-dark.css">
-<meta name="description" content="An overView of Coroutines in Python and Kotlin" />
+<meta name="description" content="An overView of Compose Jetpack" />
 </head>
 
 <body class="min-h-screen flex flex-col max-w-7xl lg:max-w-none text-zinc-800 bg-neutral-100 
@@ -92,7 +92,7 @@
 
 <main>
   <header>
-    <h1 class="font-semibold text-3xl my-2">OverView of Coroutines</h1>
+    <h1 class="font-semibold text-3xl my-2">How does Android impelment Compose Jetpack</h1>
     <footer class="flex text-sm text-zinc-800 dark:text-zinc-400">
       <div class="flex text-xs text-zinc-800 dark:text-zinc-400">
         <time>April 27, 2024</time>
@@ -108,7 +108,7 @@
   <details class="flex flex-col my-6 p-4 bg-zinc-200 dark:bg-zinc-800 rounded-lg">
     <summary class="text-lg font-bold">Table of contents</summary>
     <div class="mx-4 px-4 underline">
-      <div id="toc"><ul><li><a class="toc-href" href="#introduction" title="Introduction">Introduction</a><ul><li><a class="toc-href" href="#key-concepts" title="Key Concepts">Key Concepts</a></li><li><a class="toc-href" href="#syntax-and-structure" title="Syntax and Structure">Syntax and Structure</a><ul><li><a class="toc-href" href="#structured-concurrency" title="Structured Concurrency">Structured Concurrency</a></li></ul></li><li><a class="toc-href" href="#conclusion_1" title="Conclusion">Conclusion</a></li></ul></li></ul></div>
+      <div id="toc"><ul><li><a class="toc-href" href="#introduction" title="Introduction">Introduction</a><ul><li><a class="toc-href" href="#common-methods-for-creating-a-view-in-android" title="Common Methods for Creating a View in Android">Common Methods for Creating a View in Android</a></li></ul></li></ul></div>
     </div>
   </details>
   <div class="max-w-7xl container mx-auto my-8 text-zinc-800 dark:text-zinc-300  
@@ -129,124 +129,90 @@
               sm:text-left md:text-justify
               ">
     <h1 id="introduction">Introduction</h1>
-<p>Coroutines are a powerful control flow mechanism that enable asynchronous programming without dramatically restructuring code like traditional callback-based approaches.
-Both Python and Kotlin provide native support for coroutines, offering developers elegant solutions for tasks like:</p>
+<p>Android Compose, introduced by Google, is a modern toolkit for building native Android UIs declaratively. It simplifies UI development by using a reactive programming model, allowing developers to describe the UI in Kotlin code without relying on XML layouts. With Compose, UI components, called Composables, are functions that automatically recompose when data changes, ensuring that the UI remains consistent with the app's state. This approach not only accelerates development but also enhances the maintainability and scalability of Android applications.</p>
+<h3 id="common-methods-for-creating-a-view-in-android">Common Methods for Creating a View in Android</h3>
 <ul>
-<li>Network I/O: Handling multiple network requests concurrently.</li>
-<li>File I/O: Efficient reading and writing of files.</li>
-<li>Long-running Computations: Breaking down complex tasks into smaller, manageable units that can pause and resume.</li>
-<li>Other Asynchronous Scenarios: Wherever non-blocking operations are needed.</li>
+<li>Using XML Layout: 
+One common method is using XML layouts to define UI components. This method involves creating an XML file and defining the layout and views in it. Here's an example of a TextView that shows the current time and updates it every minute:</li>
 </ul>
-<h2 id="key-concepts">Key Concepts</h2>
-<h4>Suspending Functions:</h4>
+<div class="highlight"><pre><span></span><code><span class="cm">&lt;!-- res/layout/activity_main.xml --&gt;</span>
+<span class="nt">&lt;RelativeLayout</span><span class="w"> </span><span class="na">xmlns:android=</span><span class="s">"http://schemas.android.com/apk/res/android"</span>
+<span class="w">    </span><span class="na">android:layout_width=</span><span class="s">"match_parent"</span>
+<span class="w">    </span><span class="na">android:layout_height=</span><span class="s">"match_parent"</span><span class="nt">&gt;</span>
+
+<span class="w">    </span><span class="nt">&lt;TextView</span>
+<span class="w">        </span><span class="na">android:id=</span><span class="s">"@+id/timeTextView"</span>
+<span class="w">        </span><span class="na">android:layout_width=</span><span class="s">"wrap_content"</span>
+<span class="w">        </span><span class="na">android:layout_height=</span><span class="s">"wrap_content"</span>
+<span class="w">        </span><span class="na">android:layout_centerInParent=</span><span class="s">"true"</span>
+<span class="w">        </span><span class="na">android:textSize=</span><span class="s">"20sp"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/RelativeLayout&gt;</span>
+</code></pre></div>
+<p>After we use layout to as Activity base</p>
+<div class="highlight"><pre><span></span><code><span class="n">setContentView</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="na">layout</span><span class="p">.</span><span class="na">activity_main</span><span class="p">)</span>
+</code></pre></div>
 <ul>
-<li>Python: Functions declared using the async keyword. They use the await keyword to suspend execution and wait for the result of another coroutine.</li>
-<li>Kotlin: Functions declared using the suspend keyword. Similarly, use various suspend functions to pause execution without blocking a thread.</li>
+<li>Dynamic View Generation with Code:
+Another method is generating views dynamically in code without using XML. This approach allows more flexibility and is often used in situations where views need to be created or modified programmatically</li>
 </ul>
-<h4>Event Loop:</h4>
+<div class="highlight"><pre><span></span><code><span class="w">        </span><span class="kd">val</span><span class="w"> </span><span class="nv">relativeLayout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RelativeLayout</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="na">apply</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">layoutParams</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RelativeLayout</span><span class="p">.</span><span class="na">LayoutParams</span><span class="p">(</span>
+<span class="w">                </span><span class="n">RelativeLayout</span><span class="p">.</span><span class="na">LayoutParams</span><span class="p">.</span><span class="na">MATCH_PARENT</span><span class="p">,</span>
+<span class="w">                </span><span class="n">RelativeLayout</span><span class="p">.</span><span class="na">LayoutParams</span><span class="p">.</span><span class="na">MATCH_PARENT</span>
+<span class="w">            </span><span class="p">)</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="kd">val</span><span class="w"> </span><span class="nv">timeTextView</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TextView</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="na">apply</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">layoutParams</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RelativeLayout</span><span class="p">.</span><span class="na">LayoutParams</span><span class="p">(</span>
+<span class="w">                </span><span class="n">RelativeLayout</span><span class="p">.</span><span class="na">LayoutParams</span><span class="p">.</span><span class="na">WRAP_CONTENT</span><span class="p">,</span>
+<span class="w">                </span><span class="n">RelativeLayout</span><span class="p">.</span><span class="na">LayoutParams</span><span class="p">.</span><span class="na">WRAP_CONTENT</span>
+<span class="w">            </span><span class="p">).</span><span class="na">apply</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">addRule</span><span class="p">(</span><span class="n">RelativeLayout</span><span class="p">.</span><span class="na">CENTER_IN_PARENT</span><span class="p">)</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="n">textSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20f</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="n">relativeLayout</span><span class="p">.</span><span class="na">addView</span><span class="p">(</span><span class="n">timeTextView</span><span class="p">)</span>
+<span class="w">        </span><span class="n">setContentView</span><span class="p">(</span><span class="n">relativeLayout</span><span class="p">)</span>
+</code></pre></div>
 <ul>
-<li>Python: The asyncio library manages an event loop, responsible for scheduling and executing coroutines.
-<br/></li>
-<li>Kotlin: The kotlinx coroutines library provides coroutine builders and an underlying mechanism for their management. But here we use the Android's coroutine library.
-Syntax and Structure</li>
+<li>Using Android Compose: With Compose, UI components are built using composable functions, which allows for a more declarative and reactive approach.</li>
 </ul>
-<h2 id="syntax-and-structure">Syntax and Structure</h2>
-<p>On Android, coroutines help to manage long-running tasks that might otherwise block the main thread and cause your app to become unresponsive.
-In this example we send a request to database using kotlin, the io-request should always be done in background thread, so we use the coroutine to handle this task.</p>
-<div class="highlight"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="nn">android.os.AsyncTask</span>
-<span class="k">import</span><span class="w"> </span><span class="nn">kotlinx.coroutines.*</span>
-
-<span class="c1">// Simulate a simple database interaction </span>
-<span class="kd">class</span><span class="w"> </span><span class="nc">MyDatabase</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="kd">suspend</span><span class="w"> </span><span class="kd">fun</span><span class="w"> </span><span class="nf">fetchData</span><span class="p">(</span><span class="n">query</span><span class="p">:</span><span class="w"> </span><span class="kt">String</span><span class="p">):</span><span class="w"> </span><span class="kt">String</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="n">delay</span><span class="p">(</span><span class="m">2000L</span><span class="p">)</span><span class="w"> </span><span class="c1">// Simulate database operation delay</span>
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="s">"Result for query: </span><span class="si">$</span><span class="n">query</span><span class="s">"</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
-
-<span class="kd">class</span><span class="w"> </span><span class="nc">MyActivity</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">AppCompatActivity</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// Assuming you are in an Activity context</span>
-
-<span class="w">    </span><span class="kd">override</span><span class="w"> </span><span class="kd">fun</span><span class="w"> </span><span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">:</span><span class="w"> </span><span class="n">Bundle?)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="k">super</span><span class="p">.</span><span class="na">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">)</span>
-
-<span class="w">        </span><span class="n">lifecycleScope</span><span class="p">.</span><span class="na">launch</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// Launch coroutine within the Activity's lifecycle</span>
-<span class="w">            </span><span class="kd">val</span><span class="w"> </span><span class="nv">result1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fetchDataFromDB</span><span class="p">(</span><span class="s">"SELECT * FROM table1"</span><span class="p">)</span>
-<span class="w">            </span><span class="kd">val</span><span class="w"> </span><span class="nv">result2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fetchDataFromDB</span><span class="p">(</span><span class="s">"SELECT * FROM table2"</span><span class="p">)</span>
-<span class="w">           </span><span class="c1">// update ui</span>
+<div class="highlight"><pre><span></span><code><span class="nd">@Composable</span>
+<span class="kd">fun</span><span class="w"> </span><span class="nf">MyApp</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">Surface</span><span class="p">(</span>
+<span class="w">        </span><span class="n">modifier</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Modifier</span><span class="p">.</span><span class="na">fillMaxSize</span><span class="p">(),</span>
+<span class="w">        </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MaterialTheme</span><span class="p">.</span><span class="na">colorScheme</span><span class="p">.</span><span class="na">background</span>
+<span class="w">    </span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">Box</span><span class="p">(</span><span class="n">contentAlignment</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Alignment</span><span class="p">.</span><span class="na">Center</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">TimeTextView</span><span class="p">()</span>
 <span class="w">        </span><span class="p">}</span>
 <span class="w">    </span><span class="p">}</span>
-
-<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">suspend</span><span class="w"> </span><span class="kd">fun</span><span class="w"> </span><span class="nf">fetchDataFromDB</span><span class="p">(</span><span class="n">query</span><span class="p">:</span><span class="w"> </span><span class="kt">String</span><span class="p">):</span><span class="w"> </span><span class="kt">String</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">withContext</span><span class="p">(</span><span class="n">Dispatchers</span><span class="p">.</span><span class="na">IO</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="n">MyDatabase</span><span class="p">().</span><span class="na">fetchData</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
-<span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-<h4>Explanation</h4>
-<p>lifecycleScope.launch: Launches the coroutine in the context of the Activity's lifecycle, ensuring cancellation when the Activity is destroyed.
-<code>withContext(Dispatchers.IO)</code>: Switches the coroutine to a background thread suitable for database operations. 
-This is crucial to avoid blocking the main thread.</p>
-<p>In Python we can use the asyncio library to handle the coroutine, here is an example of how to use the asyncio library to request from database.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">asyncio</span>
-<span class="kn">import</span> <span class="nn">mysql.connector</span>
-
-<span class="n">mydb</span> <span class="o">=</span> <span class="n">mysql</span><span class="o">.</span><span class="n">connector</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
-    <span class="n">host</span><span class="o">=</span><span class="s2">"your_database_host"</span><span class="p">,</span>
-    <span class="n">user</span><span class="o">=</span><span class="s2">"your_username"</span><span class="p">,</span>
-    <span class="n">password</span><span class="o">=</span><span class="s2">"your_password"</span><span class="p">,</span>
-    <span class="n">database</span><span class="o">=</span><span class="s2">"your_database_name"</span>
-<span class="p">)</span>
-
-<span class="k">async</span> <span class="k">def</span> <span class="nf">fetch_data</span><span class="p">(</span><span class="n">query</span><span class="p">):</span>
-    <span class="n">cursor</span> <span class="o">=</span> <span class="n">mydb</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
-    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
-
-    <span class="n">result</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>  <span class="c1"># Fetch all results (adjust as needed)</span>
-    <span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>  <span class="c1"># Close the cursor</span>
-
-    <span class="k">return</span> <span class="n">result</span> 
-
-<span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-    <span class="c1"># Example usage</span>
-    <span class="n">result1</span> <span class="o">=</span> <span class="k">await</span> <span class="n">fetch_data</span><span class="p">(</span><span class="s2">"SELECT * FROM table1"</span><span class="p">)</span> 
-    <span class="nb">print</span><span class="p">(</span><span class="n">result1</span><span class="p">)</span>
-
-<span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
-</code></pre></div>
-<h3 id="structured-concurrency">Structured Concurrency</h3>
-<p>Handling coroutine lifecycles and errors is critical:</p>
-<ul>
-<li>Python: Structured concurrency is primarily done using asyncio.gather and asyncio.wait to manage concurrent tasks, along with try-except blocks.</li>
-<li>Kotlin: Provides coroutineScope and supervisorScope for creating structured hierarchies of coroutines, enabling fine-grained error handling and cancellation.</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th style="text-align: left;">Feature</th>
-<th style="text-align: center;">Python</th>
-<th style="text-align: right;">Kotlin</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;">Keyword</td>
-<td style="text-align: center;">async</td>
-<td style="text-align: right;">suspend</td>
-</tr>
-<tr>
-<td style="text-align: left;">Event Loop</td>
-<td style="text-align: center;">Lib    asyncio k</td>
-<td style="text-align: right;">otlinx.coroutines</td>
-</tr>
-<tr>
-<td style="text-align: left;">Starting Point</td>
-<td style="text-align: center;">asyncio.run(...)</td>
-<td class=".." style="text-align: right;">runBlocking</td>
-</tr>
-</tbody>
-</table>
-<h2 id="conclusion_1">Conclusion</h2>
-<p>Both Python and Kotlin provide effective coroutine implementations, enabling developers to write cleaner, more manageable asynchronous code.
-Coroutines are a powerful tool for handling I/O-bound tasks, long-running computations, and other asynchronous scenarios, making them a valuable addition to any developer's toolkit.</p>
+<p>Implementation Details
+We have three options for implementing UI components in Android: XML Layout, Dynamic View Generation with Code, and Android Compose.</p>
+<ol>
+<li>
+<p>XML Layout
+In the case of XML Layout, the layouts are saved in the res/layout directory. These XML files define the structure and appearance of the UI components. During runtime, the LayoutInflater class is used to inflate these XML layouts into actual view objects that the Android framework can manage and display. This method separates the UI design from the business logic, allowing for a clear distinction between the visual structure and the underlying functionality.</p>
+</li>
+<li>
+<p>Dynamic View Generation with Code
+When generating views dynamically with code, there is no need for XML files. The entire UI is constructed programmatically using Java or Kotlin. This method allows for more flexibility and dynamic adjustments of the UI components at runtime. Since the views are created directly in the code, the Android framework handles them natively, ensuring efficient execution and manipulation of the UI.</p>
+</li>
+<li>
+<p>Android Compose
+Android Compose takes a different approach by using annotations to generate intermediate Java code. Composable functions, marked with the @Composable annotation, describe the UI components and their behavior. During the build process, these annotations are processed to generate the necessary code for the UI. This generated code can be examined by decompiling the app, revealing the intermediate Java code that Compose creates. This approach allows for a more declarative and reactive style of UI development, streamlining the process and enhancing maintainability.</p>
+</li>
+</ol>
+<p>Additional Information on Compose
+As you are new to Compose, here are a few more points that can help you understand it better:</p>
+<p>State Management: Compose makes it easy to manage UI state. By using remember and mutableStateOf, you can create state variables that automatically trigger recomposition when they change.</p>
+<p>Modifiers: Modifiers in Compose allow you to modify the appearance and behavior of composable functions. You can chain multiple modifiers to achieve complex layouts and interactions.</p>
+<p>Themes and Styling: Compose provides powerful tools for theming and styling your app. You can define a theme using the MaterialTheme and apply it consistently across your app.</p>
+<p>Animations: Compose offers a rich set of APIs for creating animations. You can use functions like animateDpAsState and Crossfade to add smooth transitions and animations to your UI.</p>
+<p>Preview: The Android Studio Preview feature allows you to see how your composable functions look without running the app. This can significantly speed up the development process.</p>
     <!-- <div class="aspect-w-16 aspect-h-9 mx-auto"></div> CSS placeholder -->
   </div>
   <footer class="flex flex-col mt-10 ">
@@ -269,19 +235,12 @@ Coroutines are a powerful tool for handling I/O-bound tasks, long-running comput
         </li>
     </ul>
     <div class="flex w-full my-2 bg-zinc-200 dark:bg-zinc-700 rounded-lg">
-      <div class="w-1/2 hover:bg-zinc-300 dark:hover:bg-zinc-800 rounded-l-lg">
-        <a class="flex flex-col pr-2" href="./how-does-android-impelment-compose-jetpack.html">
-          <div class="mx-4 py-2 text-left">
-            <p class="text-zinc-600 dark:text-zinc-300 text-sm">« PREV PAGE</p>
-            <p class="text-left py-1 hover:underline">How does Android impelment Compose Jetpack</p>
-          </div>
-        </a>
-      </div>
+      <div class="w-1/2 rounded-l-lg"></div>
       <div class="w-1/2 hover:bg-zinc-300 dark:hover:bg-zinc-800 rounded-r-lg ">
-        <a class="flex flex-col" href="./crisp-dm-series-mastering-data-mining-in-football-analytics.html">
+        <a class="flex flex-col" href="./overview-of-coroutines.html">
           <div class="text-right mx-4 py-2">
             <p class="text-zinc-600 dark:text-zinc-300 text-sm">NEXT PAGE »</p>
-            <p class="text-right py-1 hover:underline">CRISP-DM Series: Mastering Data Mining in Football Analytics</p>
+            <p class="text-right py-1 hover:underline">OverView of Coroutines</p>
           </div>
         </a>
       </div>
@@ -290,7 +249,7 @@ Coroutines are a powerful tool for handling I/O-bound tasks, long-running comput
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="twitter" aria-label="share Features on twitter"
-            href="https://twitter.com/intent/tweet/?text=Features&amp;url=./overview-of-coroutines.html">
+            href="https://twitter.com/intent/tweet/?text=Features&amp;url=./how-does-android-impelment-compose-jetpack.html">
             <i class="fab fa-twitter fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -298,7 +257,7 @@ Coroutines are a powerful tool for handling I/O-bound tasks, long-running comput
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="linkedin" aria-label="share Features on linkedin"
-            href="https://www.linkedin.com/sharing/share-offsite/?url=./overview-of-coroutines.html">
+            href="https://www.linkedin.com/sharing/share-offsite/?url=./how-does-android-impelment-compose-jetpack.html">
             <i class="fab fa-linkedin fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -306,7 +265,7 @@ Coroutines are a powerful tool for handling I/O-bound tasks, long-running comput
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="reddit" aria-label="share Features on reddit"
-            href="https://reddit.com/submit?url=./overview-of-coroutines.html">
+            href="https://reddit.com/submit?url=./how-does-android-impelment-compose-jetpack.html">
             <i class="fab fa-reddit fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -314,7 +273,7 @@ Coroutines are a powerful tool for handling I/O-bound tasks, long-running comput
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="facebook" aria-label="share Features on facebook"
-            href="https://facebook.com/sharer/sharer.php?u=./overview-of-coroutines.html">
+            href="https://facebook.com/sharer/sharer.php?u=./how-does-android-impelment-compose-jetpack.html">
             <i class="fab fa-facebook fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -322,7 +281,7 @@ Coroutines are a powerful tool for handling I/O-bound tasks, long-running comput
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="whatsapp" aria-label="share Features on whatsapp"
-            href="https://api.whatsapp.com/send?text=Features - ./overview-of-coroutines.html">
+            href="https://api.whatsapp.com/send?text=Features - ./how-does-android-impelment-compose-jetpack.html">
             <i class="fab fa-whatsapp fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -330,7 +289,7 @@ Coroutines are a powerful tool for handling I/O-bound tasks, long-running comput
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="telegram" aria-label="share Features on telegram"
-            href="https://telegram.me/share/url?text=Features&amp;url=./overview-of-coroutines.html">
+            href="https://telegram.me/share/url?text=Features&amp;url=./how-does-android-impelment-compose-jetpack.html">
             <i class="fab fa-telegram fa-2x" aria-hidden="true"></i>
           </a>
         </li>
