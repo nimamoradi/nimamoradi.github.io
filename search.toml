@@ -8,9 +8,9 @@ url = "/pages/about-me.html"
 title = "About me"
 
 [[input.files]]
-path = "how-does-android-impelment-compose-jetpack.html"
-url = "/how-does-android-impelment-compose-jetpack.html"
-title = "How does Android impelment Compose Jetpack"
+path = "how-does-android-implement-compose-jetpack.html"
+url = "/how-does-android-implement-compose-jetpack.html"
+title = "How does Android implement Compose Jetpack"
 
 [[input.files]]
 path = "overview-of-coroutines.html"
