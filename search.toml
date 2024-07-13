@@ -8,9 +8,9 @@ url = "/pages/about-me.html"
 title = "About me"
 
 [[input.files]]
-path = "easy-subtitle-translation.html"
-url = "/easy-subtitle-translation.html"
-title = "Easy subtitle translation"
+path = "easy-subtitle-translation-using-google-api.html"
+url = "/easy-subtitle-translation-using-google-api.html"
+title = "Easy subtitle translation using google api"
 
 [[input.files]]
 path = "how-does-android-implement-compose-jetpack.html"
