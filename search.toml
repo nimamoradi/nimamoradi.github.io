@@ -8,6 +8,11 @@ url = "/pages/about-me.html"
 title = "About me"
 
 [[input.files]]
+path = "easy-subtitle-translation.html"
+url = "/easy-subtitle-translation.html"
+title = "Easy subtitle translation"
+
+[[input.files]]
 path = "how-does-android-implement-compose-jetpack.html"
 url = "/how-does-android-implement-compose-jetpack.html"
 title = "How does Android implement Compose Jetpack"
