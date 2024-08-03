@@ -128,76 +128,7 @@
               prose-img:rounded-md
               sm:text-left md:text-justify
               ">
-    <h1 id="logistic-regression">Logistic Regression</h1>
-<p>Logistic Regression is a binary classification algorithm that predicts with the given input how much is probable that output is either 1 or 0. Regression analysis is a method that wants to find a relation between one independent variable and one dependent variable.</p>
-<p>for instance, we are the owner of a gym club and we want to have weight loss program for are attendants we have gathered data of exercise hour and weight loss in a single month and we want to predict how much time is a need for our newcomer john to loss 5 pounds in a month.
-<img alt="here is an approach to the problem" src="https://raw.githubusercontent.com/nimamoradi/ML-notebook/5fb934ad6fd19a4f17e96be2dd7a72b33d323851/classification/images/linear-regression.jpg"/>
-gym owner will try to draw a line we yield to least sum of squares to find a pattern to between weight loss and exercise hour
-as we can we this equation can be modeled using a linear equation</p>
-<p>&ycirc; = b0 + b1x
-<br/>
-<br/>
-the problem that we have is gym owner wants to predict that John could achieve more than 5-pound loss with 20 hours a month for probability value should be always between 0 up to 1 whereas weight loss can be any number here we look logistic regression that uses sigmoid function in order to bound linear regression to 0 or 1</p>
-<p><img alt="sigmoid function diagram" src="https://github.com/nimamoradi/ML-notebook/blob/master/classification/images/sigmoid.jpg?raw=1"/></p>
-<p>&ycirc; = &sigma;(b0 + b1x)</p>
-<h3 id="we-will-classifiy-liris-with-logistic-regression">we will classifiy liris with logistic regression</h3>
-<pre>
-<code>
-from sklearn.linear_model import LogisticRegression
-
-from sklearn.model_selection  import train_test_split
-from sklearn.metrics import accuracy_score
-</code>
-</pre>
-<h3 id="for-working-better-with-data">For working better with data</h3>
-<pre>
-<code>
-import pandas as pd
-import numpy as np 
-</code>
-</pre>
-<h3 id="for-visualizeing-data">For visualizeing data</h3>
-<pre>
-<code>
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
-</code>
-</pre>
-<h3 id="loading-dataset">Loading dataset</h3>
-<p>sklearn has a built-in tool for loading common datasets for educational purposes we used direct loading from CSV</p>
-<pre>
-<code>
-dataset = pd.read_csv('./datasets/Iris.csv')
-X = dataset.iloc[:, 0:4 ].values
-Y = dataset.iloc[:, 4].values
-</code>
-</pre>
-<h3 id="splitting-dataset-into-training-and-testing">Splitting dataset into training and testing</h3>
-<pre>
-<code>
-X_train, X_test, y_train, y_test = train_test_split(X, Y, 
-                                                    test_size=0.25, 
-                                                    random_state=0)
-</code>
-</pre>
-<h3 id="define-and-fit-model">define and fit model</h3>
-<pre>
-<code>
-clf = LogisticRegression(random_state=0, solver='lbfgs',
-                          multi_class='multinomial').fit(X_train, y_train)
-print(clf.score(X, Y))
-</code>
-</pre>
-<h3 id="predicting-the-test-set-results">Predicting the Test set results</h3>
-<pre>
-<code>
-y_pred = clf.predict(X_test)
-print(y_pred)
-
-# accuracy on test set
-accuracy_score(y_test, y_pred, normalize=True, sample_weight=None)
-</code>
-</pre>
+    <p>An example of logistic regression using python</p>
     <!-- <div class="aspect-w-16 aspect-h-9 mx-auto"></div> CSS placeholder -->
   </div>
   <footer class="flex flex-col mt-10 ">

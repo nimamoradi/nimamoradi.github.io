@@ -128,54 +128,7 @@
               prose-img:rounded-md
               sm:text-left md:text-justify
               ">
-    <h1 id="tacotron-2">Tacotron 2</h1>
-<p>Pytorch implementation of DeepMind's Tacotron-2 : <a href="https://arxiv.org/pdf/1712.05884.pdf">Natural TTS synthesis by conditioning Wavenet on MEL spectogram predictions</a></p>
-<h2 id="folder-structure">Folder Structure</h2>
-<pre>
-&boxur;&boxh;&boxh;&boxh;tacotron2
-    &boxvr;&boxh;&boxh;&boxh;content
-    &boxv;   &boxur;&boxh;&boxh;&boxh;tacotron2
-    &boxv;       &boxur;&boxh;&boxh;&boxh;filelists
-    &boxvr;&boxh;&boxh;&boxh;filelists
-    &boxvr;&boxh;&boxh;&boxh;outdir
-    &boxv;   &boxur;&boxh;&boxh;&boxh;logdir
-    &boxvr;&boxh;&boxh;&boxh;text
-    &boxv;   &boxvr;&boxh;&boxh;&boxh;data_prepare
-    &boxv;   &boxur;&boxh;&boxh;&boxh;__pycache__
-    &boxur;&boxh;&boxh;&boxh;waveglow
-    </pre>
-<h2 id="setup">Setup</h2>
-<ul>
-<li>Step <strong>(0)</strong>: Get your dataset; for persain lauguge the only open source dataset is <a href="https://voice.mozilla.org/en/datasets">Mozilla common voice</a>.</li>
-<li>
-<p>Step <strong>(0.1)</strong>:note you can use our own dataset too here is <a href="https://www.kaggle.com/moradi/persian-texttospeech-audio">kaggle link</a></p>
-</li>
-<li>
-<p>Step <strong>(1)</strong>: add your own test and train data parameters in <code>filelists/</code>.
-because mozilla audio is more than 211 h of audio we procced only small portion of it, convert to wave and remove files more than 10 seconds in length, you can see them in <a href="/tacotron2/filelists">filelists</a>.</p>
-</li>
-<li>Step <strong>(2)</strong>:  Install python requirements or build docker image <ul>
-<li>Install python requirements: <code>pip install -r requirements.txt</code></li>
-</ul>
-</li>
-<li>Step <strong>(3)</strong>: Install cuda and pytorch 1.0 .</li>
-<li>Step <strong>(4)</strong>: Train the model using this command.</li>
-</ul>
-<pre>
-<code>python train.py --output_directory='/content/tts-engine/gdrive/My Drive/outdir' --log_directory='/content/tts-engine/gdrive/My Drive/logdir'</code>
-</pre>
-<ul>
-<li>Step <strong>(5)</strong>: Synthesize audio using <code>tts-engine/tacotron2/inference.ipynb</code>.</li>
-</ul>
-<h2 id="audio-samples">Audio samples</h2>
-<p>I listed some of audio the model genarated you can listen them in <a href="https://soundcloud.com/nima-moradi-78715897/sets/tacotron-2-audio-persian">soundcloud</a>.</p>
-<h2 id="model">Model</h2>
-<p align="center">
-<img src="images/arc.png" width="75%"/>
-</p>
-<p>The model described by the authors can be divided in two parts:
-- Spectrogram prediction network
-- Wavenet vocoder</p>
+    <p>Pytorch implementation of DeepMind's Tacotron-2 for Persian</p>
     <!-- <div class="aspect-w-16 aspect-h-9 mx-auto"></div> CSS placeholder -->
   </div>
   <footer class="flex flex-col mt-10 ">
