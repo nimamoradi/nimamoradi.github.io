@@ -18,11 +18,6 @@ url = "/how-does-android-implement-compose-jetpack.html"
 title = "How does Android implement Compose Jetpack"
 
 [[input.files]]
-path = "create-a-simple-ai-assistant-using-llama-3-a-proof-of-concept.html"
-url = "/create-a-simple-ai-assistant-using-llama-3-a-proof-of-concept.html"
-title = "Create a Simple AI Assistant Using LLama 3: A Proof of Concept"
-
-[[input.files]]
 path = "overview-of-coroutines.html"
 url = "/overview-of-coroutines.html"
 title = "OverView of Coroutines"
