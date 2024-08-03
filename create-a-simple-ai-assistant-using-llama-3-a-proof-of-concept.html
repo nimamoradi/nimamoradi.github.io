@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content="Pelican" />
     <meta name="description" content="Nima Moradi Personal blog Blog Posts">
-    <title>OverView of Coroutines</title>
+    <title>Create a Simple AI Assistant Using LLama 3: A Proof of Concept</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
     <link rel="stylesheet" type="text/css" href="./theme/css/main.css" />
@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="./theme/css/stork.css">
     <link rel="stylesheet" media="screen and (prefers-color-scheme: dark)"
         href="./theme/css/stork-dark.css">
-<meta name="description" content="An overView of Coroutines in Python and Kotlin" />
+<meta name="description" content="Create a simple AI assistant using LLama 3 proof of concept" />
 </head>
 
 <body class="min-h-screen flex flex-col max-w-7xl lg:max-w-none text-zinc-800 bg-neutral-100 
@@ -92,10 +92,10 @@
 
 <main>
   <header>
-    <h1 class="font-semibold text-3xl my-2">OverView of Coroutines</h1>
+    <h1 class="font-semibold text-3xl my-2">Create a Simple AI Assistant Using LLama 3: A Proof of Concept</h1>
     <footer class="flex text-sm text-zinc-800 dark:text-zinc-400">
       <div class="flex text-xs text-zinc-800 dark:text-zinc-400">
-        <time>April 27, 2024</time>
+        <time>July 02, 2024</time>
         <div>
           <span>&nbsp;·&nbsp;4 min read</span>
         </div>
@@ -108,7 +108,7 @@
   <details class="flex flex-col my-6 p-4 bg-zinc-200 dark:bg-zinc-800 rounded-lg">
     <summary class="text-lg font-bold">Table of contents</summary>
     <div class="mx-4 px-4 underline">
-      <div id="toc"><ul><li><a class="toc-href" href="#introduction" title="Introduction">Introduction</a><ul><li><a class="toc-href" href="#key-concepts" title="Key Concepts">Key Concepts</a></li><li><a class="toc-href" href="#syntax-and-structure" title="Syntax and Structure">Syntax and Structure</a><ul><li><a class="toc-href" href="#structured-concurrency" title="Structured Concurrency">Structured Concurrency</a></li></ul></li><li><a class="toc-href" href="#conclusion_1" title="Conclusion">Conclusion</a></li></ul></li></ul></div>
+      <div id="toc"><ul><li><a class="toc-href" href="#the-code" title="The Code">The Code</a></li><li><a class="toc-href" href="#sample-test-cases" title="Sample Test Cases">Sample Test Cases</a></li><li><a class="toc-href" href="#recommendations-and-code-snippets" title="Recommendations and Code Snippets">Recommendations and Code Snippets</a></li><li><a class="toc-href" href="#prompts-from-github" title="Prompts from GitHub">Prompts from GitHub</a></li></ul></div>
     </div>
   </details>
   <div class="max-w-7xl container mx-auto my-8 text-zinc-800 dark:text-zinc-300  
@@ -128,140 +128,143 @@
               prose-img:rounded-md
               sm:text-left md:text-justify
               ">
-    <h1 id="introduction">Introduction</h1>
-<p>Coroutines are a powerful control flow mechanism that enable asynchronous programming without dramatically restructuring code like traditional callback-based approaches.
-Both Python and Kotlin provide native support for coroutines, offering developers elegant solutions for tasks like:</p>
-<ul>
-<li>Network I/O: Handling multiple network requests concurrently.</li>
-<li>File I/O: Efficient reading and writing of files.</li>
-<li>Long-running Computations: Breaking down complex tasks into smaller, manageable units that can pause and resume.</li>
-<li>Other Asynchronous Scenarios: Wherever non-blocking operations are needed.</li>
-</ul>
-<h2 id="key-concepts">Key Concepts</h2>
-<h4>Suspending Functions:</h4>
-<ul>
-<li>Python: Functions declared using the async keyword. They use the await keyword to suspend execution and wait for the result of another coroutine.</li>
-<li>Kotlin: Functions declared using the suspend keyword. Similarly, use various suspend functions to pause execution without blocking a thread.</li>
-</ul>
-<h4>Event Loop:</h4>
-<ul>
-<li>Python: The asyncio library manages an event loop, responsible for scheduling and executing coroutines.
-<br/></li>
-<li>Kotlin: The kotlinx coroutines library provides coroutine builders and an underlying mechanism for their management. But here we use the Android's coroutine library.
-Syntax and Structure</li>
-</ul>
-<h2 id="syntax-and-structure">Syntax and Structure</h2>
-<p>On Android, coroutines help to manage long-running tasks that might otherwise block the main thread and cause your app to become unresponsive.
-In this example we send a request to database using kotlin, the io-request should always be done in background thread, so we use the coroutine to handle this task.</p>
-<div class="highlight"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="nn">android.os.AsyncTask</span>
-<span class="k">import</span><span class="w"> </span><span class="nn">kotlinx.coroutines.*</span>
+    <p>In this guide, we'll explore how to create a simple AI assistant using LLama 3, a state-of-the-art Large Language Model. With the growing popularity of AI-powered tools like GitHub Copilot and Amazon Q&amp;A, building your own AI assistant may seem daunting at first. However, with the help of LLama 3 and the Python interface, we'll demonstrate how to create a quick and functional demo.</p>
+<h3 id="the-code">The Code</h3>
+<p>Here's the code we used in our demonstration:</p>
+<pre>
+<code>
+def give_recommendations(lang, code, line):
+    mes = f"""
+    you are a tool like github copilot, I have a code file and I need your help to provide recommendations for a specific line. Below is the relevant code snippet and given this code 
+**File Type:** {lang} **Code Snippet:**
 
-<span class="c1">// Simulate a simple database interaction </span>
-<span class="kd">class</span><span class="w"> </span><span class="nc">MyDatabase</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="kd">suspend</span><span class="w"> </span><span class="kd">fun</span><span class="w"> </span><span class="nf">fetchData</span><span class="p">(</span><span class="n">query</span><span class="p">:</span><span class="w"> </span><span class="kt">String</span><span class="p">):</span><span class="w"> </span><span class="kt">String</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="n">delay</span><span class="p">(</span><span class="m">2000L</span><span class="p">)</span><span class="w"> </span><span class="c1">// Simulate database operation delay</span>
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="s">"Result for query: </span><span class="si">$</span><span class="n">query</span><span class="s">"</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
+``{lang}
+{code}
+``
+i want recomendations for filling code after this `{line}` part, avoid unnecessary comments
+    """
+    response = ollama.chat(
+        model="llama3",
+        messages=[
+            {
+                "role": "user",
+                "content": mes
+            },
+        ],
+    )
+    answer = response["message"]["content"]
+    return extract_code_blocks(lang, answer)
+</code>
+</pre>
+<p>Feel free to explore and modify it to suit your needs!</p>
+<h3 id="sample-test-cases">Sample Test Cases</h3>
+<p>We've included two sample test cases for you to try out:</p>
+<pre>
+<code>
+    lang_1 = 'python'
 
-<span class="kd">class</span><span class="w"> </span><span class="nc">MyActivity</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">AppCompatActivity</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// Assuming you are in an Activity context</span>
+    code_test_1 = """
+    def calculate_area(radius):
+    # This function calculates the area of a circle.
+    import math
+    area = 
+    return area
+    """
 
-<span class="w">    </span><span class="kd">override</span><span class="w"> </span><span class="kd">fun</span><span class="w"> </span><span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">:</span><span class="w"> </span><span class="n">Bundle?)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="k">super</span><span class="p">.</span><span class="na">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">)</span>
+    section_1 = ' area = '
 
-<span class="w">        </span><span class="n">lifecycleScope</span><span class="p">.</span><span class="na">launch</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// Launch coroutine within the Activity's lifecycle</span>
-<span class="w">            </span><span class="kd">val</span><span class="w"> </span><span class="nv">result1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fetchDataFromDB</span><span class="p">(</span><span class="s">"SELECT * FROM table1"</span><span class="p">)</span>
-<span class="w">            </span><span class="kd">val</span><span class="w"> </span><span class="nv">result2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fetchDataFromDB</span><span class="p">(</span><span class="s">"SELECT * FROM table2"</span><span class="p">)</span>
-<span class="w">           </span><span class="c1">// update ui</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">    </span><span class="p">}</span>
+    print(give_recommendations(lang_1, code_test_1, section_1))
 
-<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">suspend</span><span class="w"> </span><span class="kd">fun</span><span class="w"> </span><span class="nf">fetchDataFromDB</span><span class="p">(</span><span class="n">query</span><span class="p">:</span><span class="w"> </span><span class="kt">String</span><span class="p">):</span><span class="w"> </span><span class="kt">String</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">withContext</span><span class="p">(</span><span class="n">Dispatchers</span><span class="p">.</span><span class="na">IO</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="n">MyDatabase</span><span class="p">().</span><span class="na">fetchData</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
+    lang_2 = 'java'
+    code_test_2 = """
+static void bubbleSort(int arr[], int n)
+    {
+        int i, j, temp;
+        boolean swapped;
+        for (i = 0; i &lt; n - 1; i++) {
+            swapped = false;
+            for (j = 0; j &lt; n - i - 1; j++) {
+                if (arr[j] &gt; arr[j + 1]) {
+
+                    // Swap arr[j] and arr[j+1]
+
+                }
+            }
+
+            // If no two elements were
+            // swapped by inner loop, then break
+            if (swapped == false)
+                break;
+        }
+    }
+    """
+
+    section_2 = """// Swap arr[j] and arr[j+1]
+                   """
+    print(give_recommendations(lang_2, code_test_2, section_2))
+</code>
+</pre>
+<p>These test cases will give you a sense of how the AI assistant can be used in everyday scenarios.</p>
+<h3 id="recommendations-and-code-snippets">Recommendations and Code Snippets</h3>
+<p>Here are some code snippets and recommendations we came up with during our experimentation with LLama 3</p>
+<div class="highlight"><pre><span></span><code><span class="p">[</span>
+    <span class="p">(</span><span class="s1">'python'</span><span class="p">,</span> <span class="s1">'import math</span><span class="se">\n\n</span><span class="s1">def calculate_area(radius):</span><span class="se">\n</span><span class="s1">    area = math.pi * (radius ** 2)</span><span class="se">\n</span><span class="s1">    return area'</span><span class="p">)</span>
+    <span class="p">(</span><span class="s1">'python'</span><span class="p">,</span> <span class="s1">'import math</span><span class="se">\n\n</span><span class="s1">def calculate_area(radius):</span><span class="se">\n</span><span class="s1">    area = math.pi * (radius ** 2)</span><span class="se">\n</span><span class="s1">    return area'</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">'python'</span><span class="p">,</span> <span class="s1">'import math</span><span class="se">\n\n</span><span class="s1">def calculate_area(radius):</span><span class="se">\n</span><span class="s1">    pi = 22 / 7</span><span class="se">\n</span><span class="s1">    area = pi * (radius ** 2)</span><span class="se">\n</span><span class="s1">    return area'</span><span class="p">),</span> <span class="p">(</span><span class="s1">'python'</span><span class="p">,</span> <span class="s1">'import math</span><span class="se">\n\n</span><span class="s1">def calculate_area(radius):</span><span class="se">\n</span><span class="s1">    try:</span><span class="se">\n</span><span class="s1">        area = math.pi * (radius ** 2)</span><span class="se">\n</span><span class="s1">        return area</span><span class="se">\n</span><span class="s1">    except TypeError:</span><span class="se">\n</span><span class="s1">        return "Error: Radius must be a number"'</span><span class="p">)</span>
+<span class="p">]</span>
+<span class="p">[</span>
+    <span class="p">(</span><span class="s1">'java'</span><span class="p">,</span> <span class="s1">'temp = arr[j];</span><span class="se">\n</span><span class="s1">arr[j] = arr[j + 1];</span><span class="se">\n</span><span class="s1">arr[j + 1] = temp;'</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">'java'</span><span class="p">,</span> <span class="s1">'int[] tempArr = new int[1];</span><span class="se">\n</span><span class="s1">tempArr[0] = arr[j + 1];</span><span class="se">\n</span><span class="s1">Arrays.swap(arr, j, j + 1);</span><span class="se">\n</span><span class="s1">arr[j + 1] = tempArr[0];'</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">'java'</span><span class="p">,</span> <span class="s1">'int temp = arr[j + 1];</span><span class="se">\n</span><span class="s1">arr[j + 1] = arr[j];</span><span class="se">\n</span><span class="s1">arr[j] = temp;'</span><span class="p">)</span>
+<span class="p">]</span>
 </code></pre></div>
-<h4>Explanation</h4>
-<p>lifecycleScope.launch: Launches the coroutine in the context of the Activity's lifecycle, ensuring cancellation when the Activity is destroyed.
-<code>withContext(Dispatchers.IO)</code>: Switches the coroutine to a background thread suitable for database operations. 
-This is crucial to avoid blocking the main thread.</p>
-<p>In Python we can use the asyncio library to handle the coroutine, here is an example of how to use the asyncio library to request from database.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">asyncio</span>
-<span class="kn">import</span> <span class="nn">mysql.connector</span>
+<p>These code snippets showcase some interesting ideas and approaches you can take when building your own AI assistant.</p>
+<h3 id="prompts-from-github">Prompts from GitHub</h3>
+<p>Here are some prompts we found in the GitHub repository for ChatGPT, which can be used as inspiration for our LLama 3-powered AI assistant:</p>
+<pre>
+<code>
+  public static final Prompt IMPLEMENT = new Prompt("Act like a professional programmer. From concise requests you infer the intended functionality. First write out the idea in plain text, as a comment in the appropirate programming language. Then write out the code in a function, multiple functions or the appropriate data format (such as xml, json or any other). Now, implement the following specification using code in the mentioned language. ");
+    public static final Prompt CHAT = new Prompt("You are a professional assistant. You are chatting with the programmer about the following topic: ");
+    public static final Prompt FIX = new Prompt("analyze and fix the following error");
+    public static final Prompt DOCUMENTATION = new Prompt("write documentation for the following code");
+    public static final Prompt EXPLAIN = new Prompt("explain and summarize the following");
+    public static final Prompt COMPLETE = new Prompt("complete the following code");
+    public static final Prompt CONVERT = new Prompt("convert the following code by transpiling it to ");
+    public static final Prompt REVIEW = new Prompt("analyze, code review and make suggestions to improve the following code");
+    public static final Prompt TESTS = new Prompt("emit tests for the following code");
+    public static final Prompt OPTIMIZE = new Prompt("analyze the code for optimization potential, then optimize the code accordingly");
+    public static final Prompt IMPROVE = new Prompt("analyze, code review the following code, then improve and optimize the code accordingly");
+    public static final Prompt EDIT = new Prompt("edit the following code using the following instructions: ");
+    public static final Prompt EDIT_CODE_WITH_COMMAND = new Prompt("edit the following code: %s\n" +
+            "using the following instructions: %s");
+    public static final Prompt EXECUTE = new Prompt("Given english instructions, find the right terminal command in a zsh shell. The command should be in the following format: ```bash <command/>```");
 
-<span class="n">mydb</span> <span class="o">=</span> <span class="n">mysql</span><span class="o">.</span><span class="n">connector</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
-    <span class="n">host</span><span class="o">=</span><span class="s2">"your_database_host"</span><span class="p">,</span>
-    <span class="n">user</span><span class="o">=</span><span class="s2">"your_username"</span><span class="p">,</span>
-    <span class="n">password</span><span class="o">=</span><span class="s2">"your_password"</span><span class="p">,</span>
-    <span class="n">database</span><span class="o">=</span><span class="s2">"your_database_name"</span>
-<span class="p">)</span>
-
-<span class="k">async</span> <span class="k">def</span> <span class="nf">fetch_data</span><span class="p">(</span><span class="n">query</span><span class="p">):</span>
-    <span class="n">cursor</span> <span class="o">=</span> <span class="n">mydb</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
-    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
-
-    <span class="n">result</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>  <span class="c1"># Fetch all results (adjust as needed)</span>
-    <span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>  <span class="c1"># Close the cursor</span>
-
-    <span class="k">return</span> <span class="n">result</span> 
-
-<span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-    <span class="c1"># Example usage</span>
-    <span class="n">result1</span> <span class="o">=</span> <span class="k">await</span> <span class="n">fetch_data</span><span class="p">(</span><span class="s2">"SELECT * FROM table1"</span><span class="p">)</span> 
-    <span class="nb">print</span><span class="p">(</span><span class="n">result1</span><span class="p">)</span>
-
-<span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
-</code></pre></div>
-<h3 id="structured-concurrency">Structured Concurrency</h3>
-<p>Handling coroutine lifecycles and errors is critical:</p>
-<ul>
-<li>Python: Structured concurrency is primarily done using asyncio.gather and asyncio.wait to manage concurrent tasks, along with try-except blocks.</li>
-<li>Kotlin: Provides coroutineScope and supervisorScope for creating structured hierarchies of coroutines, enabling fine-grained error handling and cancellation.</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th style="text-align: left;">Feature</th>
-<th style="text-align: center;">Python</th>
-<th style="text-align: right;">Kotlin</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;">Keyword</td>
-<td style="text-align: center;">async</td>
-<td style="text-align: right;">suspend</td>
-</tr>
-<tr>
-<td style="text-align: left;">Event Loop</td>
-<td style="text-align: center;">Lib    asyncio k</td>
-<td style="text-align: right;">otlinx.coroutines</td>
-</tr>
-<tr>
-<td style="text-align: left;">Starting Point</td>
-<td style="text-align: center;">asyncio.run(...)</td>
-<td class=".." style="text-align: right;">runBlocking</td>
-</tr>
-</tbody>
-</table>
-<h2 id="conclusion_1">Conclusion</h2>
-<p>Both Python and Kotlin provide effective coroutine implementations, enabling developers to write cleaner, more manageable asynchronous code.
-Coroutines are a powerful tool for handling I/O-bound tasks, long-running computations, and other asynchronous scenarios, making them a valuable addition to any developer's toolkit.</p>
+</code>
+</pre>
+<p>That's it for now! If you're interested in exploring more, feel free to leave a comment or ask us a question in medium. Happy coding!</p>
     <!-- <div class="aspect-w-16 aspect-h-9 mx-auto"></div> CSS placeholder -->
   </div>
   <footer class="flex flex-col mt-10 ">
     <ul class="flex flex-wrap">
         <li
           class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
-          <a href="./tag/kotlin.html">Kotlin</a>
+          <a href="./tag/large-language-model.html">Large Language Model</a>
+        </li>
+        <li
+          class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
+          <a href="./tag/llama-3.html">LLama 3</a>
+        </li>
+        <li
+          class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
+          <a href="./tag/llm.html">LLM</a>
+        </li>
+        <li
+          class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
+          <a href="./tag/machine-learning.html">Machine Learning</a>
         </li>
         <li
           class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
           <a href="./tag/nima-moradi.html">Nima Moradi</a>
-        </li>
-        <li
-          class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
-          <a href="./tag/process.html">process</a>
         </li>
         <li
           class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
@@ -270,18 +273,18 @@ Coroutines are a powerful tool for handling I/O-bound tasks, long-running comput
     </ul>
     <div class="flex w-full my-2 bg-zinc-200 dark:bg-zinc-700 rounded-lg">
       <div class="w-1/2 hover:bg-zinc-300 dark:hover:bg-zinc-800 rounded-l-lg">
-        <a class="flex flex-col pr-2" href="./create-a-simple-ai-assistant-using-llama-3-a-proof-of-concept.html">
+        <a class="flex flex-col pr-2" href="./how-does-android-implement-compose-jetpack.html">
           <div class="mx-4 py-2 text-left">
             <p class="text-zinc-600 dark:text-zinc-300 text-sm">« PREV PAGE</p>
-            <p class="text-left py-1 hover:underline">Create a Simple AI Assistant Using LLama 3: A Proof of Concept</p>
+            <p class="text-left py-1 hover:underline">How does Android implement Compose Jetpack</p>
           </div>
         </a>
       </div>
       <div class="w-1/2 hover:bg-zinc-300 dark:hover:bg-zinc-800 rounded-r-lg ">
-        <a class="flex flex-col" href="./crisp-dm-series-mastering-data-mining-in-football-analytics.html">
+        <a class="flex flex-col" href="./overview-of-coroutines.html">
           <div class="text-right mx-4 py-2">
             <p class="text-zinc-600 dark:text-zinc-300 text-sm">NEXT PAGE »</p>
-            <p class="text-right py-1 hover:underline">CRISP-DM Series: Mastering Data Mining in Football Analytics</p>
+            <p class="text-right py-1 hover:underline">OverView of Coroutines</p>
           </div>
         </a>
       </div>
@@ -290,7 +293,7 @@ Coroutines are a powerful tool for handling I/O-bound tasks, long-running comput
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="twitter" aria-label="share Features on twitter"
-            href="https://twitter.com/intent/tweet/?text=Features&amp;url=./overview-of-coroutines.html">
+            href="https://twitter.com/intent/tweet/?text=Features&amp;url=./create-a-simple-ai-assistant-using-llama-3-a-proof-of-concept.html">
             <i class="fab fa-twitter fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -298,7 +301,7 @@ Coroutines are a powerful tool for handling I/O-bound tasks, long-running comput
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="linkedin" aria-label="share Features on linkedin"
-            href="https://www.linkedin.com/sharing/share-offsite/?url=./overview-of-coroutines.html">
+            href="https://www.linkedin.com/sharing/share-offsite/?url=./create-a-simple-ai-assistant-using-llama-3-a-proof-of-concept.html">
             <i class="fab fa-linkedin fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -306,7 +309,7 @@ Coroutines are a powerful tool for handling I/O-bound tasks, long-running comput
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="reddit" aria-label="share Features on reddit"
-            href="https://reddit.com/submit?url=./overview-of-coroutines.html">
+            href="https://reddit.com/submit?url=./create-a-simple-ai-assistant-using-llama-3-a-proof-of-concept.html">
             <i class="fab fa-reddit fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -314,7 +317,7 @@ Coroutines are a powerful tool for handling I/O-bound tasks, long-running comput
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="facebook" aria-label="share Features on facebook"
-            href="https://facebook.com/sharer/sharer.php?u=./overview-of-coroutines.html">
+            href="https://facebook.com/sharer/sharer.php?u=./create-a-simple-ai-assistant-using-llama-3-a-proof-of-concept.html">
             <i class="fab fa-facebook fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -322,7 +325,7 @@ Coroutines are a powerful tool for handling I/O-bound tasks, long-running comput
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="whatsapp" aria-label="share Features on whatsapp"
-            href="https://api.whatsapp.com/send?text=Features - ./overview-of-coroutines.html">
+            href="https://api.whatsapp.com/send?text=Features - ./create-a-simple-ai-assistant-using-llama-3-a-proof-of-concept.html">
             <i class="fab fa-whatsapp fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -330,7 +333,7 @@ Coroutines are a powerful tool for handling I/O-bound tasks, long-running comput
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="telegram" aria-label="share Features on telegram"
-            href="https://telegram.me/share/url?text=Features&amp;url=./overview-of-coroutines.html">
+            href="https://telegram.me/share/url?text=Features&amp;url=./create-a-simple-ai-assistant-using-llama-3-a-proof-of-concept.html">
             <i class="fab fa-telegram fa-2x" aria-hidden="true"></i>
           </a>
         </li>
