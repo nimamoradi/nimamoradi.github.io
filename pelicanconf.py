@@ -33,10 +33,23 @@ RELATIVE_URLS = True
 THEME = 'themes/Papyrus'
 THEME_STATIC_PATHS = ['static']
 PLUGIN_PATHS = ['pelican-plugins']
-PLUGINS = ['readtime', 'search', 'neighbors', 'pelican-toc']
+PLUGINS = ['readtime', 'search', 'neighbors', 'pelican-toc', 'sitemap']
 
 # TEMPLATE_PAGES = {'home.html': 'index.html',}
 
+SITEMAP = {
+    "format": "xml",
+    "priorities": {
+        "articles": 0.5,
+        "indexes": 0.5,
+        "pages": 0.5
+    },
+    "changefreqs": {
+        "articles": "monthly",
+        "indexes": "daily",
+        "pages": "monthly"
+    }
+}
 SUBTITLE = 'Nima Moradi'
 SUBTEXT = '''
 <details>

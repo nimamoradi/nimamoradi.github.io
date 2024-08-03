@@ -4,7 +4,6 @@ Tags: Python,Machine Learning, Clustering, K-Means, Nima Moradi
 Category: Guide
 Summary: An example of K-Means using python
 
-#
 
 ## K-Means Clustering
 K-Means is one of the simplest clustering algorithms that aim to cluster data by assigning fix number of centers
