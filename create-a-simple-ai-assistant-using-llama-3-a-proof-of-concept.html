@@ -133,7 +133,112 @@
 a state-of-the-art Large Language Model.
 With the growing popularity of AI-powered tools like GitHub Copilot and Amazon Q&amp;A,
 building your own AI assistant may seem daunting at first.
-However, with the help …</p>
+However, with the help of LLama 3 and the Python interface,
+we'll demonstrate how to create a quick and functional demo.</p>
+<ul>
+<li>Here's the code we used in our demonstration:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">give_recommendations</span><span class="p">(</span><span class="n">lang</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+    <span class="n">mes</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""</span>
+<span class="s2">    you are a tool like github copilot, I have a code file and I need your help to provide recommendations for a specific line. Below is the relevant code snippet and given this code </span>
+<span class="s2">**File Type:** </span><span class="si">{</span><span class="n">lang</span><span class="si">}</span><span class="s2"> **Code Snippet:**</span>
+
+<span class="s2">``</span><span class="si">{</span><span class="n">lang</span><span class="si">}</span>
+<span class="si">{</span><span class="n">code</span><span class="si">}</span>
+<span class="s2">``</span>
+<span class="s2">i want recomendations for filling code after this `</span><span class="si">{</span><span class="n">line</span><span class="si">}</span><span class="s2">` part, avoid unnecessary comments</span>
+<span class="s2">    """</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">ollama</span><span class="o">.</span><span class="n">chat</span><span class="p">(</span>
+        <span class="n">model</span><span class="o">=</span><span class="s2">"llama3"</span><span class="p">,</span>
+        <span class="n">messages</span><span class="o">=</span><span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s2">"role"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span>
+                <span class="s2">"content"</span><span class="p">:</span> <span class="n">mes</span>
+            <span class="p">},</span>
+        <span class="p">],</span>
+    <span class="p">)</span>
+    <span class="n">answer</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s2">"message"</span><span class="p">][</span><span class="s2">"content"</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">extract_code_blocks</span><span class="p">(</span><span class="n">lang</span><span class="p">,</span> <span class="n">answer</span><span class="p">)</span>
+</code></pre></div>
+<p>Feel free to explore and modify it to suit your needs!</p>
+<h3 id="sample-test-cases">Sample Test Cases</h3>
+<p>We've included two sample test cases for you to try out:</p>
+<div class="highlight"><pre><span></span><code><span class="n">lang_1</span> <span class="o">=</span> <span class="s1">'python'</span>
+
+<span class="n">code_test_1</span> <span class="o">=</span> <span class="s2">"""</span>
+<span class="s2">def calculate_area(radius):</span>
+<span class="s2"># This function calculates the area of a circle.</span>
+<span class="s2">import math</span>
+<span class="s2">area = </span>
+<span class="s2">return area</span>
+<span class="s2">"""</span>
+
+<span class="n">section_1</span> <span class="o">=</span> <span class="s1">' area = '</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">give_recommendations</span><span class="p">(</span><span class="n">lang_1</span><span class="p">,</span> <span class="n">code_test_1</span><span class="p">,</span> <span class="n">section_1</span><span class="p">))</span>
+
+<span class="n">lang_2</span> <span class="o">=</span> <span class="s1">'java'</span>
+<span class="n">code_test_2</span> <span class="o">=</span> <span class="s2">"""</span>
+<span class="s2">static void bubbleSort(int arr[], int n)</span>
+<span class="s2">{</span>
+<span class="s2">    int i, j, temp;</span>
+<span class="s2">    boolean swapped;</span>
+<span class="s2">    for (i = 0; i &lt; n - 1; i++) {</span>
+<span class="s2">        swapped = false;</span>
+<span class="s2">        for (j = 0; j &lt; n - i - 1; j++) {</span>
+<span class="s2">            if (arr[j] &gt; arr[j + 1]) {</span>
+
+<span class="s2">                // Swap arr[j] and arr[j+1]</span>
+
+<span class="s2">            }</span>
+<span class="s2">        }</span>
+
+<span class="s2">        // If no two elements were</span>
+<span class="s2">        // swapped by inner loop, then break</span>
+<span class="s2">        if (swapped == false)</span>
+<span class="s2">            break;</span>
+<span class="s2">    }</span>
+<span class="s2">}</span>
+<span class="s2">"""</span>
+
+<span class="n">section_2</span> <span class="o">=</span> <span class="s2">"""// Swap arr[j] and arr[j+1]</span>
+<span class="s2">               """</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">give_recommendations</span><span class="p">(</span><span class="n">lang_2</span><span class="p">,</span> <span class="n">code_test_2</span><span class="p">,</span> <span class="n">section_2</span><span class="p">))</span>
+</code></pre></div>
+<p>These test cases will give you a sense of how the AI assistant can be used in everyday scenarios.</p>
+<h3 id="recommendations-and-code-snippets">Recommendations and Code Snippets</h3>
+<p>Here are some code snippets and recommendations we came up with during our experimentation with LLama 3</p>
+<div class="highlight"><pre><span></span><code><span class="p">[</span>
+    <span class="p">(</span><span class="s1">'python'</span><span class="p">,</span> <span class="s1">'import math</span><span class="se">\n\n</span><span class="s1">def calculate_area(radius):</span><span class="se">\n</span><span class="s1">    area = math.pi * (radius ** 2)</span><span class="se">\n</span><span class="s1">    return area'</span><span class="p">)</span>
+    <span class="p">(</span><span class="s1">'python'</span><span class="p">,</span> <span class="s1">'import math</span><span class="se">\n\n</span><span class="s1">def calculate_area(radius):</span><span class="se">\n</span><span class="s1">    area = math.pi * (radius ** 2)</span><span class="se">\n</span><span class="s1">    return area'</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">'python'</span><span class="p">,</span> <span class="s1">'import math</span><span class="se">\n\n</span><span class="s1">def calculate_area(radius):</span><span class="se">\n</span><span class="s1">    pi = 22 / 7</span><span class="se">\n</span><span class="s1">    area = pi * (radius ** 2)</span><span class="se">\n</span><span class="s1">    return area'</span><span class="p">),</span> <span class="p">(</span><span class="s1">'python'</span><span class="p">,</span> <span class="s1">'import math</span><span class="se">\n\n</span><span class="s1">def calculate_area(radius):</span><span class="se">\n</span><span class="s1">    try:</span><span class="se">\n</span><span class="s1">        area = math.pi * (radius ** 2)</span><span class="se">\n</span><span class="s1">        return area</span><span class="se">\n</span><span class="s1">    except TypeError:</span><span class="se">\n</span><span class="s1">        return "Error: Radius must be a number"'</span><span class="p">)</span>
+<span class="p">]</span>
+<span class="p">[</span>
+    <span class="p">(</span><span class="s1">'java'</span><span class="p">,</span> <span class="s1">'temp = arr[j];</span><span class="se">\n</span><span class="s1">arr[j] = arr[j + 1];</span><span class="se">\n</span><span class="s1">arr[j + 1] = temp;'</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">'java'</span><span class="p">,</span> <span class="s1">'int[] tempArr = new int[1];</span><span class="se">\n</span><span class="s1">tempArr[0] = arr[j + 1];</span><span class="se">\n</span><span class="s1">Arrays.swap(arr, j, j + 1);</span><span class="se">\n</span><span class="s1">arr[j + 1] = tempArr[0];'</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">'java'</span><span class="p">,</span> <span class="s1">'int temp = arr[j + 1];</span><span class="se">\n</span><span class="s1">arr[j + 1] = arr[j];</span><span class="se">\n</span><span class="s1">arr[j] = temp;'</span><span class="p">)</span>
+<span class="p">]</span>
+</code></pre></div>
+<p>These code snippets showcase some interesting ideas and approaches you can take when building your own AI assistant.</p>
+<h3 id="prompts-from-github">Prompts from GitHub</h3>
+<p>Here are some prompts we found in the GitHub repository for ChatGPT, which can be used as inspiration for our LLama 3-powered AI assistant:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Prompt</span><span class="w"> </span><span class="n">IMPLEMENT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Prompt</span><span class="p">(</span><span class="s">"Act like a professional programmer. From concise requests you infer the intended functionality. First write out the idea in plain text, as a comment in the appropirate programming language. Then write out the code in a function, multiple functions or the appropriate data format (such as xml, json or any other). Now, implement the following specification using code in the mentioned language. "</span><span class="p">);</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Prompt</span><span class="w"> </span><span class="n">CHAT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Prompt</span><span class="p">(</span><span class="s">"You are a professional assistant. You are chatting with the programmer about the following topic: "</span><span class="p">);</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Prompt</span><span class="w"> </span><span class="n">FIX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Prompt</span><span class="p">(</span><span class="s">"analyze and fix the following error"</span><span class="p">);</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Prompt</span><span class="w"> </span><span class="n">DOCUMENTATION</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Prompt</span><span class="p">(</span><span class="s">"write documentation for the following code"</span><span class="p">);</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Prompt</span><span class="w"> </span><span class="n">EXPLAIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Prompt</span><span class="p">(</span><span class="s">"explain and summarize the following"</span><span class="p">);</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Prompt</span><span class="w"> </span><span class="n">COMPLETE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Prompt</span><span class="p">(</span><span class="s">"complete the following code"</span><span class="p">);</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Prompt</span><span class="w"> </span><span class="n">CONVERT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Prompt</span><span class="p">(</span><span class="s">"convert the following code by transpiling it to "</span><span class="p">);</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Prompt</span><span class="w"> </span><span class="n">REVIEW</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Prompt</span><span class="p">(</span><span class="s">"analyze, code review and make suggestions to improve the following code"</span><span class="p">);</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Prompt</span><span class="w"> </span><span class="n">TESTS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Prompt</span><span class="p">(</span><span class="s">"emit tests for the following code"</span><span class="p">);</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Prompt</span><span class="w"> </span><span class="n">OPTIMIZE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Prompt</span><span class="p">(</span><span class="s">"analyze the code for optimization potential, then optimize the code accordingly"</span><span class="p">);</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Prompt</span><span class="w"> </span><span class="n">IMPROVE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Prompt</span><span class="p">(</span><span class="s">"analyze, code review the following code, then improve and optimize the code accordingly"</span><span class="p">);</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Prompt</span><span class="w"> </span><span class="n">EDIT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Prompt</span><span class="p">(</span><span class="s">"edit the following code using the following instructions: "</span><span class="p">);</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Prompt</span><span class="w"> </span><span class="n">EDIT_CODE_WITH_COMMAND</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Prompt</span><span class="p">(</span><span class="s">"edit the following code: %s\n"</span><span class="w"> </span><span class="o">+</span>
+<span class="w">        </span><span class="s">"using the following instructions: %s"</span><span class="p">);</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Prompt</span><span class="w"> </span><span class="n">EXECUTE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Prompt</span><span class="p">(</span><span class="s">"Given english instructions, find the right terminal command in a zsh shell. The command should be in the following format: ```bash &lt;command&gt;```"</span><span class="p">);</span>
+</code></pre></div>
+<p>That's it for now! If you're interested in exploring more, feel free to leave a comment or ask us a question in medium. Happy coding!</p>
     <!-- <div class="aspect-w-16 aspect-h-9 mx-auto"></div> CSS placeholder -->
   </div>
   <footer class="flex flex-col mt-10 ">

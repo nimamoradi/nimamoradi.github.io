@@ -128,7 +128,84 @@
               prose-img:rounded-md
               sm:text-left md:text-justify
               ">
-    <p>Easy subtitle translation using google api</p>
+    <h2 id="breaking-language-barriers-translating-subtitles-with-google-api">Breaking Language Barriers: Translating Subtitles with Google API</h2>
+<p>Sometimes ago, I wanted to watch a movie with my mother, but she doesn't have the best English. I thought of machine translation and decided to use Google Translate to translate the subtitles into her preferred language. Here's how I did it.</p>
+<h3 id="setting-up-google-translate-api">Setting Up Google Translate API</h3>
+<p>To use the Google Translate API, you need to set up a Google Cloud project and authenticate your requests. Follow the instructions <a href="https://translatepress.com/docs/automatic-translation/generate-google-api-key/#:~:text=Enable%20Google%20Cloud%20Translation%20API,-With%20the%20new&amp;text=From%20here%20you%20need%20to,select%20it%20and%20click%20Enable.">here</a>.</p>
+<h3 id="the-script">The Script</h3>
+<p>Here's a simple Python script that uses the Google Translate API to translate subtitles.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">translate_v2</span> <span class="k">as</span> <span class="n">translate</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+
+<span class="k">def</span> <span class="nf">parse_srt_to_array</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">'utf-8'</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+    <span class="n">blocks</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">'</span><span class="p">)</span>
+    <span class="n">subtitles</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">blocks</span><span class="p">:</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">time_range</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span>
+            <span class="n">subtitles</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">'index'</span><span class="p">:</span> <span class="n">index</span><span class="p">,</span> <span class="s1">'time_range'</span><span class="p">:</span> <span class="n">time_range</span><span class="p">,</span> <span class="s1">'text'</span><span class="p">:</span> <span class="n">text</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">subtitles</span>
+
+
+<span class="k">def</span> <span class="nf">parse_subtitle_block</span><span class="p">(</span><span class="n">block</span><span class="p">):</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">block</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">time_range</span> <span class="o">=</span> <span class="n">block</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">text_lines</span> <span class="o">=</span> <span class="n">block</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">text_lines</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s1">'index'</span><span class="p">:</span> <span class="n">index</span><span class="p">,</span> <span class="s1">'time_range'</span><span class="p">:</span> <span class="n">time_range</span><span class="p">,</span> <span class="s1">'text'</span><span class="p">:</span> <span class="n">text</span><span class="p">}</span>
+
+
+<span class="k">def</span> <span class="nf">translate_text_with_google</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">target_language</span><span class="p">,</span> <span class="n">source_language</span><span class="p">):</span>
+    <span class="n">translate_client</span> <span class="o">=</span> <span class="n">translate</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+    <span class="c1"># The API automatically handles HTML tags if you pass the format as 'html'</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">translate_client</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">source_language</span><span class="o">=</span><span class="n">source_language</span><span class="p">,</span> <span class="n">target_language</span><span class="o">=</span><span class="n">target_language</span><span class="p">,</span>
+                                        <span class="n">format_</span><span class="o">=</span><span class="s1">'html'</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="s1">'translatedText'</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">reverse_text</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">clean_html_tags</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="c1"># Reverse each line in the subtitle text separately</span>
+    <span class="k">return</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">line</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">clean_html_tags</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="c1"># Remove HTML-like tags</span>
+    <span class="n">clean_text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">'&lt;[^&gt;]*&gt;'</span><span class="p">,</span> <span class="s1">''</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">clean_text</span>
+
+
+<span class="n">translated</span> <span class="o">=</span> <span class="p">[]</span>
+
+
+<span class="k">def</span> <span class="nf">write_translated_subtitles</span><span class="p">(</span><span class="n">subtitles</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">target_language</span><span class="p">,</span> <span class="n">source_language</span><span class="p">):</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="s1">'w'</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">'utf-8'</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">subtitle</span> <span class="ow">in</span> <span class="n">subtitles</span><span class="p">:</span>
+            <span class="n">translated_text</span> <span class="o">=</span> <span class="n">translate_text_with_google</span><span class="p">(</span><span class="n">subtitle</span><span class="p">[</span><span class="s1">'text'</span><span class="p">],</span> <span class="n">target_language</span><span class="p">,</span> <span class="n">source_language</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">translated_text</span><span class="p">)</span>
+            <span class="n">translated</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">translated_text</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">subtitle</span><span class="p">[</span><span class="s1">'index'</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">subtitle</span><span class="p">[</span><span class="s1">'time_range'</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">translated_text</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">"</span><span class="p">)</span>
+
+
+<span class="c1"># Example usage</span>
+<span class="n">input_srt_path</span> <span class="o">=</span> <span class="s1">'./sub/input.srt'</span>  <span class="c1"># Update this path</span>
+<span class="n">output_srt_path</span> <span class="o">=</span> <span class="s1">'./sub/output.srt'</span>  <span class="c1"># Update this path</span>
+
+<span class="c1"># Parse the .srt file to an array of subtitle blocks</span>
+<span class="n">subtitles</span> <span class="o">=</span> <span class="n">parse_srt_to_array</span><span class="p">(</span><span class="n">input_srt_path</span><span class="p">)</span>
+
+<span class="c1"># Translate the subtitles (mock translation in this case) and write to a new file</span>
+<span class="n">write_translated_subtitles</span><span class="p">(</span><span class="n">subtitles</span><span class="p">,</span> <span class="n">output_srt_path</span><span class="p">,</span> <span class="n">target_language</span><span class="o">=</span><span class="s1">'fa'</span><span class="p">,</span> <span class="n">source_language</span><span class="o">=</span><span class="s1">'en'</span><span class="p">)</span>
+</code></pre></div>
     <!-- <div class="aspect-w-16 aspect-h-9 mx-auto"></div> CSS placeholder -->
   </div>
   <footer class="flex flex-col mt-10 ">

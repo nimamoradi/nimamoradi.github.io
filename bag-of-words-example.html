@@ -128,7 +128,117 @@
               prose-img:rounded-md
               sm:text-left md:text-justify
               ">
-    <p>An example of Bag of Words using python</p>
+    <p>Bag of Words bag of words is one of the most basic ways to represent a word, it is simply a word counter. let us look at an example</p>
+<div class="highlight"><pre><span></span><code><span class="mf">1</span><span class="w"> </span><span class="p">:)</span><span class="w"> </span><span class="n">John</span><span class="w"> </span><span class="n">likes</span><span class="w"> </span><span class="kr">to</span><span class="w"> </span><span class="n">watch</span><span class="w"> </span><span class="n">movies</span><span class="mf">.</span><span class="w"> </span><span class="n">Mary</span><span class="w"> </span><span class="n">likes</span><span class="w"> </span><span class="n">movies</span><span class="w"> </span><span class="kr">to</span><span class="n">o</span><span class="mf">.</span>
+
+<span class="mf">2</span><span class="w"> </span><span class="p">:)</span><span class="w"> </span><span class="n">John</span><span class="w"> </span><span class="n">also</span><span class="w"> </span><span class="n">likes</span><span class="w"> </span><span class="kr">to</span><span class="w"> </span><span class="n">watch</span><span class="w"> </span><span class="n">football</span><span class="w"> </span><span class="n">games</span><span class="mf">.</span>
+</code></pre></div>
+<p>if we count the occurrence of each word</p>
+<div class="highlight"><pre><span></span><code>BoW1 = {"John":1,"likes":2,"to":1,"watch":1,"movies":2,"Mary":1,"too":1};
+
+BoW2 = {"John":1,"also":1,"likes":1,"to":1,"watch":1,"football":1,"games":1};
+</code></pre></div>
+<p>Ok let us see how to implement it in python</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># the dataset we use called 20 newsgroup it consist of 20 group with short text </span>
+<span class="c1"># scikit have builtin way to load the dataset just like iris and etc.</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">fetch_20newsgroups</span>
+<span class="n">newsgroups_train</span> <span class="o">=</span> <span class="n">fetch_20newsgroups</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="s1">'train'</span><span class="p">,</span><span class="n">remove</span><span class="o">=</span><span class="p">(</span><span class="s1">'headers'</span><span class="p">,</span> <span class="s1">'footers'</span><span class="p">,</span> <span class="s1">'quotes'</span><span class="p">),</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># here we will only work with data section because bag of word don't need labels</span>
+<span class="n">pprint</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">newsgroups_train</span><span class="p">))</span>
+</code></pre></div>
+<p>the first thing bag-of-word do is consist of a corpus of all existing word and make a one-hot vector for each of them.</p>
+<p>Now each we have a very large vector with one 1 in each row, we represent each sentence as a vector with for existing word it will show 1 in a corresponding bit and 0 not present.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">islice</span>
+
+<span class="k">def</span> <span class="nf">take</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">iterable</span><span class="p">):</span>
+    <span class="s2">"Return first n items of the iterable as a list"</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">islice</span><span class="p">(</span><span class="n">iterable</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="kn">import</span> <span class="n">CountVectorizer</span>
+
+<span class="n">corpus</span> <span class="o">=</span> <span class="n">newsgroups_train</span><span class="o">.</span><span class="n">data</span>
+
+<span class="n">vectorizer</span> <span class="o">=</span> <span class="n">CountVectorizer</span><span class="p">()</span>
+<span class="n">vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">corpus</span><span class="p">)</span><span class="o">.</span><span class="n">todense</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span> <span class="n">take</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">vocabulary_</span><span class="o">.</span><span class="n">items</span><span class="p">())</span> <span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1">#  to demonstrate let us consider this corpus </span>
+<span class="c1">#  we have 24-word unique word with will be of vector size for each word and every sentence is the summation of its unique binary words</span>
+<span class="n">corpus</span> <span class="o">=</span> <span class="p">[</span>
+<span class="s1">'All my cats in a row'</span><span class="p">,</span>
+<span class="s1">'When my cat sits down, she looks like a Furby toy!'</span><span class="p">,</span>
+<span class="s1">'The cats from outer space'</span><span class="p">,</span>
+<span class="s1">'Sunshine loves to sit like this for some reason.'</span>
+<span class="p">]</span>
+
+<span class="n">vectorizer</span> <span class="o">=</span> <span class="n">CountVectorizer</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">corpus</span><span class="p">)</span><span class="o">.</span><span class="n">todense</span><span class="p">()</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">vocabulary_</span> <span class="p">)</span>
+</code></pre></div>
+<h1 id="preprocssing">Preprocssing</h1>
+<p>in our above code model will consider cat and cats diffrent word and have may useless word in our bow</p>
+<h4>Stopwords</h4>
+<p>Stopwords are a collection of common words like 'a','is','the'
+which would not contribute too much on the meaning of sentence </p>
+<h4>Stemming</h4>
+<p>stemming is process of remove prefix and suffix form words, doing this make study and studing a single word,bear in mind that using lemmatization will lead to better result, but it's harder to impelement on your own.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># we use stopwords list from nltk</span>
+<span class="kn">import</span> <span class="nn">nltk</span>
+<span class="c1"># download stop words if you do not have it with this command {nltk.download('stopwords')}</span>
+<span class="kn">from</span> <span class="nn">nltk.corpus</span> <span class="kn">import</span> <span class="n">stopwords</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">nltk.tokenize</span> <span class="kn">import</span> <span class="n">RegexpTokenizer</span>
+<span class="kn">from</span> <span class="nn">nltk.stem.snowball</span> <span class="kn">import</span> <span class="n">SnowballStemmer</span>
+
+<span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="n">input_text</span><span class="p">):</span>
+    <span class="c1"># Create a regular expression tokenizer</span>
+    <span class="n">tokenizer</span> <span class="o">=</span> <span class="n">RegexpTokenizer</span><span class="p">(</span><span class="sa">r</span><span class="s1">'\w+'</span><span class="p">)</span>
+
+    <span class="c1"># Create a Snowball stemmer </span>
+    <span class="n">stemmer</span> <span class="o">=</span> <span class="n">SnowballStemmer</span><span class="p">(</span><span class="s1">'english'</span><span class="p">)</span>
+
+    <span class="c1"># Get the list of stop words </span>
+    <span class="n">stop_words</span> <span class="o">=</span>  <span class="n">nltk</span><span class="o">.</span><span class="n">corpus</span><span class="o">.</span><span class="n">stopwords</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="s1">'english'</span><span class="p">)</span>
+
+    <span class="c1"># Tokenize the input string</span>
+    <span class="n">tokens</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">input_text</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+
+    <span class="c1"># Remove the stop words </span>
+    <span class="n">tokens</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">tokens</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">stop_words</span><span class="p">]</span>
+
+    <span class="c1"># Perform stemming on the tokenized words </span>
+    <span class="n">tokens_stemmed</span> <span class="o">=</span> <span class="p">[</span><span class="n">stemmer</span><span class="o">.</span><span class="n">stem</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="s1">' '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tokens_stemmed</span><span class="p">)</span> 
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="k">for</span> <span class="n">index</span><span class="p">,</span><span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">newsgroups_train</span><span class="o">.</span><span class="n">data</span><span class="p">):</span>
+    <span class="n">newsgroups_train</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">process</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> 
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="nb">len</span><span class="p">(</span><span class="n">newsgroups_train</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">vectorizer</span> <span class="o">=</span> <span class="n">CountVectorizer</span><span class="p">()</span>
+<span class="n">X_train</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">newsgroups_train</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">X_train</span><span class="o">.</span><span class="n">shape</span> <span class="p">)</span>
+</code></pre></div>
+<h3 id="the-downsides-of-bag-of-words">The downsides of Bag of words</h3>
+<ol>
+<li>
+<p>Vectors assign to each word is meaningless, and for there is a pattern between two semantically similar words and their corresponding vectors.</p>
+</li>
+<li>
+<p>Words are not normalized if we want to a summarized document in our bow model we should show words with the highest score which will be many common words that probably repeated in other documents too.</p>
+</li>
+<li>
+<p>sparseness each word vector is a super long vector with only 1 bit and all other zeros which cause memory inefficiency</p>
+</li>
+</ol>
+<p>nima moradi 21/7/2019  <a href="https://twitter.com/ni_moradi" title="twitter page nima moradi">My page twitter</a></p>
     <!-- <div class="aspect-w-16 aspect-h-9 mx-auto"></div> CSS placeholder -->
   </div>
   <footer class="flex flex-col mt-10 ">

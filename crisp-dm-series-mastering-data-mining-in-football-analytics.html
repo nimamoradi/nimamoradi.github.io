@@ -128,7 +128,73 @@
               prose-img:rounded-md
               sm:text-left md:text-justify
               ">
-    <p>An example of CRISP-Data Mining using python</p>
+    <p>Welcome to our CRISP-DM series, where we explore the Cross-Industry Standard Process for Data Mining through the lens of football analytics. This series is designed for aspiring data scientists and analytics enthusiasts who wish to deepen their understanding of data mining processes, from business understanding to deployment, using the exciting world of football as a case study.
+<img alt="Image Placeholder: CRISP" src="../images/crisp.png"/></p>
+<h2 id="what-is-crisp-dm">What is CRISP-DM?</h2>
+<p>The CRISP-DM (Cross-Industry Standard Process for Data Mining) framework offers a structured methodology to navigate data analysts and scientists through the entirety of a project, from inception to completion. Originating from a seminal paper in 2000, its adoption and utility have remained steadfast. Numerous discussions, such as certain articles, attest to its effectiveness in refining the capabilities of data scientists. Its significance extends beyond the technical team, advocating for a comprehensive understanding among all project participants, including stakeholders and managers. For those intrigued by the domain, delving into CRISP-DM is highly recommended as a foundational resource.</p>
+<h2 id="introduction-to-crisp-dm">Introduction to CRISP-DM</h2>
+<p>In this series, we'll dive deep into each phase of the CRISP-DM methodology, applying its principles to football analytics. Our goal is to not only uncover insights into creating the most potent attacking line-up but also to equip you with the skills and knowledge to tackle any data mining project with confidence.</p>
+<h3 id="defining-the-objective-business-understanding">Defining the Objective (Business Understanding)</h3>
+<p>Our journey begins with a clear objective for this example
+I will use football data to predict the most effective attacking lineup in football teams. This objective will guide our data mining process, 
+ensuring that our efforts are aligned with a strategic goal.</p>
+<h3 id="gathering-data">Gathering Data</h3>
+<p>We leveraged Python's pandas and BS Soup library to programmatically collect data from fbref.com, focusing on key performance metrics like goals, assists, and shots on target.
+It can be used on different leagues and seasons In here only showcase English Premier League 2015/16 season data.</p>
+<h4>Extracting Table Data with BeautifulSoup</h4>
+<p>Before diving into the pandas DataFrame creation, 
+it's essential to capture the table data from the webpage.
+BeautifulSoup excels in parsing HTML and XML documents,
+making it an invaluable tool for web scraping tasks.
+Here's how we can use it to pinpoint the table containing our desired data:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="c1"># Fetch the webpage content</span>
+<span class="n">url</span> <span class="o">=</span> <span class="s2">"https://fbref.com/en/players/002d06bb/matchlogs/2015-2016/Sylvain-Distin-Match-Logs"</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">'html.parser'</span><span class="p">)</span>
+
+<span class="c1"># Locate the table by its tag or class (example shown uses tag)</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'table'</span><span class="p">)</span>
+</code></pre></div>
+<h4>Creating a DataFrame from Table Data</h4>
+<p>While pandas can directly read tables from HTML pages, 
+this method often misses crucial parts of the data, such as links embedded 
+in table cells. To overcome this limitation,
+we custom-define a function that meticulously extracts both text and hyperlinks 
+from each cell, ensuring no data point is overlooked:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="k">def</span> <span class="nf">dataframe_from_html_table</span><span class="p">(</span><span class="n">table</span><span class="p">):</span>
+    <span class="c1"># Initialize an empty list to store your data</span>
+    <span class="c1"># Extract headers</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">[</span><span class="n">header</span><span class="o">.</span><span class="n">get_text</span><span class="p">(</span><span class="n">strip</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">for</span> <span class="n">header</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">'th'</span><span class="p">)]</span>
+    <span class="c1"># Initialize an empty list to store your data</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># Iterate over the table rows, skipping the header row</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">'tr'</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]:</span>
+        <span class="n">row_data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">header</span><span class="p">,</span> <span class="n">cell</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">headers</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">find_all</span><span class="p">([</span><span class="s1">'th'</span><span class="p">,</span> <span class="s1">'td'</span><span class="p">])):</span>
+            <span class="c1"># Get text content and hyperlink</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">get_text</span><span class="p">(</span><span class="n">strip</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">link</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'a'</span><span class="p">)</span>
+            <span class="n">href</span> <span class="o">=</span> <span class="n">link</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'href'</span><span class="p">)</span> <span class="k">if</span> <span class="n">link</span> <span class="k">else</span> <span class="kc">None</span>
+
+            <span class="c1"># Add text and hyperlink to the row data</span>
+            <span class="k">if</span> <span class="n">header</span> <span class="o">==</span> <span class="s1">'Date'</span><span class="p">:</span>
+                <span class="n">row_data</span><span class="p">[</span><span class="n">header</span><span class="p">]</span> <span class="o">=</span> <span class="n">text</span>
+            <span class="k">elif</span> <span class="n">href</span><span class="p">:</span>
+                <span class="n">row_data</span><span class="p">[</span><span class="n">header</span><span class="p">]</span> <span class="o">=</span> <span class="n">href</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">row_data</span><span class="p">[</span><span class="n">header</span><span class="p">]</span> <span class="o">=</span> <span class="n">text</span>
+
+        <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row_data</span><span class="p">)</span>
+
+    <span class="c1"># Create a DataFrame</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</code></pre></div>
+<p>To be Continued in Part 2</p>
     <!-- <div class="aspect-w-16 aspect-h-9 mx-auto"></div> CSS placeholder -->
   </div>
   <footer class="flex flex-col mt-10 ">

@@ -128,7 +128,91 @@
               prose-img:rounded-md
               sm:text-left md:text-justify
               ">
-    <p>An overView of Compose Jetpack</p>
+    <h1 id="introduction">Introduction</h1>
+<p>Android Compose, introduced by Google, is a modern toolkit for building native Android UIs declaratively. It simplifies UI development by using a reactive programming model, allowing developers to describe the UI in Kotlin code without relying on XML layouts. With Compose, UI components, called Composables, are functions that automatically recompose when data changes, ensuring that the UI remains consistent with the app's state. This approach not only accelerates development but also enhances the maintainability and scalability of Android applications.</p>
+<h3 id="common-methods-for-creating-a-view-in-android">Common Methods for Creating a View in Android</h3>
+<ul>
+<li>Using XML Layout: 
+One common method is using XML layouts to define UI components. This method involves creating an XML file and defining the layout and views in it. Here's an example of a TextView that shows the current time and updates it every minute:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="cm">&lt;!-- res/layout/activity_main.xml --&gt;</span>
+<span class="nt">&lt;RelativeLayout</span><span class="w"> </span><span class="na">xmlns:android=</span><span class="s">"http://schemas.android.com/apk/res/android"</span>
+<span class="w">    </span><span class="na">android:layout_width=</span><span class="s">"match_parent"</span>
+<span class="w">    </span><span class="na">android:layout_height=</span><span class="s">"match_parent"</span><span class="nt">&gt;</span>
+
+<span class="w">    </span><span class="nt">&lt;TextView</span>
+<span class="w">        </span><span class="na">android:id=</span><span class="s">"@+id/timeTextView"</span>
+<span class="w">        </span><span class="na">android:layout_width=</span><span class="s">"wrap_content"</span>
+<span class="w">        </span><span class="na">android:layout_height=</span><span class="s">"wrap_content"</span>
+<span class="w">        </span><span class="na">android:layout_centerInParent=</span><span class="s">"true"</span>
+<span class="w">        </span><span class="na">android:textSize=</span><span class="s">"20sp"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/RelativeLayout&gt;</span>
+</code></pre></div>
+<p>After we use layout to as Activity base</p>
+<div class="highlight"><pre><span></span><code><span class="n">setContentView</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="na">layout</span><span class="p">.</span><span class="na">activity_main</span><span class="p">)</span>
+</code></pre></div>
+<ul>
+<li>Dynamic View Generation with Code:
+Another method is generating views dynamically in code without using XML. This approach allows more flexibility and is often used in situations where views need to be created or modified programmatically</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="w">        </span><span class="kd">val</span><span class="w"> </span><span class="nv">relativeLayout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RelativeLayout</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="na">apply</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">layoutParams</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RelativeLayout</span><span class="p">.</span><span class="na">LayoutParams</span><span class="p">(</span>
+<span class="w">                </span><span class="n">RelativeLayout</span><span class="p">.</span><span class="na">LayoutParams</span><span class="p">.</span><span class="na">MATCH_PARENT</span><span class="p">,</span>
+<span class="w">                </span><span class="n">RelativeLayout</span><span class="p">.</span><span class="na">LayoutParams</span><span class="p">.</span><span class="na">MATCH_PARENT</span>
+<span class="w">            </span><span class="p">)</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="kd">val</span><span class="w"> </span><span class="nv">timeTextView</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TextView</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="na">apply</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">layoutParams</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RelativeLayout</span><span class="p">.</span><span class="na">LayoutParams</span><span class="p">(</span>
+<span class="w">                </span><span class="n">RelativeLayout</span><span class="p">.</span><span class="na">LayoutParams</span><span class="p">.</span><span class="na">WRAP_CONTENT</span><span class="p">,</span>
+<span class="w">                </span><span class="n">RelativeLayout</span><span class="p">.</span><span class="na">LayoutParams</span><span class="p">.</span><span class="na">WRAP_CONTENT</span>
+<span class="w">            </span><span class="p">).</span><span class="na">apply</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">addRule</span><span class="p">(</span><span class="n">RelativeLayout</span><span class="p">.</span><span class="na">CENTER_IN_PARENT</span><span class="p">)</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="n">textSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20f</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="n">relativeLayout</span><span class="p">.</span><span class="na">addView</span><span class="p">(</span><span class="n">timeTextView</span><span class="p">)</span>
+<span class="w">        </span><span class="n">setContentView</span><span class="p">(</span><span class="n">relativeLayout</span><span class="p">)</span>
+</code></pre></div>
+<ul>
+<li>Using Android Compose: With Compose, UI components are built using composable functions, which allows for a more declarative and reactive approach.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nd">@Composable</span>
+<span class="kd">fun</span><span class="w"> </span><span class="nf">MyApp</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">Surface</span><span class="p">(</span>
+<span class="w">        </span><span class="n">modifier</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Modifier</span><span class="p">.</span><span class="na">fillMaxSize</span><span class="p">(),</span>
+<span class="w">        </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MaterialTheme</span><span class="p">.</span><span class="na">colorScheme</span><span class="p">.</span><span class="na">background</span>
+<span class="w">    </span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">Box</span><span class="p">(</span><span class="n">contentAlignment</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Alignment</span><span class="p">.</span><span class="na">Center</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">TimeTextView</span><span class="p">()</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Implementation Details
+We have three options for implementing UI components in Android: XML Layout, Dynamic View Generation with Code, and Android Compose.</p>
+<ol>
+<li>
+<p>XML Layout
+In the case of XML Layout, the layouts are saved in the res/layout directory. These XML files define the structure and appearance of the UI components. During runtime, the LayoutInflater class is used to inflate these XML layouts into actual view objects that the Android framework can manage and display. This method separates the UI design from the business logic, allowing for a clear distinction between the visual structure and the underlying functionality.</p>
+</li>
+<li>
+<p>Dynamic View Generation with Code
+When generating views dynamically with code, there is no need for XML files. The entire UI is constructed programmatically using Java or Kotlin. This method allows for more flexibility and dynamic adjustments of the UI components at runtime. Since the views are created directly in the code, the Android framework handles them natively, ensuring efficient execution and manipulation of the UI.</p>
+</li>
+<li>
+<p>Android Compose
+Android Compose takes a different approach by using annotations to generate intermediate Java code. Composable functions, marked with the @Composable annotation, describe the UI components and their behavior. During the build process, these annotations are processed to generate the necessary code for the UI. This generated code can be examined by decompiling the app, revealing the intermediate Java code that Compose creates. This approach allows for a more declarative and reactive style of UI development, streamlining the process and enhancing maintainability.</p>
+</li>
+</ol>
+<p>Additional Information on Compose
+As you are new to Compose, here are a few more points that can help you understand it better:</p>
+<p>State Management: Compose makes it easy to manage UI state. By using remember and mutableStateOf, you can create state variables that automatically trigger recomposition when they change.</p>
+<p>Modifiers: Modifiers in Compose allow you to modify the appearance and behavior of composable functions. You can chain multiple modifiers to achieve complex layouts and interactions.</p>
+<p>Themes and Styling: Compose provides powerful tools for theming and styling your app. You can define a theme using the MaterialTheme and apply it consistently across your app.</p>
+<p>Animations: Compose offers a rich set of APIs for creating animations. You can use functions like animateDpAsState and Crossfade to add smooth transitions and animations to your UI.</p>
+<p>Preview: The Android Studio Preview feature allows you to see how your composable functions look without running the app. This can significantly speed up the development process.</p>
     <!-- <div class="aspect-w-16 aspect-h-9 mx-auto"></div> CSS placeholder -->
   </div>
   <footer class="flex flex-col mt-10 ">
