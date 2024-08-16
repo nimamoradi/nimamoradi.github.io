@@ -8,6 +8,11 @@ url = "/pages/about-me.html"
 title = "About me"
 
 [[input.files]]
+path = "jax-vs-numpy-performance.html"
+url = "/jax-vs-numpy-performance.html"
+title = "JAX vs NumPy: A Performance Comparison"
+
+[[input.files]]
 path = "create-a-simple-ai-assistant-using-llama-3-a-proof-of-concept.html"
 url = "/create-a-simple-ai-assistant-using-llama-3-a-proof-of-concept.html"
 title = "Create a Simple AI Assistant Using LLama 3: A Proof of Concept"

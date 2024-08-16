@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content="Pelican" />
+    <meta name="description" content="Nima Moradi Personal blog Blog Posts">
+    <title>JAX vs NumPy: A Performance Comparison</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
+    <link rel="stylesheet" type="text/css" href="./theme/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="./theme/css/pygment.css" />
+    <link rel="shortcut icon" href="./favicon.jpg" type="image/x-icon">
+    <link rel="stylesheet" href="./theme/css/stork.css">
+    <link rel="stylesheet" media="screen and (prefers-color-scheme: dark)"
+        href="./theme/css/stork-dark.css">
+<meta name="description" content="An analysis of JAX performance compared to NumPy for common array operations." />
+</head>
+
+<body class="min-h-screen flex flex-col max-w-7xl lg:max-w-none text-zinc-800 bg-neutral-100 
+    dark:bg-neutral-900 dark:text-zinc-300 container mx-auto justify-center md:px-3 ">
+    <script>
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia(
+                '(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+    </script>
+    <nav class="sm:flex sm:justify-between xl:ml-32 pl-4 items-center">
+        <div class="flex pt-4">
+            <h1 class="font-semibold text-2xl"><a href="./">Nima Moradi Personal blog</a></h1>
+            <button id="theme-toggle" type="button" aria-label="Light|Dark"
+                class="text-zinc-700 dark:text-zinc-400 rounded-full focus:outline-none text-sm ml-2 p-1">
+                <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                </svg>
+                <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                        fill-rule="evenodd" clip-rule="evenodd"></path>
+                </svg>
+            </button>
+        </div>
+        <ul class="flex flex-wrap lg:mr-24 md:pt-0">
+            <li class="mr-4 pt-6"><a  href="./pages/about-me.html">About me</a></li>
+            <li class="mr-4 pt-6"><a  href="./archives.html">Archive</a></li>
+            <li class="mr-4 pt-6"><a                     href="./categories.html">Categories</a></li>
+            <li class="mr-4 pt-6"><a  href="./tags.html">Tags</a></li>
+            <li class="mr-4 pt-6"><a  href="./search.html">Search</a></li>
+        </ul>
+    </nav>
+    <div class="flex-grow md:max-w-screen-md md:mx-auto md:w-3/4 px-4">
+        <nav class="text-zinc-800 dark:text-zinc-300 mt-12 pb-2 md:mt-16" aria-label="Breadcrumb">
+            <ul class="p-0 inline-flex items-center">
+                <li class="flex items-center">
+                    <a href="./" class="text-zinc-800 dark:text-zinc-300 inline-flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
+                            </path>
+                        </svg>
+                        Home
+                    </a>
+                    <svg class="fill-current w-3 h-3 mr-2 ml-1" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 320 512">
+                        <path
+                            d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z" />
+                    </svg>
+                </li>
+                <li class="flex items-center">
+                    <a href="./categories.html">Categories</a>
+                    <svg class="fill-current w-3 h-3 mr-2 ml-1" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 320 512">
+                        <path
+                            d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z" />
+                    </svg>
+                </li>
+                <li class="flex items-center">
+                    <a href="./category/programming.html">Programming</a>
+                    <svg class="fill-current w-3 h-3 mr-2 ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                        <path
+                            d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z" />
+                    </svg>
+                </li>
+            </ul>
+        </nav>
+
+<main>
+  <header>
+    <h1 class="font-semibold text-3xl my-2">JAX vs NumPy: A Performance Comparison</h1>
+    <footer class="flex text-sm text-zinc-800 dark:text-zinc-400">
+      <div class="flex text-xs text-zinc-800 dark:text-zinc-400">
+        <time>August 15, 2024</time>
+        <div>
+          <span>&nbsp;·&nbsp;2 min read</span>
+        </div>
+        <div>
+          <span>&nbsp;·&nbsp;Nima Moradi</span>
+        </div>
+      </div>
+    </footer>
+  </header>
+  <details class="flex flex-col my-6 p-4 bg-zinc-200 dark:bg-zinc-800 rounded-lg">
+    <summary class="text-lg font-bold">Table of contents</summary>
+    <div class="mx-4 px-4 underline">
+      <div id="toc"><ul><li><a class="toc-href" href="#jax-vs-numpy-a-performance-comparison" title="JAX vs NumPy: A Performance Comparison">JAX vs NumPy: A Performance Comparison</a><ul><li><a class="toc-href" href="#what-is-jax" title="What is JAX?">What is JAX?</a></li><li><a class="toc-href" href="#performance-comparison" title="Performance Comparison">Performance Comparison</a></li><li><a class="toc-href" href="#analysis" title="Analysis">Analysis</a></li><li><a class="toc-href" href="#considerations-for-using-jax" title="Considerations for Using JAX">Considerations for Using JAX</a></li><li><a class="toc-href" href="#conclusion" title="Conclusion">Conclusion</a></li></ul></li></ul></div>
+    </div>
+  </details>
+  <div class="max-w-7xl container mx-auto my-8 text-zinc-800 dark:text-zinc-300  
+              prose lg:max-w-none prose-headings:text-zinc-800 prose-headings:dark:text-zinc-300 
+              prose-h1:text-3xl lg:prose-h1:text-3xl prose-headings:font-semibold 
+              prose-pre:bg-zinc-200 prose-pre:text-zinc-800
+              dark:prose-pre:bg-zinc-800 dark:prose-pre:text-zinc-200
+              prose-blockquote:text-zinc-800
+              dark:prose-blockquote:text-zinc-200
+              prose-a:text-slate-600 prose-a:font-normal
+              dark:prose-a:text-slate-400
+              dark:prose-strong:text-zinc-200 
+              dark:prose-code:text-zinc-200
+              dark:prose-code:bg-zinc-800
+              prose-code:bg-zinc-200
+              prose-code:font-light
+              prose-img:rounded-md
+              sm:text-left md:text-justify
+              ">
+    <h1 id="jax-vs-numpy-a-performance-comparison">JAX vs NumPy: A Performance Comparison</h1>
+<p><a href="https://github.com/google/jax">JAX</a> is a relatively new library from Google that aims to bring together NumPy's ease of use, the advantages of autodiff, and the speed of XLA (Accelerated Linear Algebra). While it's designed to work seamlessly with GPUs and TPUs, it's also interesting to see how it performs on CPUs compared to the well-established NumPy library.</p>
+<h2 id="what-is-jax">What is JAX?</h2>
+<p>JAX is described as "Autograd and XLA, brought together for high-performance machine learning research." It offers:</p>
+<ol>
+<li>A familiar NumPy-style API</li>
+<li>Automatic differentiation of native Python and NumPy functions</li>
+<li>Just-In-Time (JIT) compilation to GPU/TPU</li>
+</ol>
+<p>While JAX is primarily aimed at machine learning researchers, its NumPy-like interface makes it an interesting alternative for general scientific computing tasks.</p>
+<h2 id="performance-comparison">Performance Comparison</h2>
+<p>We ran a benchmark comparing JAX and NumPy for common array operations on a 1000x1000 matrix. Here are the results:</p>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>NumPy Time (s)</th>
+<th>JAX Time (s)</th>
+<th>Faster</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Matrix Multiplication</td>
+<td>0.004825</td>
+<td>0.004053</td>
+<td>JAX</td>
+</tr>
+<tr>
+<td>Element-wise Multiplication</td>
+<td>0.000879</td>
+<td>0.000281</td>
+<td>JAX</td>
+</tr>
+<tr>
+<td>Matrix-Vector Multiplication</td>
+<td>0.000128</td>
+<td>0.000079</td>
+<td>JAX</td>
+</tr>
+<tr>
+<td>Sum</td>
+<td>0.000231</td>
+<td>0.001109</td>
+<td>NumPy</td>
+</tr>
+<tr>
+<td>Mean</td>
+<td>0.000230</td>
+<td>0.001106</td>
+<td>NumPy</td>
+</tr>
+<tr>
+<td>Transpose</td>
+<td>0.000001</td>
+<td>0.000297</td>
+<td>NumPy</td>
+</tr>
+<tr>
+<td>Inverse</td>
+<td>0.021859</td>
+<td>0.022489</td>
+<td>NumPy</td>
+</tr>
+<tr>
+<td>Eigenvalues</td>
+<td>0.423519</td>
+<td>0.360369</td>
+<td>JAX</td>
+</tr>
+<tr>
+<td>SVD</td>
+<td>0.237887</td>
+<td>0.307350</td>
+<td>NumPy</td>
+</tr>
+<tr>
+<td>FFT</td>
+<td>0.011997</td>
+<td>0.010373</td>
+<td>JAX</td>
+</tr>
+</tbody>
+</table>
+<h2 id="analysis">Analysis</h2>
+<p>Based on these results, we can observe:</p>
+<ol>
+<li>
+<p><strong>JAX outperforms NumPy</strong> in matrix multiplication, element-wise multiplication, and matrix-vector multiplication. These are fundamental operations in many scientific computing and machine learning tasks.</p>
+</li>
+<li>
+<p>JAX is significantly faster for <strong>eigenvalue computation</strong>, which can be crucial for certain linear algebra applications.</p>
+</li>
+<li>
+<p>JAX also shows a slight edge in <strong>Fast Fourier Transform (FFT)</strong> operations.</p>
+</li>
+<li>
+<p>Surprisingly, <strong>NumPy is faster for simpler operations</strong> like sum, mean, and transpose. This might be due to the overhead of JAX's compilation process for these simpler operations.</p>
+</li>
+<li>
+<p>NumPy also performs better for <strong>matrix inversion and SVD</strong> in this benchmark.</p>
+</li>
+</ol>
+<h2 id="considerations-for-using-jax">Considerations for Using JAX</h2>
+<p>While JAX shows promising performance in several areas, the decision to use it over NumPy should consider several factors:</p>
+<ol>
+<li>
+<p><strong>Task Complexity</strong>: JAX seems to shine more on complex operations. For simpler tasks, NumPy might be sufficient or even faster.</p>
+</li>
+<li>
+<p><strong>GPU Availability</strong>: Our benchmark was on <b>CPU</b>. JAX's performance advantage could be more pronounced when using GPUs.</p>
+</li>
+<li>
+<p><strong>Learning Curve</strong>: While JAX aims to be NumPy-compatible, it has its own quirks and features that require learning.</p>
+</li>
+<li>
+<p><strong>Ecosystem</strong>: NumPy has a vast ecosystem of compatible libraries. JAX is newer and its ecosystem is still growing.</p>
+</li>
+<li>
+<p><strong>Automatic Differentiation</strong>: If your work involves gradient computations, JAX's built-in autodiff capabilities could be a significant advantage.</p>
+</li>
+</ol>
+<h2 id="conclusion">Conclusion</h2>
+<p>JAX shows promising performance for many array operations, particularly for more complex computations. However, NumPy still holds its ground for simpler operations. The choice between JAX and NumPy should depend on your specific use case, the complexity of your computations, and whether you need features like automatic differentiation or GPU acceleration.</p>
+    <!-- <div class="aspect-w-16 aspect-h-9 mx-auto"></div> CSS placeholder -->
+  </div>
+  <footer class="flex flex-col mt-10 ">
+    <ul class="flex flex-wrap">
+        <li
+          class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
+          <a href="./tag/jax.html">jax</a>
+        </li>
+        <li
+          class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
+          <a href="./tag/numpy.html">numpy</a>
+        </li>
+        <li
+          class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
+          <a href="./tag/python.html">python</a>
+        </li>
+        <li
+          class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
+          <a href="./tag/scientific-computing.html">scientific computing</a>
+        </li>
+    </ul>
+    <div class="flex w-full my-2 bg-zinc-200 dark:bg-zinc-700 rounded-lg">
+      <div class="w-1/2 rounded-l-lg"></div>
+      <div class="w-1/2 hover:bg-zinc-300 dark:hover:bg-zinc-800 rounded-r-lg ">
+        <a class="flex flex-col" href="./create-a-simple-ai-assistant-using-llama-3-a-proof-of-concept.html">
+          <div class="text-right mx-4 py-2">
+            <p class="text-zinc-600 dark:text-zinc-300 text-sm">NEXT PAGE »</p>
+            <p class="text-right py-1 hover:underline">Create a Simple AI Assistant Using LLama 3: A Proof of Concept</p>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="flex bg-zinc-200 dark:bg-zinc-700 py-2 rounded-lg justify-center space-x-2 text-xs">
+      <ul>
+        <li class="bg-gray-900 p-1 text-white rounded-md">
+          <a target="_blank" rel="noopener noreferrer" title="twitter" aria-label="share Features on twitter"
+            href="https://twitter.com/intent/tweet/?text=Features&amp;url=./jax-vs-numpy-performance.html">
+            <i class="fab fa-twitter fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+      </ul>
+      <ul>
+        <li class="bg-gray-900 p-1 text-white rounded-md">
+          <a target="_blank" rel="noopener noreferrer" title="linkedin" aria-label="share Features on linkedin"
+            href="https://www.linkedin.com/sharing/share-offsite/?url=./jax-vs-numpy-performance.html">
+            <i class="fab fa-linkedin fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+      </ul>
+      <ul>
+        <li class="bg-gray-900 p-1 text-white rounded-md">
+          <a target="_blank" rel="noopener noreferrer" title="reddit" aria-label="share Features on reddit"
+            href="https://reddit.com/submit?url=./jax-vs-numpy-performance.html">
+            <i class="fab fa-reddit fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+      </ul>
+      <ul>
+        <li class="bg-gray-900 p-1 text-white rounded-md">
+          <a target="_blank" rel="noopener noreferrer" title="facebook" aria-label="share Features on facebook"
+            href="https://facebook.com/sharer/sharer.php?u=./jax-vs-numpy-performance.html">
+            <i class="fab fa-facebook fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+      </ul>
+      <ul>
+        <li class="bg-gray-900 p-1 text-white rounded-md">
+          <a target="_blank" rel="noopener noreferrer" title="whatsapp" aria-label="share Features on whatsapp"
+            href="https://api.whatsapp.com/send?text=Features - ./jax-vs-numpy-performance.html">
+            <i class="fab fa-whatsapp fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+      </ul>
+      <ul>
+        <li class="bg-gray-900 p-1 text-white rounded-md">
+          <a target="_blank" rel="noopener noreferrer" title="telegram" aria-label="share Features on telegram"
+            href="https://telegram.me/share/url?text=Features&amp;url=./jax-vs-numpy-performance.html">
+            <i class="fab fa-telegram fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </footer>
+  <div>
+  </div>
+</main>
+
+    </div>
+    <footer class="flex w-full text-xs justify-center mt-10 mb-6 text-zinc-600 dark:text-zinc-400">
+        <div class="px-4">
+            <span></span>Powered by
+            <a class="underline" href="https://getpelican.com/">Pelican</a>&nbsp;&
+            <a class="underline" href="https://github.com/aleylara/Papyrus">Papyrus</a>
+        </div>
+    </footer>
+
+
+    <script>
+        let themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+        let themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia(
+                '(prefers-color-scheme: dark)').matches)) {
+            themeToggleLightIcon.classList.remove('hidden');
+        } else {
+            themeToggleDarkIcon.classList.remove('hidden');
+        }
+        let themeToggleBtn = document.getElementById('theme-toggle');
+        themeToggleBtn.addEventListener('click', function () {
+            themeToggleDarkIcon.classList.toggle('hidden');
+            themeToggleLightIcon.classList.toggle('hidden');
+            if (localStorage.getItem('color-theme')) {
+                if (localStorage.getItem('color-theme') === 'light') {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
+                }
+            } else {
+                if (document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
+                } else {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
