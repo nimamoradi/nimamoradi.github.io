@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content="Pelican" />
+    <meta name="description" content="Nima Moradi Personal blog Blog Posts">
+    <title>Building a Todo App with GCP: Part 1 - Setting Up Infrastructure</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
+    <link rel="stylesheet" type="text/css" href="./theme/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="./theme/css/pygment.css" />
+    <link rel="shortcut icon" href="./favicon.jpg" type="image/x-icon">
+    <link rel="stylesheet" href="./theme/css/stork.css">
+    <link rel="stylesheet" media="screen and (prefers-color-scheme: dark)"
+        href="./theme/css/stork-dark.css">
+<meta name="description" content="An todo app using GCP tech stack" />
+</head>
+
+<body class="min-h-screen flex flex-col max-w-7xl lg:max-w-none text-zinc-800 bg-neutral-100 
+    dark:bg-neutral-900 dark:text-zinc-300 container mx-auto justify-center md:px-3 ">
+    <script>
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia(
+                '(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+    </script>
+    <nav class="sm:flex sm:justify-between xl:ml-32 pl-4 items-center">
+        <div class="flex pt-4">
+            <h1 class="font-semibold text-2xl"><a href="./">Nima Moradi Personal blog</a></h1>
+            <button id="theme-toggle" type="button" aria-label="Light|Dark"
+                class="text-zinc-700 dark:text-zinc-400 rounded-full focus:outline-none text-sm ml-2 p-1">
+                <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                </svg>
+                <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                        fill-rule="evenodd" clip-rule="evenodd"></path>
+                </svg>
+            </button>
+        </div>
+        <ul class="flex flex-wrap lg:mr-24 md:pt-0">
+            <li class="mr-4 pt-6"><a  href="./pages/about-me.html">About me</a></li>
+            <li class="mr-4 pt-6"><a  href="./archives.html">Archive</a></li>
+            <li class="mr-4 pt-6"><a                     href="./categories.html">Categories</a></li>
+            <li class="mr-4 pt-6"><a  href="./tags.html">Tags</a></li>
+            <li class="mr-4 pt-6"><a  href="./search.html">Search</a></li>
+        </ul>
+    </nav>
+    <div class="flex-grow md:max-w-screen-md md:mx-auto md:w-3/4 px-4">
+        <nav class="text-zinc-800 dark:text-zinc-300 mt-12 pb-2 md:mt-16" aria-label="Breadcrumb">
+            <ul class="p-0 inline-flex items-center">
+                <li class="flex items-center">
+                    <a href="./" class="text-zinc-800 dark:text-zinc-300 inline-flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
+                            </path>
+                        </svg>
+                        Home
+                    </a>
+                    <svg class="fill-current w-3 h-3 mr-2 ml-1" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 320 512">
+                        <path
+                            d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z" />
+                    </svg>
+                </li>
+                <li class="flex items-center">
+                    <a href="./categories.html">Categories</a>
+                    <svg class="fill-current w-3 h-3 mr-2 ml-1" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 320 512">
+                        <path
+                            d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z" />
+                    </svg>
+                </li>
+                <li class="flex items-center">
+                    <a href="./category/programming.html">Programming</a>
+                    <svg class="fill-current w-3 h-3 mr-2 ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                        <path
+                            d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z" />
+                    </svg>
+                </li>
+            </ul>
+        </nav>
+
+<main>
+  <header>
+    <h1 class="font-semibold text-3xl my-2">Building a Todo App with GCP: Part 1 - Setting Up Infrastructure</h1>
+    <footer class="flex text-sm text-zinc-800 dark:text-zinc-400">
+      <div class="flex text-xs text-zinc-800 dark:text-zinc-400">
+        <time>September 28, 2024</time>
+        <div>
+          <span>&nbsp;·&nbsp;5 min read</span>
+        </div>
+        <div>
+          <span>&nbsp;·&nbsp;Nima Moradi</span>
+        </div>
+      </div>
+    </footer>
+  </header>
+  <details class="flex flex-col my-6 p-4 bg-zinc-200 dark:bg-zinc-800 rounded-lg">
+    <summary class="text-lg font-bold">Table of contents</summary>
+    <div class="mx-4 px-4 underline">
+      <div id="toc"><ul><li><a class="toc-href" href="#getting-started-with-gcp" title="Getting Started with GCP">Getting Started with GCP</a></li><li><a class="toc-href" href="#defining-infrastructure-with-terraform" title="Defining Infrastructure with Terraform">Defining Infrastructure with Terraform</a><ul><li><a class="toc-href" href="#maintf" title="main.tf">main.tf</a></li><li><a class="toc-href" href="#variablestf" title="variables.tf">variables.tf</a></li></ul></li><li><a class="toc-href" href="#deploying-the-cloud-function_1" title="Deploying the Cloud Function">Deploying the Cloud Function</a></li><li><a class="toc-href" href="#applying-the-infrastructure" title="Applying the Infrastructure">Applying the Infrastructure</a></li><li><a class="toc-href" href="#conclusion" title="Conclusion">Conclusion</a></li></ul></div>
+    </div>
+  </details>
+  <div class="max-w-7xl container mx-auto my-8 text-zinc-800 dark:text-zinc-300  
+              prose lg:max-w-none prose-headings:text-zinc-800 prose-headings:dark:text-zinc-300 
+              prose-h1:text-3xl lg:prose-h1:text-3xl prose-headings:font-semibold 
+              prose-pre:bg-zinc-200 prose-pre:text-zinc-800
+              dark:prose-pre:bg-zinc-800 dark:prose-pre:text-zinc-200
+              prose-blockquote:text-zinc-800
+              dark:prose-blockquote:text-zinc-200
+              prose-a:text-slate-600 prose-a:font-normal
+              dark:prose-a:text-slate-400
+              dark:prose-strong:text-zinc-200 
+              dark:prose-code:text-zinc-200
+              dark:prose-code:bg-zinc-800
+              prose-code:bg-zinc-200
+              prose-code:font-light
+              prose-img:rounded-md
+              sm:text-left md:text-justify
+              ">
+    <p>Welcome to the first part of our journey in building a todo app using the Google Cloud Platform (GCP) tech stack. In this multi-part series, we'll explore how to leverage various GCP services to create a robust and scalable todo application. Our goal is to provide users with the ability to register tasks and receive email notifications when the task due time approaches.</p>
+<p>In this initial post, we'll focus on setting up the necessary infrastructure using Terraform and deploying our first Cloud Function to handle adding tasks to Firestore.</p>
+<h2 id="getting-started-with-gcp">Getting Started with GCP</h2>
+<p>To begin, make sure you have a GCP account set up. If you haven't already, head over to the <a href="https://console.cloud.google.com/">GCP Console</a> and create a new project.</p>
+<p>Next, install the Google Cloud SDK on your local machine. This will allow you to interact with GCP services from the command line. Once installed, initialize the SDK by running:</p>
+<pre><code>gcloud init</code></pre>
+<p>Follow the prompts to authenticate and select the project you created earlier.</p>
+<h2 id="defining-infrastructure-with-terraform">Defining Infrastructure with Terraform</h2>
+<p>We'll use Terraform to define and manage our infrastructure as code. This ensures reproducibility and makes it easy to update and maintain our setup.</p>
+<p>Here's a look at our Terraform configuration files:</p>
+<h3 id="maintf">main.tf</h3>
+<div class="highlight"><pre><span></span><code><span class="nb">terraform</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nb">required_providers</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nb">google</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="na">source</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="s2">"hashicorp/google"</span>
+<span class="w">      </span><span class="na">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"~&gt; 4.0"</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kr">provider</span><span class="w"> </span><span class="nv">"google"</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">project</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">var.project_id</span>
+<span class="w">  </span><span class="na">region</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="nv">var.region</span>
+<span class="p">}</span>
+
+<span class="kr">resource</span><span class="w"> </span><span class="nc">"google_firestore_database"</span><span class="w"> </span><span class="nv">"default"</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">name</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="s2">"(default)"</span>
+<span class="w">  </span><span class="na">location_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">var.region</span>
+<span class="w">  </span><span class="na">type</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="s2">"FIRESTORE_NATIVE"</span>
+<span class="p">}</span>
+
+<span class="c1"># ... (rest of the configuration)</span>
+</code></pre></div>
+<p>In <code>main.tf</code>, we specify the required providers, including the Google provider. We also define a Firestore database resource to store our todo tasks.</p>
+<h3 id="variablestf">variables.tf</h3>
+<div class="highlight"><pre><span></span><code><span class="kr">variable</span><span class="w"> </span><span class="nv">"project_id"</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"The ID of the project in which to provision resources."</span>
+<span class="w">  </span><span class="na">type</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="kt">string</span>
+<span class="p">}</span>
+
+<span class="kr">variable</span><span class="w"> </span><span class="nv">"region"</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"The region in which to provision resources."</span>
+<span class="w">  </span><span class="na">type</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="kt">string</span>
+<span class="w">  </span><span class="na">default</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="s2">"us-central1"</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>The <code>variables.tf</code> file defines the input variables for our Terraform configuration, such as the project ID and region.</p>
+<h2 id="deploying-the-cloud-function_1">Deploying the Cloud Function</h2>
+<p>To handle adding tasks to Firestore, we'll create a Cloud Function using Python. Here's the code for our function:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">uuid</span>
+<span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">firestore</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="n">db</span> <span class="o">=</span> <span class="n">firestore</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">add_task</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="c1"># ... (function implementation)</span>
+    <span class="k">pass</span>
+</code></pre></div>
+<p>The <code>add_task</code> function receives a POST request with the task details and adds it to the Firestore database.</p>
+<p>To deploy the Cloud Function, we define the necessary resources in <code>main.tf</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="kr">data</span><span class="w"> </span><span class="nc">"archive_file"</span><span class="w"> </span><span class="nv">"function_zip"</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">type</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="s2">"zip"</span>
+<span class="w">  </span><span class="na">source_dir</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="s2">"${path.module}/function"</span>
+<span class="w">  </span><span class="na">output_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"${path.module}/function.zip"</span>
+<span class="p">}</span>
+
+<span class="kr">resource</span><span class="w"> </span><span class="nc">"google_storage_bucket"</span><span class="w"> </span><span class="nv">"function_bucket"</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">name</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="s2">"${var.project_id}-function-bucket"</span>
+<span class="w">  </span><span class="na">location</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">var.region</span>
+<span class="p">}</span>
+
+<span class="kr">resource</span><span class="w"> </span><span class="nc">"google_storage_bucket_object"</span><span class="w"> </span><span class="nv">"function_zip"</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">name</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s2">"function-${data.archive_file.function_zip.output_md5}.zip"</span>
+<span class="w">  </span><span class="na">bucket</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">google_storage_bucket.function_bucket.name</span>
+<span class="w">  </span><span class="na">source</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">data.archive_file.function_zip.output_path</span>
+<span class="p">}</span>
+
+<span class="kr">resource</span><span class="w"> </span><span class="nc">"google_cloudfunctions_function"</span><span class="w"> </span><span class="nv">"todo_app"</span><span class="w"> </span><span class="p">{</span>
+<span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"todo-app"</span>
+<span class="na">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Todo App Function"</span>
+<span class="na">runtime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"python39"</span>
+
+<span class="na">available_memory_mb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">256</span>
+<span class="na">source_archive_bucket</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">google_storage_bucket.function_bucket.name</span>
+<span class="na">source_archive_object</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">google_storage_bucket_object.function_zip.name</span>
+<span class="na">trigger_http</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">true</span>
+<span class="na">entry_point</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"add_task"</span>
+<span class="p">}</span>
+
+<span class="kr">resource</span><span class="w"> </span><span class="nc">"google_cloudfunctions_function_iam_member"</span><span class="w"> </span><span class="nv">"invoker"</span><span class="w"> </span><span class="p">{</span>
+<span class="na">project</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">google_cloudfunctions_function.todo_app.project</span>
+<span class="na">region</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">google_cloudfunctions_function.todo_app.region</span>
+<span class="na">cloud_function</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">google_cloudfunctions_function.todo_app.name</span>
+
+<span class="na">role</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"roles/cloudfunctions.invoker"</span>
+<span class="na">member</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"allUsers"</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>These resources create a Cloud Storage bucket to store the function code, archive the code into a zip file, and deploy the Cloud Function with the specified configuration. We also grant the "Cloud Functions Invoker" role to all users to allow them to invoke the function.</p>
+<h2 id="applying-the-infrastructure">Applying the Infrastructure</h2>
+<p>With the Terraform configuration in place, we can apply the changes to provision the necessary resources. Run the following commands:</p>
+<pre><code>terraform init
+terraform apply
+</code></pre>
+<p>Review the execution plan and confirm the changes by typing "yes" when prompted.</p>
+<p>Once the infrastructure is provisioned, Terraform will output the URL of the deployed Cloud Function:</p>
+<div class="highlight"><pre><span></span><code><span class="kr">output</span><span class="w"> </span><span class="nv">"function_url"</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">value</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="nv">google_cloudfunctions_function.todo_app.https_trigger_url</span>
+<span class="w">  </span><span class="na">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"URL of the deployed function"</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>You can use this URL to invoke the function and add tasks to your todo app.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>In this first part of the series, we set up the foundation for our todo app using GCP and Terraform. We provisioned a Firestore database to store our tasks and deployed a Cloud Function to handle adding tasks.</p>
+<p>In the upcoming parts, we'll explore additional features such as user registration, email notifications, and more. Stay tuned as we continue to build our todo app using the powerful capabilities of GCP!</p>
+    <!-- <div class="aspect-w-16 aspect-h-9 mx-auto"></div> CSS placeholder -->
+  </div>
+  <footer class="flex flex-col mt-10 ">
+    <ul class="flex flex-wrap">
+        <li
+          class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
+          <a href="./tag/gcp.html">GCP</a>
+        </li>
+        <li
+          class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
+          <a href="./tag/python.html">python</a>
+        </li>
+    </ul>
+    <div class="flex w-full my-2 bg-zinc-200 dark:bg-zinc-700 rounded-lg">
+      <div class="w-1/2 rounded-l-lg"></div>
+      <div class="w-1/2 hover:bg-zinc-300 dark:hover:bg-zinc-800 rounded-r-lg ">
+        <a class="flex flex-col" href="./jax-vs-numpy-performance.html">
+          <div class="text-right mx-4 py-2">
+            <p class="text-zinc-600 dark:text-zinc-300 text-sm">NEXT PAGE »</p>
+            <p class="text-right py-1 hover:underline">JAX vs NumPy: A Performance Comparison</p>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="flex bg-zinc-200 dark:bg-zinc-700 py-2 rounded-lg justify-center space-x-2 text-xs">
+      <ul>
+        <li class="bg-gray-900 p-1 text-white rounded-md">
+          <a target="_blank" rel="noopener noreferrer" title="twitter" aria-label="share Features on twitter"
+            href="https://twitter.com/intent/tweet/?text=Features&amp;url=./Todo app.html">
+            <i class="fab fa-twitter fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+      </ul>
+      <ul>
+        <li class="bg-gray-900 p-1 text-white rounded-md">
+          <a target="_blank" rel="noopener noreferrer" title="linkedin" aria-label="share Features on linkedin"
+            href="https://www.linkedin.com/sharing/share-offsite/?url=./Todo app.html">
+            <i class="fab fa-linkedin fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+      </ul>
+      <ul>
+        <li class="bg-gray-900 p-1 text-white rounded-md">
+          <a target="_blank" rel="noopener noreferrer" title="reddit" aria-label="share Features on reddit"
+            href="https://reddit.com/submit?url=./Todo app.html">
+            <i class="fab fa-reddit fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+      </ul>
+      <ul>
+        <li class="bg-gray-900 p-1 text-white rounded-md">
+          <a target="_blank" rel="noopener noreferrer" title="facebook" aria-label="share Features on facebook"
+            href="https://facebook.com/sharer/sharer.php?u=./Todo app.html">
+            <i class="fab fa-facebook fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+      </ul>
+      <ul>
+        <li class="bg-gray-900 p-1 text-white rounded-md">
+          <a target="_blank" rel="noopener noreferrer" title="whatsapp" aria-label="share Features on whatsapp"
+            href="https://api.whatsapp.com/send?text=Features - ./Todo app.html">
+            <i class="fab fa-whatsapp fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+      </ul>
+      <ul>
+        <li class="bg-gray-900 p-1 text-white rounded-md">
+          <a target="_blank" rel="noopener noreferrer" title="telegram" aria-label="share Features on telegram"
+            href="https://telegram.me/share/url?text=Features&amp;url=./Todo app.html">
+            <i class="fab fa-telegram fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </footer>
+  <div>
+  </div>
+</main>
+
+    </div>
+    <footer class="flex w-full text-xs justify-center mt-10 mb-6 text-zinc-600 dark:text-zinc-400">
+        <div class="px-4">
+            <span></span>Powered by
+            <a class="underline" href="https://getpelican.com/">Pelican</a>&nbsp;&
+            <a class="underline" href="https://github.com/aleylara/Papyrus">Papyrus</a>
+        </div>
+    </footer>
+
+
+    <script>
+        let themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+        let themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia(
+                '(prefers-color-scheme: dark)').matches)) {
+            themeToggleLightIcon.classList.remove('hidden');
+        } else {
+            themeToggleDarkIcon.classList.remove('hidden');
+        }
+        let themeToggleBtn = document.getElementById('theme-toggle');
+        themeToggleBtn.addEventListener('click', function () {
+            themeToggleDarkIcon.classList.toggle('hidden');
+            themeToggleLightIcon.classList.toggle('hidden');
+            if (localStorage.getItem('color-theme')) {
+                if (localStorage.getItem('color-theme') === 'light') {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
+                }
+            } else {
+                if (document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
+                } else {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
