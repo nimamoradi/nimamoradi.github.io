@@ -8,6 +8,11 @@ url = "/pages/about-me.html"
 title = "About me"
 
 [[input.files]]
+path = "a-look-at-jinja-templates.html"
+url = "/a-look-at-jinja-templates.html"
+title = "A look at Jinja templates"
+
+[[input.files]]
 path = "Todo app.html"
 url = "/Todo app.html"
 title = "Building a Todo App with GCP: Part 1 - Setting Up Infrastructure"
