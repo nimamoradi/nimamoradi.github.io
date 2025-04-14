@@ -8,6 +8,11 @@ url = "/pages/about-me.html"
 title = "About me"
 
 [[input.files]]
+path = "kotlin-multiplatform-quick-start-guide-macos.html"
+url = "/kotlin-multiplatform-quick-start-guide-macos.html"
+title = "Kotlin Multiplatform Quick Start Guide (macOS)"
+
+[[input.files]]
 path = "a-look-at-jinja-templates.html"
 url = "/a-look-at-jinja-templates.html"
 title = "A look at Jinja templates"
