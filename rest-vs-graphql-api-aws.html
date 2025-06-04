@@ -131,11 +131,6 @@
     <hr/>
 <h2 id="introduction">Introduction</h2>
 <p>GraphQL is a query language for APIs that allows clients to request exactly the data they need in a single query. It eliminates the common inefficiencies of REST APIs, such as overfetching or underfetching, and provides a flexible, strongly typed interface that adapts well to evolving frontend requirements.</p>
-<p>This post compares two API design paradigms on AWS:</p>
-<ul>
-<li><strong>REST API</strong>, using <strong>API Gateway</strong> + <strong>Lambda</strong> + <strong>DynamoDB</strong></li>
-<li><strong>GraphQL</strong>, using <strong>AppSync</strong> + <strong>DynamoDB</strong></li>
-</ul>
 <p>We&rsquo;re not building a full e-commerce platform, but using a minimal online shopping example to highlight the differences in data access and structure. Think of a site similar to Amazon &mdash; which typically involves features like user accounts, shopping carts, item catalogs, dynamic offers, and price updates. In our simplified version, we&rsquo;ll focus only on three core resources:</p>
 <ul>
 <li>User profile</li>
