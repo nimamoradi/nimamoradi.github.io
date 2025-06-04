@@ -8,6 +8,11 @@ url = "/pages/about-me.html"
 title = "About me"
 
 [[input.files]]
+path = "rest-vs-graphql-api-aws.html"
+url = "/rest-vs-graphql-api-aws.html"
+title = "REST API vs. GraphQL on AWS: A Simple Comparison Using API Gateway and AppSync"
+
+[[input.files]]
 path = "kotlin-multiplatform-quick-start-guide-macos.html"
 url = "/kotlin-multiplatform-quick-start-guide-macos.html"
 title = "Kotlin Multiplatform Quick Start Guide (macOS)"
