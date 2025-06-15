@@ -58,17 +58,13 @@ SUBTEXT = '''
     <b>Master of Science in Computer Science - Bishop's University</b>
     <br>
     Sherbrooke - Canada
-    <br>
-    2021 - 2023
     <br><br>
     <b>Bachelor of Science in Computer Engineering - Ferdowsi University</b>
     <br>
     Mashhad - Iran
-    <br>
-    2015 - 2019
     <br><br>
-    I have a keen interest in the fields of Deep Learning, Natural Language Processing, Software Development, and Android App Development. In particular, I am fascinated by the potential of these technologies to solve complex problems and create innovative solutions. I am always eager to learn more and stay up-to-date with the latest advancements in these fields.
-    <br>
+    As a Software Developer, I am passionate about turning bold visions into reality through structured thinking and persistent effort. I build robust, scalable systems and thrive on the complex challenges found in high-impact projects, with a keen interest in Deep Learning, Natural Language Processing, and Mobile Development. I believe great software development is like a Dixieland jazz ensemble: a blend of individual skill, rigorous structure, and collaborative interplay. I'm always open to collaborating on forward-thinking projects with teams that value creativity and technical excellence.
+    <br><br>
     Country: Canada
     <br>
     Email: <a href="mailto:me@ni-moradi.com">me@ni-moradi.com</a>, 

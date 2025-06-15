@@ -1,36 +1,36 @@
 Title: About me
-Date: 2023-12-24
+Date: 2025-03-28
 Tags: software, AI, bio, Nima Moradi, CV
 Description: description of me
 
 # Experience
 
 ## Inagral
-**Freelance · 2 yrs 2 mos**  
-_Sherbrooke, Quebec, Canada · Remote_
+**Freelance · 3 yrs**  
+Sherbrooke, Quebec, Canada 
 
 #### Financial LLM Market Analysis Tool - Developer
-_Apr 2023 - Present · 9 mos_  
+Apr 2023 - Jan 2024  
 Development of multiple news data pipelines, pre-processing, prompt generation and continuous fine-tuning of an LLM on Financial news to extract market trends and sentiment on specific asset classes.
 
 _Skills:_ Llama · Prompt Engineering · BERT (Language Model) · Large Language Models (LLM) · Sentiment Analysis · Python (Programming Language)
 
 ### Android DRM Wrapper - Developer
-_Nov 2021 - Present · 2 yrs 2 mos_  
+Nov 2021 - Oct 2024 · 3 yrs 
 Development of an app wrapping platform, adding an Android DRM layer (subscription checking, lateral menu overlay, analytics) to any application by injecting Android smali code to an already compiled Android app.  
 _Tech stack:_ Kotlin, Java, Python, Node.js REST API, Android Dynamic Layout generation, Android Dynamic code loading
 
 ![Image Placeholder: Android DRM Wrapper](../images/drm_image.jpeg)
 
 ### Blockchain Data Analysis Tool - Developer
-_Jan 2023 - Apr 2023 · 4 mos_  
+Jan 2023 - Apr 2023 · 4 mos_  
 Development of on an on-chain analysis tool on the Ethereum blockchain using QuickNode and Python to identify early market anomalies.
 
 _Skills:_ QuickNode · Ethereum Blockchain · Smart Contracts · Solidity · Python (Programming Language)
 
 
 ### Android Mobile Cloud Gaming - Developer
-_Dec 2021 - Sep 2022 · 10 mos_
+Dec 2021 - Sep 2022 · 10 mos_
 - **Responsibilities and Achievements:**
   - Implemented an Android Cloud Gaming architecture using WebRTC.
   - Developed an Android Streamer SDK.
@@ -42,7 +42,7 @@ _Dec 2021 - Sep 2022 · 10 mos_
 
 ### Android Virtual Gamepad Development
 
-_Jan 2022 - Mar 2022 · 3 mos_
+Jan 2022 - Mar 2022 · 3 mos_
 - **Responsibilities and Achievements:**
   - Developed an Android Virtual Gamepad with user-customizable layout in both full-screen and overlay mode.
   - Implemented Physical Bluetooth Gamepad synchronization.
@@ -52,8 +52,8 @@ _Jan 2022 - Mar 2022 · 3 mos_
 - ![INAGRAL fullscreen Android gamepad](../images/gamepad_blank.jpeg)
 
 ## Full-stack Developer
-_Freelance · Jun 2019 - Aug 2021 · 2 yrs 3 mos_  
-_Remote_  
+Freelance · Jun 2019 - Aug 2021 · 2 yrs 3 mos_  
+Remote_  
 Software Development for various local clients and hobby projects:  
 - Grocery Shopping Android app.  
 - School Management System web app.  
@@ -85,19 +85,63 @@ _Skills:_ React Native · Mobile Application Development
 
 [Baghalimoon](https://baghalimoon.ir/)
 
+## Licenses & Certifications
+
+### Associate Cloud Engineer Certification  
+**Google**  
+*Issued Sep 2024 - Expires Sep 2027*  
+[Show credential](https://www.credly.com/badges/58dbe935-acc9-48bc-a797-14d6f3c7cec2/linked_in_profile)  
+**Skills:** Google Cloud Platform (GCP) · SQL · MySQL  
+
+---
+
+### AWS Certified Data Engineer – Associate  
+**Amazon Web Services (AWS)**  
+*Issued Jun 2024 - Expires Jun 2027*  
+[Show credential](https://www.credly.com/badges/78349bd8-cfeb-46c9-b9c1-513d2777c434/linked_in_profile)  
+**Skills:** Back-End Web Development · SQL · MySQL  
+
+---
+
+### AWS Certified Solutions Architect – Associate  
+**Amazon Web Services (AWS)**  
+*Issued May 2024 - Expires May 2027*  
+[Show credential](https://www.credly.com/badges/d4ed070d-7f4d-4d48-8845-b2f53cc1b325/linked_in_profile)  
+**Skills:** Back-End Web Development · SQL · MySQL  
+
+---
+
+### Machine Learning with Python  
+**Coursera**  
+*Issued Aug 2022*  
+Credential ID: EJNEU5KH7FD8  
+[Show credential](https://www.coursera.org/account/accomplishments/certificate/EJNEU5KH7FD8)  
+
+---
+
+### Exploratory Data Analysis for Machine Learning  
+**Coursera**  
+*Issued Jun 2022*  
+Credential ID: AMYAHE2UVL8X  
+[Show credential](https://www.coursera.org/account/accomplishments/certificate/AMYAHE2UVL8X)  
 
 
 ## EDUCATION
 
 ### Master of Science
 **Bishop's University**  
-*MSc Computer Science*  
-2021 - 2023  
-Thesis: Time-Series Forecasting of ECG and EOG Artifacts in EEG Recordings Using Attention-Based Mechanisms
+*MSc Computer Science*
+#### Thesis: Time-Series Forecasting of ECG and EOG Signals in EEG Recordings A Multivariate Time series Approach
+* Developed a novel multivariate regression approach to remove ECG and EOG artifacts from EEG recordings without additional sensors.
+* Achieved performance comparable to conventional methods, with a PSNR of 39 dB on cleaned EEG signals.
+* Validated on multiple datasets, offering a cost-effective solution for EEG noise filtering in clinical and research applications.Master Thesis: Time-Series Forecasting of ECG and EOG Signals in EEG Recordings A Multivariate Time series Approach * Developed a novel multivariate regression approach to remove ECG and EOG artifacts from EEG recordings without additional sensors. * Achieved performance comparable to conventional methods, with a PSNR of 39 dB on cleaned EEG signals. * Validated on multiple datasets, offering a cost-effective solution for EEG noise filtering in clinical and research applications.
 
 ### Bachelor of Engineering
 **Ferdowsi University**  
-*BSc Computer Engineering*  
-2015 - 2019  
-Thesis: Persian text-to-speech using Tacotron 2 and Grapheme-to-Phoneme conversion.  
-Project: Autism Detection: LDA for topic modeling and Random Forest for autism detection through Twitter analysis.
+*BSc Computer Engineering*Undergraduate Thesis Project
+
+#### Developed a real-time text-to-speech (TTS)
+engine using Tacotron 2, a neural network architecture developed by Google DeepMind. Integrated Grapheme-to-Phoneme (G2P) models for accurate pronunciation predictions. Delivered real-time natural speech synthesis in the Persian language.
+
+#### Research Project - Detection of Autism in Twitter (University Lab)
+Conducted research on autism detection through Twitter feed analysis. Utilized topic modeling with LDA (Latent Dirichlet Allocation) and classification techniques with Convolutional Neural Networks (CNN) and Random Forest.
