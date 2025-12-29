@@ -8,6 +8,11 @@ url = "/pages/about-me.html"
 title = "About me"
 
 [[input.files]]
+path = "building-local-ai-audiobook-pipeline.html"
+url = "/building-local-ai-audiobook-pipeline.html"
+title = "Building a Local AI Audiobook Pipeline with Python and Kokoro"
+
+[[input.files]]
 path = "rest-vs-graphql-api-aws.html"
 url = "/rest-vs-graphql-api-aws.html"
 title = "REST API vs. GraphQL on AWS: A Simple Comparison Using API Gateway and AppSync"
