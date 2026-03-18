@@ -97,115 +97,210 @@
             sm:text-left md:text-justify
             ">
         
-        <h1 id="experience">Experience</h1>
+        <p>I am a software engineer with 6+ years of experience across distributed backend systems, AWS serverless architecture, Android engineering, WebRTC-based real-time systems, APK instrumentation, and AI/data tooling. My work spans backend infrastructure, mobile platforms, cloud gaming, and developer tooling.</p>
+<p><strong>Location:</strong> Montr&eacute;al, QC, Canada
+<strong>Profiles:</strong> <a href="https://github.com/nimamoradi">GitHub</a> &middot; <a href="https://www.linkedin.com/in/nima-moradi/">LinkedIn</a>
+<strong>Languages:</strong> English (native or bilingual) &middot; French (elementary)</p>
+<h1 id="experience">Experience</h1>
 <h2 id="inagral">Inagral</h2>
-<p><strong>Freelance &middot; 3 yrs</strong><br/>
-Sherbrooke, Quebec, Canada </p>
-<h4>Financial LLM Market Analysis Tool - Developer</h4>
-<p>Apr 2023 - Jan 2024<br/>
-Development of multiple news data pipelines, pre-processing, prompt generation and continuous fine-tuning of an LLM on Financial news to extract market trends and sentiment on specific asset classes.</p>
-<p><em>Skills:</em> Llama &middot; Prompt Engineering &middot; BERT (Language Model) &middot; Large Language Models (LLM) &middot; Sentiment Analysis &middot; Python (Programming Language)</p>
-<h3 id="android-drm-wrapper-developer">Android DRM Wrapper - Developer</h3>
-<p>Nov 2021 - Oct 2024 &middot; 3 yrs 
-Development of an app wrapping platform, adding an Android DRM layer (subscription checking, lateral menu overlay, analytics) to any application by injecting Android smali code to an already compiled Android app.<br/>
-<em>Tech stack:</em> Kotlin, Java, Python, Node.js REST API, Android Dynamic Layout generation, Android Dynamic code loading</p>
-<p><img alt="Image Placeholder: Android DRM Wrapper" src="../images/drm_image.jpeg"/></p>
-<h3 id="blockchain-data-analysis-tool-developer">Blockchain Data Analysis Tool - Developer</h3>
-<p>Jan 2023 - Apr 2023 &middot; 4 mos_<br/>
-Development of on an on-chain analysis tool on the Ethereum blockchain using QuickNode and Python to identify early market anomalies.</p>
-<p><em>Skills:</em> QuickNode &middot; Ethereum Blockchain &middot; Smart Contracts &middot; Solidity &middot; Python (Programming Language)</p>
-<h3 id="android-mobile-cloud-gaming-developer">Android Mobile Cloud Gaming - Developer</h3>
-<p>Dec 2021 - Sep 2022 &middot; 10 mos_
-- <strong>Responsibilities and Achievements:</strong>
-  - Implemented an Android Cloud Gaming architecture using WebRTC.
-  - Developed an Android Streamer SDK.
-  - Developed an Android System signed controller app.
-  - Customized AOSP for input injection from stream.
-  - Tech stack: Kotlin, Java, WebRTC, AOSP, WebRTC signaling, WebSocket API, STUN/TURN
-- <strong>Skills:</strong> WebSocket, REST APIs, AOSP, WebRTC, AWS Lambda, Cloud Gaming, Android Development
-- <img alt="INAGRAL Cloud Gaming Store - Prototype" src="../images/game_store.jpeg"/></p>
-<h3 id="android-virtual-gamepad-development">Android Virtual Gamepad Development</h3>
-<p>Jan 2022 - Mar 2022 &middot; 3 mos_
-- <strong>Responsibilities and Achievements:</strong>
-  - Developed an Android Virtual Gamepad with user-customizable layout in both full-screen and overlay mode.
-  - Implemented Physical Bluetooth Gamepad synchronization.
-  - Tech stack: Kotlin, Java
-- <strong>Skills:</strong> Kotlin, GamePad, Android Development, Java
-- <img alt="INAGRAL overlay Android gamepad" src="../images/gamepad.jpeg"/>
-- <img alt="INAGRAL fullscreen Android gamepad" src="../images/gamepad_blank.jpeg"/></p>
-<h2 id="full-stack-developer_1">Full-stack Developer</h2>
-<p>Freelance &middot; Jun 2019 - Aug 2021 &middot; 2 yrs 3 mos_<br/>
-Remote_<br/>
-Software Development for various local clients and hobby projects:<br/>
-- Grocery Shopping Android app.<br/>
-- School Management System web app.<br/>
-- Fresh Fruit Shopping and Delivery Android app.<br/>
-- Puzzle Game Android app.<br/>
-- Open Source Telegram Android app customisation.<br/>
-<em>Tech stack:</em> Android, Python Backend, PHP Laravel, Java, Kotlin.</p>
-<h2 id="sedabook">Sedabook</h2>
-<p><strong>Android Developer</strong><br/>
-<em>Sedabook &middot; Self-employed</em><br/>
-<em>Sep 2019 - Nov 2019 &middot; 3 mos</em><br/>
-Hobby Project working on SedaBook (an online Audiobook marketplace)<br/>
-Obtained 2nd place at Sharif University Mobile Development Competition 2019.</p>
-<p><em>Skills:</em> Android Development &middot; Mobile Application Development</p>
+<p><strong>Software Engineer</strong>
+_Remote &middot; Canada &middot; Nov 2021 - Feb 2026</p>
+<p>Worked across Android cloud gaming, AWS serverless backends, real-time streaming infrastructure, APK instrumentation / DRM tooling, monitoring, telemetry, and internal AI/data projects.</p>
+<h3 id="serverless-virtual-device-orchestration-control-plane">Serverless Virtual Device Orchestration Control Plane</h3>
+<p>Built a serverless control plane for pools of containerized Android and virtual devices used in session-based workloads.</p>
+<ul>
+<li>Architected a hybrid ECS/Fargate + AWS Lambda system for low-latency routing and asynchronous lifecycle management.</li>
+<li>Implemented dynamic pool provisioning and reconciliation using SQS, DynamoDB, and EventBridge.</li>
+<li>Achieved <strong>30%&ndash;50% compute savings</strong> through precise warm-pool provisioning and automated teardown.</li>
+</ul>
+<p><em>Tech stack:</em> Python, FastAPI, AWS Lambda, ECS/Fargate, SQS, DynamoDB, EventBridge, SAM, ALB, VPC Networking</p>
+<h3 id="serverless-signaling-service-for-session-negotiation-and-state-sync">Serverless Signaling Service for Session Negotiation and State Sync</h3>
+<p>Designed a scalable AWS-based signaling and real-time synchronization layer for cloud gaming sessions.</p>
+<ul>
+<li>Built WebRTC session negotiation and state synchronization services with AWS Lambda, DynamoDB, and WebSocket APIs.</li>
+<li>Helped migrate from a legacy EC2-based setup to a more cost-effective serverless model.</li>
+<li>Reduced operational cost by <strong>roughly 70%&ndash;80%</strong>.</li>
+</ul>
+<p><em>Tech stack:</em> Node.js, Python, AWS Lambda, DynamoDB, WebSocket APIs, WebRTC</p>
+<h3 id="distributed-streaming-platform-and-webrtc-media-server">Distributed Streaming Platform and WebRTC Media Server</h3>
+<p>Worked on low-latency media and infrastructure for cloud gaming and real-time streaming.</p>
+<ul>
+<li>Built distributed streaming components on AWS EC2 with Auto Scaling Groups.</li>
+<li>Developed C++ WebRTC media server components using GStreamer.</li>
+<li>Supported automated recovery and stable low-latency video delivery.</li>
+</ul>
+<p><em>Tech stack:</em> C++, WebRTC, GStreamer, AWS EC2, Auto Scaling Groups</p>
+<h3 id="android-cloud-gaming-runtime-streamer-sdk-controller-aosp-customization">Android Cloud Gaming Runtime / Streamer SDK / Controller / AOSP Customization</h3>
+<p>Built Android runtime and platform components for cloud gaming.</p>
+<ul>
+<li>Implemented an Android cloud gaming architecture using WebRTC.</li>
+<li>Developed an Android Streamer SDK and a system-signed controller app.</li>
+<li>Customized AOSP for input injection from stream and worked on streaming and recording-related components.</li>
+</ul>
+<p><em>Tech stack:</em> Kotlin, Java, WebRTC, AOSP, REST APIs, WebSocket API, STUN/TURN</p>
+<h3 id="android-cloud-gaming-storefront-game-library-subscription-flows">Android Cloud Gaming Storefront / Game Library / Subscription Flows</h3>
+<p>Developed and optimized the native Android client and storefront experience for a cloud gaming service.</p>
+<ul>
+<li>Re-architected game store UI and subscription flows.</li>
+<li>Improved navigation, engagement, and reduced unnecessary client-side data fetching.</li>
+<li>Mentored a junior developer during client-side architecture updates.</li>
+<li>Improved startup and load time by <strong>about 20%</strong>.</li>
+</ul>
+<p><em>Tech stack:</em> Kotlin, Java, Android UI/UX, client architecture</p>
+<p><img alt="INAGRAL Cloud Gaming Store - Prototype" src="../images/game_store.jpeg"/></p>
+<h3 id="android-virtual-gamepad">Android Virtual Gamepad</h3>
+<p>Built an Android virtual gamepad for cloud gaming use cases.</p>
+<ul>
+<li>Supported both full-screen and overlay modes.</li>
+<li>Implemented customizable layouts, drag-and-drop controls, layout presets, and Bluetooth gamepad synchronization.</li>
+</ul>
+<p><em>Tech stack:</em> Kotlin, Java, Android, Bluetooth, custom views, input handling</p>
+<p><img alt="INAGRAL overlay Android gamepad" src="../images/gamepad.jpeg"/>
+<img alt="INAGRAL fullscreen Android gamepad" src="../images/gamepad_blank.jpeg"/></p>
+<h3 id="android-drm-rasp-security-wrapper-apk-instrumentation-pipeline">Android DRM &amp; RASP Security Wrapper / APK Instrumentation Pipeline</h3>
+<p>Built a wrapper and automation pipeline that modifies compiled Android APKs without source-code access.</p>
+<ul>
+<li>Injected DRM, subscription validation, analytics, monetization, and security-related behavior into target apps.</li>
+<li>Automated manifest merging, resource merging, and resource ID repair across decompiled APKs.</li>
+<li>Implemented dynamic code loading and wrapper-side protections for Android applications.</li>
+<li>Added a lateral overlay and side-menu system to surface native and HTML-based apps inside wrapped applications.</li>
+</ul>
+<p><em>Tech stack:</em> Python, Kotlin, Java, Smali, apktool, DexClassLoader, Android resource and manifest tooling</p>
+<p><img alt="Android DRM Wrapper" src="../images/drm_image.jpeg"/></p>
+<h3 id="financial-llm-market-analysis-tool">Financial LLM Market Analysis Tool</h3>
+<p>Built financial news and sentiment analysis pipelines around LLM workflows.</p>
+<ul>
+<li>Developed multiple news data pipelines, preprocessing flows, and prompt generation workflows.</li>
+<li>Fine-tuned and continuously adapted LLM-based workflows to extract market trends and sentiment for specific asset classes.</li>
+</ul>
+<p><em>Tech stack:</em> Python, Llama, BERT, Prompt Engineering, Large Language Models (LLM), Sentiment Analysis</p>
+<h3 id="blockchain-data-analysis-tool">Blockchain Data Analysis Tool</h3>
+<p>Built an on-chain analysis tool focused on Ethereum market anomalies.</p>
+<ul>
+<li>Used blockchain transaction data and APIs to identify early market anomalies.</li>
+</ul>
+<p><em>Tech stack:</em> Python, QuickNode, Ethereum, Smart Contracts, Solidity</p>
+<h2 id="freelance_1">Freelance</h2>
+<p><strong>Full-stack Developer</strong>
+<em>Remote &middot; Jun 2019 - Aug 2021</em></p>
+<p>Part-time freelance work during my studies across local clients and hobby projects. Some client work is not listed publicly due to NDA.</p>
+<p>Representative public work:
+- School management system web app
+- Grocery shopping mobile app
+- Fresh fruit shopping and delivery Android app
+- Puzzle game Android app
+- Open-source Telegram Android app customization</p>
+<p><em>Tech stack:</em> Android, Python backend, PHP / Laravel, Java, Kotlin, PostgreSQL, MySQL</p>
+<h2 id="sedabook">SedaBook</h2>
+<p><strong>Android Developer</strong>
+<em>Self-employed &middot; Sep 2019 - Nov 2019</em></p>
+<p>Worked on SedaBook, an online audiobook marketplace. Earned <strong>2nd place</strong> at Sharif University Mobile Development Competition 2019.</p>
 <h2 id="baghalimoon">Baghalimoon</h2>
-<p><strong>Cross Platform Mobile Developer</strong><br/>
-<em>Baghalimoon &middot; Freelance</em><br/>
-<em>Sep 2017 - Oct 2018 &middot; 1 yr 2 mos</em><br/>
-<em>Razavi Khorasan Province, Iran &middot; On-site</em><br/>
-Development of a Cross-platform React Native app for an Online Grocery Store on Android and iOS used by thousands of users.<br/>
-Freelance work for a local StartUp.</p>
-<p><em>Skills:</em> React Native &middot; Mobile Application Development</p>
+<p><strong>Cross-Platform Mobile Developer</strong>
+<em>Freelance &middot; Mashhad, Iran &middot; Sep 2017 - Oct 2018</em></p>
+<p>Built a cross-platform React Native app for an online grocery store on Android and iOS.</p>
+<ul>
+<li>Implemented authentication, catalog, cart, checkout, and payment flows.</li>
+<li>Reached a couple thousand installs across Android and iOS, with active users in the hundreds.</li>
+</ul>
+<p><em>Tech stack:</em> React Native, mobile commerce</p>
 <p><a href="https://baghalimoon.ir/">Baghalimoon</a></p>
-<h2 id="licenses-certifications">Licenses &amp; Certifications</h2>
+<h2 id="mashhad-wheel-manufacturing-co">Mashhad Wheel Manufacturing Co.</h2>
+<p><strong>Software Engineer Intern</strong>
+<em>Mashhad, Iran &middot; Jul 2018 - Sep 2018</em></p>
+<p>Built an intranet communication chat application proof of concept.</p>
+<ul>
+<li>Developed an Android client integrated with .NET APIs.</li>
+<li>Delivered an MVP for internal communication workflows.</li>
+</ul>
+<h1 id="selected-open-source-public-work_1">Selected Open-Source &amp; Public Work</h1>
+<h3 id="jobfinder">JobFinder</h3>
+<p>Job finder and CV creator built as a serverless application.
+<em>Stack:</em> SerpApi, Google Gemini, AWS SAM, EventBridge, SQS, DynamoDB, SES, Python
+<a href="https://github.com/nimamoradi/JobFinder">Repository</a></p>
+<h3 id="llm-tools">LLM-Tools</h3>
+<p>Public repository for building tools for LLMs with LangGraph and Pydantic.
+<a href="https://github.com/nimamoradi/LLM-Tools">Repository</a></p>
+<h3 id="llm-extension">LLM-Extension</h3>
+<p>Python project for extending an LLM with a custom functionality layer using LLaMA 3 and Ollama.
+<a href="https://github.com/nimamoradi/LLM-Extension">Repository</a></p>
+<h3 id="tts-engine">tts-engine</h3>
+<p>Tacotron 2 experiments for Persian text-to-speech.
+<em>Stack:</em> PyTorch, Mozilla Common Voice
+<a href="https://github.com/nimamoradi/tts-engine">Repository</a></p>
+<h3 id="fetch-awesome">fetch-awesome</h3>
+<p>React Native fetch wrapper with timeout handling, retries, request cancelation, simple cache support, and progress reporting.
+<a href="https://github.com/nimamoradi/fetch-awesome">Repository</a></p>
+<h1 id="writing-experiments_1">Writing &amp; Experiments</h1>
+<p>Selected topics published across my website and public technical work:</p>
+<ul>
+<li>Building a Local AI Audiobook Pipeline with Python and Kokoro</li>
+<li>Building a Todo App with GCP: Part 1 &mdash; Setting Up Infrastructure</li>
+<li>AI Assistant Using Llama 3 and Ollama via Python</li>
+<li>Easy Subtitle Translation with Google API</li>
+<li>REST API vs GraphQL on AWS &mdash; API Gateway vs AppSync</li>
+<li>Streamlining API Integration with Kiota and OpenAPI</li>
+<li>JAX vs NumPy performance comparison</li>
+<li>How Android Implements Jetpack Compose</li>
+<li>Overview of Coroutines</li>
+</ul>
+<h1 id="core-skills">Core Skills</h1>
+<ul>
+<li><strong>Languages:</strong> Kotlin, Java, Python, C++, JavaScript, SQL, PHP</li>
+<li><strong>Cloud &amp; Backend:</strong> AWS Lambda, ECS/Fargate, SQS, DynamoDB, EventBridge, SAM, FastAPI, Node.js, REST APIs, GraphQL / AppSync, Terraform, Firestore, SES</li>
+<li><strong>Android &amp; Mobile:</strong> Android SDK, Jetpack Compose, React Native, AOSP customization, system-signed Android apps, APK instrumentation, Smali, apktool, DexClassLoader, Bluetooth controller support</li>
+<li><strong>Real-time Systems:</strong> WebRTC, GStreamer, STUN/TURN, signaling services, session orchestration, event-driven architecture</li>
+<li><strong>AI / Data:</strong> LLM workflows, LangGraph, Pydantic, Llama / LLaMA 3, Ollama, Google Gemini, Prompt Engineering, BERT, Sentiment Analysis, PyTorch, JAX, NumPy, LDA, CNN, Random Forest</li>
+<li><strong>Datastores:</strong> DynamoDB, PostgreSQL, MySQL, Firestore, Ethereum / QuickNode data sources</li>
+</ul>
+<h1 id="licenses-certifications">Licenses &amp; Certifications</h1>
+<h3 id="google-cloud-generative-ai-leader">Google Cloud &mdash; Generative AI Leader</h3>
+<p><strong>Google Cloud</strong>
+<em>Issued Sep 2025</em>
+Credential ID: KMWKKS4FJY19</p>
+<hr/>
 <h3 id="associate-cloud-engineer-certification">Associate Cloud Engineer Certification</h3>
-<p><strong>Google</strong><br/>
-<em>Issued Sep 2024 - Expires Sep 2027</em><br/>
-<a href="https://www.credly.com/badges/58dbe935-acc9-48bc-a797-14d6f3c7cec2/linked_in_profile">Show credential</a><br/>
-<strong>Skills:</strong> Google Cloud Platform (GCP) &middot; SQL &middot; MySQL  </p>
+<p><strong>Google</strong>
+<em>Issued Sep 2024 - Expires Sep 2027</em>
+<a href="https://www.credly.com/badges/58dbe935-acc9-48bc-a797-14d6f3c7cec2/linked_in_profile">Show credential</a></p>
 <hr/>
 <h3 id="aws-certified-data-engineer-associate">AWS Certified Data Engineer &ndash; Associate</h3>
-<p><strong>Amazon Web Services (AWS)</strong><br/>
-<em>Issued Jun 2024 - Expires Jun 2027</em><br/>
-<a href="https://www.credly.com/badges/78349bd8-cfeb-46c9-b9c1-513d2777c434/linked_in_profile">Show credential</a><br/>
-<strong>Skills:</strong> Back-End Web Development &middot; SQL &middot; MySQL  </p>
+<p><strong>Amazon Web Services (AWS)</strong>
+<em>Issued Jun 2024 - Expires Jun 2027</em>
+<a href="https://www.credly.com/badges/78349bd8-cfeb-46c9-b9c1-513d2777c434/linked_in_profile">Show credential</a></p>
 <hr/>
 <h3 id="aws-certified-solutions-architect-associate">AWS Certified Solutions Architect &ndash; Associate</h3>
-<p><strong>Amazon Web Services (AWS)</strong><br/>
-<em>Issued May 2024 - Expires May 2027</em><br/>
-<a href="https://www.credly.com/badges/d4ed070d-7f4d-4d48-8845-b2f53cc1b325/linked_in_profile">Show credential</a><br/>
-<strong>Skills:</strong> Back-End Web Development &middot; SQL &middot; MySQL  </p>
+<p><strong>Amazon Web Services (AWS)</strong>
+<em>Issued May 2024 - Expires May 2027</em>
+<a href="https://www.credly.com/badges/d4ed070d-7f4d-4d48-8845-b2f53cc1b325/linked_in_profile">Show credential</a></p>
 <hr/>
 <h3 id="machine-learning-with-python">Machine Learning with Python</h3>
-<p><strong>Coursera</strong><br/>
-<em>Issued Aug 2022</em><br/>
-Credential ID: EJNEU5KH7FD8<br/>
-<a href="https://www.coursera.org/account/accomplishments/certificate/EJNEU5KH7FD8">Show credential</a> </p>
+<p><strong>Coursera</strong>
+<em>Issued Aug 2022</em>
+Credential ID: EJNEU5KH7FD8
+<a href="https://www.coursera.org/account/accomplishments/certificate/EJNEU5KH7FD8">Show credential</a></p>
 <hr/>
 <h3 id="exploratory-data-analysis-for-machine-learning">Exploratory Data Analysis for Machine Learning</h3>
-<p><strong>Coursera</strong><br/>
-<em>Issued Jun 2022</em><br/>
-Credential ID: AMYAHE2UVL8X<br/>
-<a href="https://www.coursera.org/account/accomplishments/certificate/AMYAHE2UVL8X">Show credential</a> </p>
-<h2 id="education_1">EDUCATION</h2>
-<h3 id="master-of-science">Master of Science</h3>
-<p><strong>Bishop's University</strong><br/>
-<em>MSc Computer Science</em></p>
-<h4>Thesis: Time-Series Forecasting of ECG and EOG Signals in EEG Recordings A Multivariate Time series Approach</h4>
+<p><strong>Coursera</strong>
+<em>Issued Jun 2022</em>
+Credential ID: AMYAHE2UVL8X
+<a href="https://www.coursera.org/account/accomplishments/certificate/AMYAHE2UVL8X">Show credential</a></p>
+<h1 id="education_1">Education</h1>
+<h2 id="bishops-university">Bishop's University</h2>
+<p><strong>Master of Science (MSc), Computer Science</strong>
+<em>Sep 2021 - Jan 2025</em></p>
+<p><strong>Thesis:</strong> <em>Time-Series Forecasting of ECG and EOG Signals in EEG Recordings: A Multivariate Time-Series Approach</em></p>
 <ul>
-<li>Developed a novel multivariate regression approach to remove ECG and EOG artifacts from EEG recordings without additional sensors.</li>
-<li>Achieved performance comparable to conventional methods, with a PSNR of 39 dB on cleaned EEG signals.</li>
-<li>Validated on multiple datasets, offering a cost-effective solution for EEG noise filtering in clinical and research applications.Master Thesis: Time-Series Forecasting of ECG and EOG Signals in EEG Recordings A Multivariate Time series Approach * Developed a novel multivariate regression approach to remove ECG and EOG artifacts from EEG recordings without additional sensors. * Achieved performance comparable to conventional methods, with a PSNR of 39 dB on cleaned EEG signals. * Validated on multiple datasets, offering a cost-effective solution for EEG noise filtering in clinical and research applications.</li>
+<li>Developed a multivariate regression approach to remove ECG and EOG artifacts from EEG recordings without additional sensors.</li>
+<li>Achieved performance comparable to conventional methods, with PSNR around 39 dB on cleaned EEG signals.</li>
+<li>Validated the approach on multiple datasets as a cost-effective solution for EEG noise filtering in clinical and research applications.</li>
 </ul>
-<h3 id="bachelor-of-engineering">Bachelor of Engineering</h3>
-<p><strong>Ferdowsi University</strong><br/>
-<em>BSc Computer Engineering</em>Undergraduate Thesis Project</p>
-<h4>Developed a real-time text-to-speech (TTS)</h4>
-<p>engine using Tacotron 2, a neural network architecture developed by Google DeepMind. Integrated Grapheme-to-Phoneme (G2P) models for accurate pronunciation predictions. Delivered real-time natural speech synthesis in the Persian language.</p>
-<h4>Research Project - Detection of Autism in Twitter (University Lab)</h4>
-<p>Conducted research on autism detection through Twitter feed analysis. Utilized topic modeling with LDA (Latent Dirichlet Allocation) and classification techniques with Convolutional Neural Networks (CNN) and Random Forest.</p>
+<h2 id="ferdowsi-university-of-mashhad">Ferdowsi University of Mashhad</h2>
+<p><strong>Bachelor of Engineering, Computer Engineering</strong></p>
+<h3 id="undergraduate-thesis-persian-text-to-speech-engine">Undergraduate Thesis: Persian Text-to-Speech Engine</h3>
+<p>Developed a real-time Persian text-to-speech engine using Tacotron 2 and Grapheme-to-Phoneme (G2P) models for accurate pronunciation prediction.</p>
+<h3 id="research-project-detection-of-autism-in-twitter">Research Project: Detection of Autism in Twitter</h3>
+<p>Conducted research on autism detection through Twitter feed analysis using LDA topic modeling, Convolutional Neural Networks (CNN), and Random Forest classification.</p>
         <!-- <div class="aspect-w-16 aspect-h-9 mx-auto"></div> CSS placeholder -->
     </div>
     <footer class="flex bg-zinc-200 dark:bg-zinc-700 mt-10 py-2 rounded-lg justify-center space-x-2 text-xs">
