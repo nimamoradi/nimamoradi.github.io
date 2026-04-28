@@ -1,6 +1,6 @@
 AUTHOR = 'Nima Moradi'
 SITENAME = 'Nima Moradi Personal blog'
-SITEURL = 'ni-moradi.com'
+SITEURL = 'https://ni-moradi.com'
 
 PATH = 'content'
 
@@ -67,8 +67,6 @@ SUBTEXT = '''
     <br><br>
     Country: Canada
     <br>
-    Email: <a href="mailto:me@ni-moradi.com">me@ni-moradi.com</a>, 
-    <a href="mailto:ni.moradi96@gmail.com">ni.moradi96@gmail.com</a>
     <a href="/pages/about-me.html">Read More</a>
   </p>
 </details>
