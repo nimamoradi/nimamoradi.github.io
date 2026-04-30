@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content="Pelican" />
     <meta name="description" content="Nima Moradi Personal blog Blog Posts">
-    <title>Fine tuning the text to SQL using JAX echo System</title>
-    <link rel="canonical" href="./fine-tuning-the-text-to-sql-using-jax-echo-system.html">
+    <title>Fine tuning the text to SQL using JAX echo System - Part 1</title>
+    <link rel="canonical" href="./fine-tuning-the-text-to-sql-using-jax-echo-system-part-1.html">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
     <link rel="stylesheet" type="text/css" href="./theme/css/main.css" />
@@ -94,12 +94,12 @@
 
 <main>
   <header>
-    <h1 class="font-semibold text-3xl my-2">Fine tuning the text to SQL using JAX echo System</h1>
+    <h1 class="font-semibold text-3xl my-2">Fine tuning the text to SQL using JAX echo System - Part 1</h1>
     <footer class="flex text-sm text-zinc-800 dark:text-zinc-400">
       <div class="flex text-xs text-zinc-800 dark:text-zinc-400">
-        <time>July 12, 2024</time>
+        <time>April 30, 2026</time>
         <div>
-          <span>&nbsp;·&nbsp;3 min read</span>
+          <span>&nbsp;·&nbsp;4 min read</span>
         </div>
         <div>
           <span>&nbsp;·&nbsp;Nima Moradi</span>
@@ -136,11 +136,11 @@ I will use Spider1 dataset, this dataset have a ranking and benchmarks for showi
 replaced with Spider 2, but I will use the older version for our example since it smaller dataset and more established</p>
 <h1 id="steps">Steps</h1>
 <p>Here is the current plan for this series,
-1- show the data structure and load the data using Grain
-2- Prompting + tokenization + zero-shot generation
-3- LoRA fine-tuning with Tunix
-4- SQL fine tune evaluation with examples
-5- Execute generated SQL on SQLite and compare results</p>
+1. show the data structure and load the data using Grain
+2. Prompting + tokenization + zero-shot generation
+3. LoRA fine-tuning with Tunix
+4. SQL fine tune evaluation with examples
+5. Execute generated SQL on SQLite and compare results</p>
 <h1 id="spider-dataset">Spider dataset</h1>
 <p>This dataset comes from Spider: A Large-Scale Human-Labeled Dataset for Complex and Cross-Domain Semantic Parsing and Text-to-SQL Task paper from 2018,</p>
 <p>Here are some values for you to view for each test/train sample in the Spider dataset. We've shortened the original JSON structure to highlight the most relevant information for human readability.</p>
@@ -201,6 +201,55 @@ replaced with Spider 2, but I will use the older version for our example since i
     <span class="n">worker_count</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
+<p>To inspect one sample from the loader, I can use Python&rsquo;s <code>iter</code> and <code>next</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="n">sample</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">dev_loader</span><span class="p">))</span>
+<span class="n">sample</span>
+</code></pre></div>
+<p>Here is what one loaded sample looks like with <code>batch_size=1</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+    <span class="s2">"db_id"</span><span class="p">:</span> <span class="n">array</span><span class="p">([</span><span class="s2">"concert_singer"</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">"&lt;U14"</span><span class="p">),</span>
+    <span class="s2">"query"</span><span class="p">:</span> <span class="n">array</span><span class="p">([</span><span class="s2">"SELECT count(*) FROM singer"</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">"&lt;U27"</span><span class="p">),</span>
+    <span class="s2">"question"</span><span class="p">:</span> <span class="n">array</span><span class="p">([</span><span class="s2">"How many singers do we have?"</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">"&lt;U28"</span><span class="p">),</span>
+    <span class="s2">"db_definitions"</span><span class="p">:</span> <span class="n">array</span><span class="p">([</span>
+<span class="w">        </span><span class="sd">'''CREATE TABLE "stadium" (</span>
+<span class="sd">"Stadium_ID" int,</span>
+<span class="sd">"Location" text,</span>
+<span class="sd">"Name" text,</span>
+<span class="sd">"Capacity" int,</span>
+<span class="sd">"Highest" int,</span>
+<span class="sd">"Lowest" int,</span>
+<span class="sd">"Average" int,</span>
+<span class="sd">PRIMARY KEY ("Stadium_ID")</span>
+<span class="sd">);</span>
+<span class="sd">CREATE TABLE "singer" (</span>
+<span class="sd">"Singer_ID" int,</span>
+<span class="sd">"Name" text,</span>
+<span class="sd">"Country" text,</span>
+<span class="sd">"Song_Name" text,</span>
+<span class="sd">"Song_release_year" text,</span>
+<span class="sd">"Age" int,</span>
+<span class="sd">"Is_male" bool,</span>
+<span class="sd">PRIMARY KEY ("Singer_ID")</span>
+<span class="sd">);</span>
+<span class="sd">CREATE TABLE "concert" (</span>
+<span class="sd">"concert_ID" int,</span>
+<span class="sd">"concert_Name" text,</span>
+<span class="sd">"Theme" text,</span>
+<span class="sd">"Stadium_ID" text,</span>
+<span class="sd">"Year" text,</span>
+<span class="sd">PRIMARY KEY ("concert_ID"),</span>
+<span class="sd">FOREIGN KEY ("Stadium_ID") REFERENCES "stadium"("Stadium_ID")</span>
+<span class="sd">);</span>
+<span class="sd">CREATE TABLE "singer_in_concert" (</span>
+<span class="sd">"concert_ID" int,</span>
+<span class="sd">"Singer_ID" text,</span>
+<span class="sd">PRIMARY KEY ("concert_ID","Singer_ID"),</span>
+<span class="sd">FOREIGN KEY ("concert_ID") REFERENCES "concert"("concert_ID"),</span>
+<span class="sd">FOREIGN KEY ("Singer_ID") REFERENCES "singer"("Singer_ID")</span>
+<span class="sd">);'''</span>
+    <span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">"&lt;U771"</span><span class="p">),</span>
+<span class="p">}</span>
+</code></pre></div>
     <!-- <div class="aspect-w-16 aspect-h-9 mx-auto"></div> CSS placeholder -->
   </div>
   <footer class="flex flex-col mt-10 ">
@@ -231,19 +280,12 @@ replaced with Spider 2, but I will use the older version for our example since i
         </li>
     </ul>
     <div class="flex w-full my-2 bg-zinc-200 dark:bg-zinc-700 rounded-lg">
-      <div class="w-1/2 hover:bg-zinc-300 dark:hover:bg-zinc-800 rounded-l-lg">
-        <a class="flex flex-col pr-2" href="./easy-subtitle-translation-using-google-api.html">
-          <div class="mx-4 py-2 text-left">
-            <p class="text-zinc-600 dark:text-zinc-300 text-sm">« PREV PAGE</p>
-            <p class="text-left py-1 hover:underline">Easy subtitle translation using google api</p>
-          </div>
-        </a>
-      </div>
+      <div class="w-1/2 rounded-l-lg"></div>
       <div class="w-1/2 hover:bg-zinc-300 dark:hover:bg-zinc-800 rounded-r-lg ">
-        <a class="flex flex-col" href="./how-does-android-implement-compose-jetpack.html">
+        <a class="flex flex-col" href="./building-local-ai-audiobook-pipeline.html">
           <div class="text-right mx-4 py-2">
             <p class="text-zinc-600 dark:text-zinc-300 text-sm">NEXT PAGE »</p>
-            <p class="text-right py-1 hover:underline">How does Android implement Compose Jetpack</p>
+            <p class="text-right py-1 hover:underline">Building a Local AI Audiobook Pipeline with Python and Kokoro</p>
           </div>
         </a>
       </div>
@@ -252,7 +294,7 @@ replaced with Spider 2, but I will use the older version for our example since i
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="twitter" aria-label="share Features on twitter"
-            href="https://twitter.com/intent/tweet/?text=Features&amp;url=./fine-tuning-the-text-to-sql-using-jax-echo-system.html">
+            href="https://twitter.com/intent/tweet/?text=Features&amp;url=./fine-tuning-the-text-to-sql-using-jax-echo-system-part-1.html">
             <i class="fab fa-twitter fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -260,7 +302,7 @@ replaced with Spider 2, but I will use the older version for our example since i
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="linkedin" aria-label="share Features on linkedin"
-            href="https://www.linkedin.com/sharing/share-offsite/?url=./fine-tuning-the-text-to-sql-using-jax-echo-system.html">
+            href="https://www.linkedin.com/sharing/share-offsite/?url=./fine-tuning-the-text-to-sql-using-jax-echo-system-part-1.html">
             <i class="fab fa-linkedin fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -268,7 +310,7 @@ replaced with Spider 2, but I will use the older version for our example since i
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="reddit" aria-label="share Features on reddit"
-            href="https://reddit.com/submit?url=./fine-tuning-the-text-to-sql-using-jax-echo-system.html">
+            href="https://reddit.com/submit?url=./fine-tuning-the-text-to-sql-using-jax-echo-system-part-1.html">
             <i class="fab fa-reddit fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -276,7 +318,7 @@ replaced with Spider 2, but I will use the older version for our example since i
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="facebook" aria-label="share Features on facebook"
-            href="https://facebook.com/sharer/sharer.php?u=./fine-tuning-the-text-to-sql-using-jax-echo-system.html">
+            href="https://facebook.com/sharer/sharer.php?u=./fine-tuning-the-text-to-sql-using-jax-echo-system-part-1.html">
             <i class="fab fa-facebook fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -284,7 +326,7 @@ replaced with Spider 2, but I will use the older version for our example since i
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="whatsapp" aria-label="share Features on whatsapp"
-            href="https://api.whatsapp.com/send?text=Features - ./fine-tuning-the-text-to-sql-using-jax-echo-system.html">
+            href="https://api.whatsapp.com/send?text=Features - ./fine-tuning-the-text-to-sql-using-jax-echo-system-part-1.html">
             <i class="fab fa-whatsapp fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -292,7 +334,7 @@ replaced with Spider 2, but I will use the older version for our example since i
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="telegram" aria-label="share Features on telegram"
-            href="https://telegram.me/share/url?text=Features&amp;url=./fine-tuning-the-text-to-sql-using-jax-echo-system.html">
+            href="https://telegram.me/share/url?text=Features&amp;url=./fine-tuning-the-text-to-sql-using-jax-echo-system-part-1.html">
             <i class="fab fa-telegram fa-2x" aria-hidden="true"></i>
           </a>
         </li>
