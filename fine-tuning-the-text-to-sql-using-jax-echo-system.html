@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content="Pelican" />
     <meta name="description" content="Nima Moradi Personal blog Blog Posts">
-    <title>How does Android implement Compose Jetpack</title>
-    <link rel="canonical" href="./how-does-android-implement-compose-jetpack.html">
+    <title>Fine tuning the text to SQL using JAX echo System</title>
+    <link rel="canonical" href="./fine-tuning-the-text-to-sql-using-jax-echo-system.html">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
     <link rel="stylesheet" type="text/css" href="./theme/css/main.css" />
@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="./theme/css/stork.css">
     <link rel="stylesheet" media="screen and (prefers-color-scheme: dark)"
         href="./theme/css/stork-dark.css">
-<meta name="description" content="An overView of Compose Jetpack" />
+<meta name="description" content="Inspecting Our dataset and loading it" />
 </head>
 
 <body class="min-h-screen flex flex-col max-w-7xl lg:max-w-none text-zinc-800 bg-neutral-100 
@@ -94,12 +94,12 @@
 
 <main>
   <header>
-    <h1 class="font-semibold text-3xl my-2">How does Android implement Compose Jetpack</h1>
+    <h1 class="font-semibold text-3xl my-2">Fine tuning the text to SQL using JAX echo System</h1>
     <footer class="flex text-sm text-zinc-800 dark:text-zinc-400">
       <div class="flex text-xs text-zinc-800 dark:text-zinc-400">
         <time>July 12, 2024</time>
         <div>
-          <span>&nbsp;·&nbsp;4 min read</span>
+          <span>&nbsp;·&nbsp;3 min read</span>
         </div>
         <div>
           <span>&nbsp;·&nbsp;Nima Moradi</span>
@@ -110,7 +110,7 @@
   <details class="flex flex-col my-6 p-4 bg-zinc-200 dark:bg-zinc-800 rounded-lg">
     <summary class="text-lg font-bold">Table of contents</summary>
     <div class="mx-4 px-4 underline">
-      <div id="toc"><ul><li><a class="toc-href" href="#introduction" title="Introduction">Introduction</a><ul><li><a class="toc-href" href="#common-methods-for-creating-a-view-in-android" title="Common Methods for Creating a View in Android">Common Methods for Creating a View in Android</a></li></ul></li></ul></div>
+      <div id="toc"><ul><li><a class="toc-href" href="#introduction" title="Introduction">Introduction</a></li><li><a class="toc-href" href="#steps" title="Steps">Steps</a></li><li><a class="toc-href" href="#spider-dataset" title="Spider dataset">Spider dataset</a><ul><li><a class="toc-href" href="#grain" title="Grain">Grain</a></li></ul></li></ul></div>
     </div>
   </details>
   <div class="max-w-7xl container mx-auto my-8 text-zinc-800 dark:text-zinc-300  
@@ -131,125 +131,119 @@
               sm:text-left md:text-justify
               ">
     <h1 id="introduction">Introduction</h1>
-<p>Android Compose, introduced by Google, is a modern toolkit for building native Android UIs declaratively. It simplifies UI development by using a reactive programming model, allowing developers to describe the UI in Kotlin code without relying on XML layouts. With Compose, UI components, called Composables, are functions that automatically recompose when data changes, ensuring that the UI remains consistent with the app's state. This approach not only accelerates development but also enhances the maintainability and scalability of Android applications.</p>
-<h3 id="common-methods-for-creating-a-view-in-android">Common Methods for Creating a View in Android</h3>
-<ul>
-<li>Using XML Layout: 
-One common method is using XML layouts to define UI components. This method involves creating an XML file and defining the layout and views in it. Here's an example of a TextView that shows the current time and updates it every minute:</li>
-</ul>
-<div class="highlight"><pre><span></span><code><span class="cm">&lt;!-- res/layout/activity_main.xml --&gt;</span>
-<span class="nt">&lt;RelativeLayout</span><span class="w"> </span><span class="na">xmlns:android=</span><span class="s">"http://schemas.android.com/apk/res/android"</span>
-<span class="w">    </span><span class="na">android:layout_width=</span><span class="s">"match_parent"</span>
-<span class="w">    </span><span class="na">android:layout_height=</span><span class="s">"match_parent"</span><span class="nt">&gt;</span>
-
-<span class="w">    </span><span class="nt">&lt;TextView</span>
-<span class="w">        </span><span class="na">android:id=</span><span class="s">"@+id/timeTextView"</span>
-<span class="w">        </span><span class="na">android:layout_width=</span><span class="s">"wrap_content"</span>
-<span class="w">        </span><span class="na">android:layout_height=</span><span class="s">"wrap_content"</span>
-<span class="w">        </span><span class="na">android:layout_centerInParent=</span><span class="s">"true"</span>
-<span class="w">        </span><span class="na">android:textSize=</span><span class="s">"20sp"</span><span class="nt">/&gt;</span>
-<span class="nt">&lt;/RelativeLayout&gt;</span>
-</code></pre></div>
-<p>After we use layout to as Activity base</p>
-<div class="highlight"><pre><span></span><code><span class="n">setContentView</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="na">layout</span><span class="p">.</span><span class="na">activity_main</span><span class="p">)</span>
-</code></pre></div>
-<ul>
-<li>Dynamic View Generation with Code:
-Another method is generating views dynamically in code without using XML. This approach allows more flexibility and is often used in situations where views need to be created or modified programmatically</li>
-</ul>
-<div class="highlight"><pre><span></span><code><span class="w">        </span><span class="kd">val</span><span class="w"> </span><span class="nv">relativeLayout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RelativeLayout</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="na">apply</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="n">layoutParams</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RelativeLayout</span><span class="p">.</span><span class="na">LayoutParams</span><span class="p">(</span>
-<span class="w">                </span><span class="n">RelativeLayout</span><span class="p">.</span><span class="na">LayoutParams</span><span class="p">.</span><span class="na">MATCH_PARENT</span><span class="p">,</span>
-<span class="w">                </span><span class="n">RelativeLayout</span><span class="p">.</span><span class="na">LayoutParams</span><span class="p">.</span><span class="na">MATCH_PARENT</span>
-<span class="w">            </span><span class="p">)</span>
-<span class="w">        </span><span class="p">}</span>
-
-<span class="w">        </span><span class="kd">val</span><span class="w"> </span><span class="nv">timeTextView</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TextView</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="na">apply</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="n">layoutParams</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RelativeLayout</span><span class="p">.</span><span class="na">LayoutParams</span><span class="p">(</span>
-<span class="w">                </span><span class="n">RelativeLayout</span><span class="p">.</span><span class="na">LayoutParams</span><span class="p">.</span><span class="na">WRAP_CONTENT</span><span class="p">,</span>
-<span class="w">                </span><span class="n">RelativeLayout</span><span class="p">.</span><span class="na">LayoutParams</span><span class="p">.</span><span class="na">WRAP_CONTENT</span>
-<span class="w">            </span><span class="p">).</span><span class="na">apply</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                </span><span class="n">addRule</span><span class="p">(</span><span class="n">RelativeLayout</span><span class="p">.</span><span class="na">CENTER_IN_PARENT</span><span class="p">)</span>
-<span class="w">            </span><span class="p">}</span>
-<span class="w">            </span><span class="n">textSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20f</span>
-<span class="w">        </span><span class="p">}</span>
-
-<span class="w">        </span><span class="n">relativeLayout</span><span class="p">.</span><span class="na">addView</span><span class="p">(</span><span class="n">timeTextView</span><span class="p">)</span>
-<span class="w">        </span><span class="n">setContentView</span><span class="p">(</span><span class="n">relativeLayout</span><span class="p">)</span>
-</code></pre></div>
-<ul>
-<li>Using Android Compose: With Compose, UI components are built using composable functions, which allows for a more declarative and reactive approach.</li>
-</ul>
-<div class="highlight"><pre><span></span><code><span class="nd">@Composable</span>
-<span class="kd">fun</span><span class="w"> </span><span class="nf">MyApp</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">Surface</span><span class="p">(</span>
-<span class="w">        </span><span class="n">modifier</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Modifier</span><span class="p">.</span><span class="na">fillMaxSize</span><span class="p">(),</span>
-<span class="w">        </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MaterialTheme</span><span class="p">.</span><span class="na">colorScheme</span><span class="p">.</span><span class="na">background</span>
-<span class="w">    </span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="n">Box</span><span class="p">(</span><span class="n">contentAlignment</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Alignment</span><span class="p">.</span><span class="na">Center</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="n">TimeTextView</span><span class="p">()</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">    </span><span class="p">}</span>
+<p>In this series, I will use a small LLM model and fine tune it to answer the request by users by creating the right sql query,
+I will use Spider1 dataset, this dataset have a ranking and benchmarks for showing the effectiveness of each method, and now have been
+replaced with Spider 2, but I will use the older version for our example since it smaller dataset and more established</p>
+<h1 id="steps">Steps</h1>
+<p>Here is the current plan for this series,
+1- show the data structure and load the data using Grain
+2- Prompting + tokenization + zero-shot generation
+3- LoRA fine-tuning with Tunix
+4- SQL fine tune evaluation with examples
+5- Execute generated SQL on SQLite and compare results</p>
+<h1 id="spider-dataset">Spider dataset</h1>
+<p>This dataset comes from Spider: A Large-Scale Human-Labeled Dataset for Complex and Cross-Domain Semantic Parsing and Text-to-SQL Task paper from 2018,</p>
+<p>Here are some values for you to view for each test/train sample in the Spider dataset. We've shortened the original JSON structure to highlight the most relevant information for human readability.</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">"db_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"geo"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"query"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SELECT city_name FROM city WHERE population  =  ( SELECT MAX ( population ) FROM city WHERE state_name  =  \"wyoming\" ) AND state_name  =  \"wyoming\";"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"question"</span><span class="p">:</span><span class="w"> </span><span class="s2">"what is the biggest city in wyoming"</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>Implementation Details
-We have three options for implementing UI components in Android: XML Layout, Dynamic View Generation with Code, and Android Compose.</p>
-<ol>
-<li>
-<p>XML Layout
-In the case of XML Layout, the layouts are saved in the res/layout directory. These XML files define the structure and appearance of the UI components. During runtime, the LayoutInflater class is used to inflate these XML layouts into actual view objects that the Android framework can manage and display. This method separates the UI design from the business logic, allowing for a clear distinction between the visual structure and the underlying functionality.</p>
-</li>
-<li>
-<p>Dynamic View Generation with Code
-When generating views dynamically with code, there is no need for XML files. The entire UI is constructed programmatically using Java or Kotlin. This method allows for more flexibility and dynamic adjustments of the UI components at runtime. Since the views are created directly in the code, the Android framework handles them natively, ensuring efficient execution and manipulation of the UI.</p>
-</li>
-<li>
-<p>Android Compose
-Android Compose takes a different approach by using annotations to generate intermediate Java code. Composable functions, marked with the @Composable annotation, describe the UI components and their behavior. During the build process, these annotations are processed to generate the necessary code for the UI. This generated code can be examined by decompiling the app, revealing the intermediate Java code that Compose creates. This approach allows for a more declarative and reactive style of UI development, streamlining the process and enhancing maintainability.</p>
-</li>
-</ol>
-<p>Additional Information on Compose
-As you are new to Compose, here are a few more points that can help you understand it better:</p>
-<p>State Management: Compose makes it easy to manage UI state. By using remember and mutableStateOf, you can create state variables that automatically trigger recomposition when they change.</p>
-<p>Modifiers: Modifiers in Compose allow you to modify the appearance and behavior of composable functions. You can chain multiple modifiers to achieve complex layouts and interactions.</p>
-<p>Themes and Styling: Compose provides powerful tools for theming and styling your app. You can define a theme using the MaterialTheme and apply it consistently across your app.</p>
-<p>Animations: Compose offers a rich set of APIs for creating animations. You can use functions like animateDpAsState and Crossfade to add smooth transitions and animations to your UI.</p>
-<p>Preview: The Android Studio Preview feature allows you to see how your composable functions look without running the app. This can significantly speed up the development process.</p>
+<p><strong>Explanation of Shortened Parts:</strong></p>
+<p>We've focused on the <code>db_id</code>, <code>query</code>, and <code>question</code> fields, as these are the most directly interpretable for understanding the dataset's core purpose: mapping natural language questions to SQL queries for a specific database.</p>
+<p>The following fields were omitted for brevity:</p>
+<ul>
+<li><code>query_toks</code>: This field contains the tokenized version of the SQL query. While useful for machine processing, it's redundant for human understanding when the <code>query</code> field is present.</li>
+<li><code>query_toks_no_value</code>: Similar to <code>query_toks</code>, but with values replaced by a generic "value" token. This is primarily for model training and not for human review.</li>
+<li><code>question_toks</code>: The tokenized version of the natural language question. Again, the <code>question</code> field itself is sufficient for human comprehension.</li>
+<li><code>sql</code>: This is a highly detailed, nested JSON representation of the SQL query's abstract syntax tree (AST). While crucial for semantic parsing tasks, it's overly complex for a quick human overview of the data samples.</li>
+</ul>
+<h2 id="grain">Grain</h2>
+<p>Grain is a data loading library in the JAX ecosystem. I wrote this simple data source to read the Spider JSON files, keep only the fields I need, and attach the database schema definition for each record.</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">JsonDataSource</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_paths</span><span class="p">,</span> <span class="n">keep_fields</span><span class="o">=</span><span class="p">(</span><span class="s2">"db_id"</span><span class="p">,</span> <span class="s2">"query"</span><span class="p">,</span> <span class="s2">"question"</span><span class="p">)):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">records</span> <span class="o">=</span> <span class="n">load_json_files</span><span class="p">(</span><span class="n">json_paths</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">keep_fields</span> <span class="o">=</span> <span class="n">keep_fields</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">db_records</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">records</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="n">raw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">records</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+
+        <span class="n">record</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">key</span><span class="p">:</span> <span class="n">raw</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keep_fields</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">raw</span>
+        <span class="p">}</span>
+
+        <span class="n">file_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="n">SPIDER_PATH</span><span class="p">]</span><span class="si">}</span><span class="s1">/database/</span><span class="si">{</span><span class="n">record</span><span class="p">[</span><span class="s2">"db_id"</span><span class="p">]</span><span class="si">}</span><span class="s1">/schema.sql'</span>
+        <span class="k">if</span> <span class="n">file_path</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">db_records</span><span class="p">:</span>
+            <span class="n">record</span><span class="p">[</span><span class="s2">"db_definitions"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">get_create_table_blocks</span><span class="p">(</span><span class="n">file_path</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db_records</span><span class="p">[</span><span class="n">file_path</span><span class="p">]</span> <span class="o">=</span> <span class="n">record</span><span class="p">[</span><span class="s2">"db_definitions"</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">record</span><span class="p">[</span><span class="s2">"db_definitions"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db_records</span><span class="p">[</span><span class="n">file_path</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">record</span>
+</code></pre></div>
+<p>After defining the data source, I can pass it to Grain and create a loader. For now, I use the development split, disable shuffling, and set <code>batch_size=1</code> so it is easy to inspect one example at a time.</p>
+<div class="highlight"><pre><span></span><code><span class="n">dev_source</span> <span class="o">=</span> <span class="n">JsonDataSource</span><span class="p">([</span>
+    <span class="n">base_path</span> <span class="o">+</span> <span class="s2">"dev.json"</span><span class="p">,</span>
+<span class="p">])</span>
+
+<span class="n">dev_loader</span> <span class="o">=</span> <span class="n">grain</span><span class="o">.</span><span class="n">load</span><span class="p">(</span>
+    <span class="n">dev_source</span><span class="p">,</span>
+    <span class="n">num_epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">worker_count</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
     <!-- <div class="aspect-w-16 aspect-h-9 mx-auto"></div> CSS placeholder -->
   </div>
   <footer class="flex flex-col mt-10 ">
     <ul class="flex flex-wrap">
         <li
           class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
-          <a href="./tag/android.html">Android</a>
+          <a href="./tag/applied-ai.html">Applied AI</a>
         </li>
         <li
           class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
-          <a href="./tag/java.html">Java</a>
+          <a href="./tag/jax.html">Jax</a>
         </li>
         <li
           class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
-          <a href="./tag/kotlin.html">Kotlin</a>
+          <a href="./tag/llm.html">LLM</a>
         </li>
         <li
           class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
           <a href="./tag/nima-moradi.html">Nima Moradi</a>
         </li>
+        <li
+          class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
+          <a href="./tag/python.html">Python</a>
+        </li>
+        <li
+          class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
+          <a href="./tag/sql.html">SQL</a>
+        </li>
     </ul>
     <div class="flex w-full my-2 bg-zinc-200 dark:bg-zinc-700 rounded-lg">
       <div class="w-1/2 hover:bg-zinc-300 dark:hover:bg-zinc-800 rounded-l-lg">
-        <a class="flex flex-col pr-2" href="./fine-tuning-the-text-to-sql-using-jax-echo-system.html">
+        <a class="flex flex-col pr-2" href="./easy-subtitle-translation-using-google-api.html">
           <div class="mx-4 py-2 text-left">
             <p class="text-zinc-600 dark:text-zinc-300 text-sm">« PREV PAGE</p>
-            <p class="text-left py-1 hover:underline">Fine tuning the text to SQL using JAX echo System</p>
+            <p class="text-left py-1 hover:underline">Easy subtitle translation using google api</p>
           </div>
         </a>
       </div>
       <div class="w-1/2 hover:bg-zinc-300 dark:hover:bg-zinc-800 rounded-r-lg ">
-        <a class="flex flex-col" href="./overview-of-coroutines.html">
+        <a class="flex flex-col" href="./how-does-android-implement-compose-jetpack.html">
           <div class="text-right mx-4 py-2">
             <p class="text-zinc-600 dark:text-zinc-300 text-sm">NEXT PAGE »</p>
-            <p class="text-right py-1 hover:underline">OverView of Coroutines</p>
+            <p class="text-right py-1 hover:underline">How does Android implement Compose Jetpack</p>
           </div>
         </a>
       </div>
@@ -258,7 +252,7 @@ As you are new to Compose, here are a few more points that can help you understa
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="twitter" aria-label="share Features on twitter"
-            href="https://twitter.com/intent/tweet/?text=Features&amp;url=./how-does-android-implement-compose-jetpack.html">
+            href="https://twitter.com/intent/tweet/?text=Features&amp;url=./fine-tuning-the-text-to-sql-using-jax-echo-system.html">
             <i class="fab fa-twitter fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -266,7 +260,7 @@ As you are new to Compose, here are a few more points that can help you understa
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="linkedin" aria-label="share Features on linkedin"
-            href="https://www.linkedin.com/sharing/share-offsite/?url=./how-does-android-implement-compose-jetpack.html">
+            href="https://www.linkedin.com/sharing/share-offsite/?url=./fine-tuning-the-text-to-sql-using-jax-echo-system.html">
             <i class="fab fa-linkedin fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -274,7 +268,7 @@ As you are new to Compose, here are a few more points that can help you understa
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="reddit" aria-label="share Features on reddit"
-            href="https://reddit.com/submit?url=./how-does-android-implement-compose-jetpack.html">
+            href="https://reddit.com/submit?url=./fine-tuning-the-text-to-sql-using-jax-echo-system.html">
             <i class="fab fa-reddit fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -282,7 +276,7 @@ As you are new to Compose, here are a few more points that can help you understa
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="facebook" aria-label="share Features on facebook"
-            href="https://facebook.com/sharer/sharer.php?u=./how-does-android-implement-compose-jetpack.html">
+            href="https://facebook.com/sharer/sharer.php?u=./fine-tuning-the-text-to-sql-using-jax-echo-system.html">
             <i class="fab fa-facebook fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -290,7 +284,7 @@ As you are new to Compose, here are a few more points that can help you understa
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="whatsapp" aria-label="share Features on whatsapp"
-            href="https://api.whatsapp.com/send?text=Features - ./how-does-android-implement-compose-jetpack.html">
+            href="https://api.whatsapp.com/send?text=Features - ./fine-tuning-the-text-to-sql-using-jax-echo-system.html">
             <i class="fab fa-whatsapp fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -298,7 +292,7 @@ As you are new to Compose, here are a few more points that can help you understa
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="telegram" aria-label="share Features on telegram"
-            href="https://telegram.me/share/url?text=Features&amp;url=./how-does-android-implement-compose-jetpack.html">
+            href="https://telegram.me/share/url?text=Features&amp;url=./fine-tuning-the-text-to-sql-using-jax-echo-system.html">
             <i class="fab fa-telegram fa-2x" aria-hidden="true"></i>
           </a>
         </li>

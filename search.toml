@@ -8,6 +8,11 @@ url = "/pages/about-me.html"
 title = "About me"
 
 [[input.files]]
+path = "pages/portfolio.html"
+url = "/pages/portfolio.html"
+title = "Portfolio"
+
+[[input.files]]
 path = "building-local-ai-audiobook-pipeline.html"
 url = "/building-local-ai-audiobook-pipeline.html"
 title = "Building a Local AI Audiobook Pipeline with Python and Kokoro"
@@ -46,6 +51,11 @@ title = "Create a Simple AI Assistant Using LLama 3: A Proof of Concept"
 path = "easy-subtitle-translation-using-google-api.html"
 url = "/easy-subtitle-translation-using-google-api.html"
 title = "Easy subtitle translation using google api"
+
+[[input.files]]
+path = "fine-tuning-the-text-to-sql-using-jax-echo-system.html"
+url = "/fine-tuning-the-text-to-sql-using-jax-echo-system.html"
+title = "Fine tuning the text to SQL using JAX echo System"
 
 [[input.files]]
 path = "how-does-android-implement-compose-jetpack.html"
