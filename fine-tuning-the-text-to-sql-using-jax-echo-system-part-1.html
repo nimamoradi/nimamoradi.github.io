@@ -136,12 +136,14 @@ I will use Spider1 dataset, this dataset have a ranking and benchmarks for showi
 replaced with Spider 2, but I will use the older version for our example since it smaller dataset and more established
 <img alt="Quick overview of part 1(ai-generated image)" src="../images/part1_sql.png"/></p>
 <h1 id="steps">Steps</h1>
-<p>Here is the current plan for this series,
-1. show the data structure and load the data using Grain
-1. Prompting + tokenization + zero-shot generation
-1. LoRA fine-tuning with Tunix
-1. SQL fine tune evaluation with examples
-1. Execute generated SQL on SQLite and compare results</p>
+<p>Here is the current plan for this series,</p>
+<ol>
+<li>show the data structure and load the data using Grain</li>
+<li>Prompting + tokenization + zero-shot generation</li>
+<li>LoRA fine-tuning with Tunix</li>
+<li>SQL fine tune evaluation with examples</li>
+<li>Execute generated SQL on SQLite and compare results</li>
+</ol>
 <h1 id="spider-dataset">Spider dataset</h1>
 <p>This dataset comes from Spider: A Large-Scale Human-Labeled Dataset for Complex and Cross-Domain Semantic Parsing and Text-to-SQL Task paper from 2018,</p>
 <p>Here are some values for you to view for each test/train sample in the Spider dataset. We've shortened the original JSON structure to highlight the most relevant information for human readability.</p>
