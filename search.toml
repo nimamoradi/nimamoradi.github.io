@@ -13,6 +13,11 @@ url = "/pages/portfolio.html"
 title = "Portfolio"
 
 [[input.files]]
+path = "fine-tuning-text-to-sql-using-the-jax-ecosystem-part-2.html"
+url = "/fine-tuning-text-to-sql-using-the-jax-ecosystem-part-2.html"
+title = "Fine tuning Text-to-SQL using the JAX Ecosystem - Part 2"
+
+[[input.files]]
 path = "fine-tuning-the-text-to-sql-using-jax-echo-system-part-1.html"
 url = "/fine-tuning-the-text-to-sql-using-jax-echo-system-part-1.html"
 title = "Fine tuning the text to SQL using JAX echo System - Part 1"

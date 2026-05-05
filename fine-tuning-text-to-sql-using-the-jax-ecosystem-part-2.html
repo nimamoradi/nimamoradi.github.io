@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content="Pelican" />
+    <meta name="description" content="Nima Moradi Personal blog Blog Posts">
+    <title>Fine tuning Text-to-SQL using the JAX Ecosystem - Part 2</title>
+    <link rel="canonical" href="./fine-tuning-text-to-sql-using-the-jax-ecosystem-part-2.html">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
+    <link rel="stylesheet" type="text/css" href="./theme/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="./theme/css/pygment.css" />
+    <link rel="shortcut icon" href="./favicon.jpg" type="image/x-icon">
+    <link rel="stylesheet" href="./theme/css/stork.css">
+    <link rel="stylesheet" media="screen and (prefers-color-scheme: dark)"
+        href="./theme/css/stork-dark.css">
+<meta name="description" content="Loading a small Gemma model, preparing prompts, downloading weights, and running the first zero-shot text-to-SQL baseline" />
+</head>
+
+<body class="min-h-screen flex flex-col max-w-7xl lg:max-w-none text-zinc-800 bg-neutral-100 
+    dark:bg-neutral-900 dark:text-zinc-300 container mx-auto justify-center md:px-3 ">
+    <script>
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia(
+                '(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+    </script>
+    <nav class="sm:flex sm:justify-between xl:ml-32 pl-4 items-center">
+        <div class="flex pt-4">
+            <h1 class="font-semibold text-2xl"><a href="./">Nima Moradi Personal blog</a></h1>
+            <button id="theme-toggle" type="button" aria-label="Light|Dark"
+                class="text-zinc-700 dark:text-zinc-400 rounded-full focus:outline-none text-sm ml-2 p-1">
+                <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                </svg>
+                <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                        fill-rule="evenodd" clip-rule="evenodd"></path>
+                </svg>
+            </button>
+        </div>
+        <ul class="flex flex-wrap lg:mr-24 md:pt-0">
+            <li class="mr-4 pt-6"><a  href="./pages/about-me.html">About me</a></li>
+            <li class="mr-4 pt-6"><a  href="./pages/portfolio.html">Portfolio</a></li>
+            <li class="mr-4 pt-6"><a  href="./archives.html">Archive</a></li>
+            <li class="mr-4 pt-6"><a                     href="./categories.html">Categories</a></li>
+            <li class="mr-4 pt-6"><a  href="./tags.html">Tags</a></li>
+            <li class="mr-4 pt-6"><a  href="./search.html">Search</a></li>
+        </ul>
+    </nav>
+    <div class="flex-grow md:max-w-screen-md md:mx-auto md:w-3/4 px-4">
+        <nav class="text-zinc-800 dark:text-zinc-300 mt-12 pb-2 md:mt-16" aria-label="Breadcrumb">
+            <ul class="p-0 inline-flex items-center">
+                <li class="flex items-center">
+                    <a href="./" class="text-zinc-800 dark:text-zinc-300 inline-flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
+                            </path>
+                        </svg>
+                        Home
+                    </a>
+                    <svg class="fill-current w-3 h-3 mr-2 ml-1" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 320 512">
+                        <path
+                            d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z" />
+                    </svg>
+                </li>
+                <li class="flex items-center">
+                    <a href="./categories.html">Categories</a>
+                    <svg class="fill-current w-3 h-3 mr-2 ml-1" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 320 512">
+                        <path
+                            d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z" />
+                    </svg>
+                </li>
+                <li class="flex items-center">
+                    <a href="./category/guide.html">Guide</a>
+                    <svg class="fill-current w-3 h-3 mr-2 ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                        <path
+                            d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z" />
+                    </svg>
+                </li>
+            </ul>
+        </nav>
+
+<main>
+  <header>
+    <h1 class="font-semibold text-3xl my-2">Fine tuning Text-to-SQL using the JAX Ecosystem - Part 2</h1>
+    <footer class="flex text-sm text-zinc-800 dark:text-zinc-400">
+      <div class="flex text-xs text-zinc-800 dark:text-zinc-400">
+        <time>May 05, 2026</time>
+        <div>
+          <span>&nbsp;·&nbsp;11 min read</span>
+        </div>
+        <div>
+          <span>&nbsp;·&nbsp;Nima Moradi</span>
+        </div>
+      </div>
+    </footer>
+  </header>
+  <details class="flex flex-col my-6 p-4 bg-zinc-200 dark:bg-zinc-800 rounded-lg">
+    <summary class="text-lg font-bold">Table of contents</summary>
+    <div class="mx-4 px-4 underline">
+      <div id="toc"><ul><li><a class="toc-href" href="#introduction" title="Introduction">Introduction</a></li><li><a class="toc-href" href="#why-i-started-with-a-very-small-model" title="Why I started with a very small model">Why I started with a very small model</a></li><li><a class="toc-href" href="#getting-the-model-weights" title="Getting the model weights">Getting the model weights</a></li><li><a class="toc-href" href="#factory-pattern-for-model-loading" title="Factory pattern for model loading">Factory pattern for model loading</a></li><li><a class="toc-href" href="#tokenization" title="Tokenization">Tokenization</a></li><li><a class="toc-href" href="#prompt-format" title="Prompt format">Prompt format</a></li><li><a class="toc-href" href="#running-zero-shot-generation" title="Running zero-shot generation">Running zero-shot generation</a></li><li><a class="toc-href" href="#first-zero-shot-results" title="First zero-shot results">First zero-shot results</a></li><li><a class="toc-href" href="#good-examples" title="Good examples">Good examples</a></li><li><a class="toc-href" href="#failed-examples" title="Failed examples">Failed examples</a></li><li><a class="toc-href" href="#result-summary" title="Result summary">Result summary</a></li></ul></div>
+    </div>
+  </details>
+  <div class="max-w-7xl container mx-auto my-8 text-zinc-800 dark:text-zinc-300  
+              prose lg:max-w-none prose-headings:text-zinc-800 prose-headings:dark:text-zinc-300 
+              prose-h1:text-3xl lg:prose-h1:text-3xl prose-headings:font-semibold 
+              prose-pre:bg-zinc-200 prose-pre:text-zinc-800
+              dark:prose-pre:bg-zinc-800 dark:prose-pre:text-zinc-200
+              prose-blockquote:text-zinc-800
+              dark:prose-blockquote:text-zinc-200
+              prose-a:text-slate-600 prose-a:font-normal
+              dark:prose-a:text-slate-400
+              dark:prose-strong:text-zinc-200 
+              dark:prose-code:text-zinc-200
+              dark:prose-code:bg-zinc-800
+              prose-code:bg-zinc-200
+              prose-code:font-light
+              prose-img:rounded-md
+              sm:text-left md:text-justify
+              ">
+    <h1 id="introduction">Introduction</h1>
+<p>In the previous part, I inspected the Spider dataset and created a Grain data loader that returns the fields I need for text-to-SQL:</p>
+<ol>
+<li><code>db_id</code>,</li>
+<li><code>question</code>,</li>
+<li><code>query</code>,</li>
+<li><code>db_definitions</code>.
+<img alt="Quick overview of part 2(ai-generated image)" src="../images/part2_sql.png"/>
+In this part, I use those loaded records to run the first model generation step.</li>
+</ol>
+<p>The goal here is not to fine-tune yet. I first want a simple baseline:</p>
+<ol>
+<li>load a small Gemma model,</li>
+<li>load the tokenizer,</li>
+<li>prepare a prompt from the database schema and the user question,</li>
+<li>run zero-shot generation,</li>
+<li>compare the generated SQL with the Spider ground truth.</li>
+</ol>
+<p>This gives me a starting point before LoRA fine-tuning.</p>
+<h1 id="why-i-started-with-a-very-small-model">Why I started with a very small model</h1>
+<p>Before using Gemma directly, I experimented a little with models from Hugging Face Transformers. That path is very open. It lets you try many model families, including decoder-only models and encoder-decoder models.</p>
+<p>But for this series, I want to keep the project close to the JAX ecosystem. The data side already uses JAX-related tools, and the fine-tuning part will also be built around JAX. So I looked at Flax and the Gemma JAX library.</p>
+<p>For this part, I selected Gemma 3 270M instruction-tuned. The reason is not that I expect a 270M model to solve Spider perfectly. The reason is that I want something small enough to load, inspect, and fine-tune quickly.</p>
+<p>A bigger model will probably handle many of these examples better in zero-shot mode. But the question I want to test in this series is different:</p>
+<blockquote>
+<p>Can I improve a very small model enough with fine-tuning so it becomes useful for SQL generation?</p>
+</blockquote>
+<p>I do not know the final answer yet. This part only creates the baseline.</p>
+<h1 id="getting-the-model-weights">Getting the model weights</h1>
+<p>The Gemma model architecture can be created from code, but the trained weights must still be downloaded.</p>
+<p>For this experiment I used Kaggle to get the Gemma weights. You need to accept the model license first, then authenticate Kaggle in your environment.</p>
+<p>I used this setup:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">"XLA_PYTHON_CLIENT_MEM_FRACTION"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"1.0"</span>
+
+<span class="c1"># This will prompt you to enter your Kaggle API token.</span>
+<span class="kn">import</span> <span class="nn">kagglehub</span>
+<span class="n">kagglehub</span><span class="o">.</span><span class="n">login</span><span class="p">()</span>
+</code></pre></div>
+<p>After login, I downloaded the model with:</p>
+<div class="highlight"><pre><span></span><code><span class="n">path</span> <span class="o">=</span> <span class="n">kagglehub</span><span class="o">.</span><span class="n">model_download</span><span class="p">(</span><span class="s2">"google/gemma-3/flax/gemma-3-270m-it"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+</code></pre></div>
+<p>You can also download the weights from the Kaggle UI directly or use a command-line download option. You can learn more about them on the kaggle gemma 3 page.</p>
+<p>I used Gemma 3 for this run. Gemma 4 exists, but when I started wiring this project, I wanted to avoid adding another moving target since most of this repo is still under active development, so I stayed with <code>gemma-3-270m-it</code> for this part.</p>
+<h1 id="factory-pattern-for-model-loading">Factory pattern for model loading</h1>
+<p>I wanted to avoid hard-coding one model in the main training script. Today I am using Gemma 3 270M, but later I may want to try another Gemma size, another tokenizer, or another model-loading path.</p>
+<p>For that reason, I created a small factory around the model-loading code.</p>
+<p>The configuration contains the parts that may change:</p>
+<div class="highlight"><pre><span></span><code><span class="n">config</span> <span class="o">=</span> <span class="n">LLMFactoryConfig</span><span class="p">(</span>
+    <span class="n">ckpt_path</span><span class="o">=</span><span class="n">ckpt_path</span><span class="p">,</span>
+    <span class="n">tokenizer_path</span><span class="o">=</span><span class="n">tokenizer_path</span><span class="p">,</span>
+    <span class="n">model_cls</span><span class="o">=</span><span class="n">gm</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Gemma3_270M</span><span class="p">,</span>
+    <span class="n">tokenizer_cls</span><span class="o">=</span><span class="n">gm</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">Gemma3Tokenizer</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>Then the model is built with:</p>
+<div class="highlight"><pre><span></span><code><span class="n">factory</span> <span class="o">=</span> <span class="n">LLMModuleFactory</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<span class="n">modules</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
+</code></pre></div>
+<p>The factory has one main job: return a small group of objects that the rest of the code can use.</p>
+<p>The build process is:</p>
+<ol>
+<li>create the model architecture,</li>
+<li>load the model parameters from the checkpoint,</li>
+<li>initialize the tokenizer,</li>
+<li>create a sampler for text generation.</li>
+</ol>
+<p>A simplified version looks like this:</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">LLMModuleFactory</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">LLMFactoryConfig</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
+
+    <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_cls</span><span class="p">()</span>
+
+        <span class="n">params</span> <span class="o">=</span> <span class="n">load_params</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">ckpt_path</span><span class="p">)</span>
+
+        <span class="n">tokenizer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">tokenizer_cls</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">tokenizer_path</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">sampler</span> <span class="o">=</span> <span class="n">gm</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">Sampler</span><span class="p">(</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+            <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">LLMModules</span><span class="p">(</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+            <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
+            <span class="n">sampler</span><span class="o">=</span><span class="n">sampler</span><span class="p">,</span>
+        <span class="p">)</span>
+</code></pre></div>
+<p>This is only the structure. The exact implementation can change, but the idea is the same: the rest of the project should not need to know all the details of checkpoint loading.</p>
+<h1 id="tokenization">Tokenization</h1>
+<p>The model does not read normal Python strings directly. It reads token ids.</p>
+<p>I looked at the Gemma tokenizer methods for encoding and decoding text. The tokenizer gives methods to encode a string into tokens and decode tokens back into text. That is useful for debugging because I can inspect what the model receives and what the generated ids become after decoding.</p>
+<p>A small check can look like this:</p>
+<div class="highlight"><pre><span></span><code><span class="n">tokenizer</span> <span class="o">=</span> <span class="n">modules</span><span class="o">.</span><span class="n">tokenizer</span>
+
+<span class="n">text</span> <span class="o">=</span> <span class="s2">"How many singers do we have?"</span>
+<span class="n">token_ids</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">token_ids</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">token_ids</span><span class="p">))</span>
+</code></pre></div>
+<p>For this part, I kept tokenization simple. I did not yet build the full training tokenization pipeline with masks, labels, padding, and end-of-sequence handling, the sampler will handle this for us.</p>
+<p>That will matter more in the fine-tuning part.</p>
+<h1 id="prompt-format">Prompt format</h1>
+<p>The prompt uses two fields from the Spider example:</p>
+<ol>
+<li>the database schema,</li>
+<li>the natural language question.</li>
+</ol>
+<p>The target SQL query is not included in the prompt during zero-shot generation. It is only used later for comparison.</p>
+<p>The prompt follow this pattern:</p>
+<div class="highlight"><pre><span></span><code><span class="sa">f</span><span class="s2">"""&lt;start_of_turn&gt;user</span>
+<span class="s2">Based on this database schema:</span>
+
+<span class="si">{</span><span class="n">record</span><span class="p">[</span><span class="s2">"db_definitions"</span><span class="p">]</span><span class="si">}</span>
+
+<span class="s2">Write a SQL query to answer this question. Output ONLY the SQL query, nothing else.</span>
+
+<span class="s2">Question: </span><span class="si">{</span><span class="n">record</span><span class="p">[</span><span class="s2">"question"</span><span class="p">]</span><span class="si">}</span><span class="s2">&lt;end_of_turn&gt;</span>
+<span class="s2">&lt;start_of_turn&gt;model</span>
+<span class="s2">"""</span>
+</code></pre></div>
+<p>This prompt is intentionally direct. I tell the model to output only SQL because I want the result to be easy to compare and later execute.</p>
+<p>In practice, the model still sometimes returns Markdown code blocks, such as:</p>
+<div class="highlight"><pre><span></span><code>```sql
+SELECT COUNT(*) FROM singer;
+```&lt;end_of_turn&gt;
+</code></pre></div>
+<p>This means I will need a cleanup step before real evaluation.</p>
+<h1 id="running-zero-shot-generation">Running zero-shot generation</h1>
+<p>After the model is loaded and the data loader is ready, the main script calls an evaluation function:</p>
+<div class="highlight"><pre><span></span><code><span class="n">modules</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
+
+<span class="n">evaluate_text_to_sql</span><span class="p">(</span>
+    <span class="n">sampler</span><span class="o">=</span><span class="n">modules</span><span class="o">.</span><span class="n">sampler</span><span class="p">,</span>
+    <span class="n">loader</span><span class="o">=</span><span class="n">dev_loader</span><span class="p">,</span>
+    <span class="n">max_new_tokens</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>I used <code>temperature=0.0</code> because I want deterministic output during debugging. If the output changes every run, it becomes harder to compare prompt changes and model changes.</p>
+<h1 id="first-zero-shot-results">First zero-shot results</h1>
+<p>Here are the first 10 examples from the <code>concert_singer</code> database.</p>
+<p>I manually checked the generated SQL from these examples. The model did not behave randomly. It handled a few simple patterns well, but it also failed on several examples where it had to understand filters, selected columns, or ordering logic more carefully.</p>
+<h1 id="good-examples">Good examples</h1>
+<p>The model did well on the direct counting example:</p>
+<div class="highlight"><pre><span></span><code>Question:
+What is the total number of singers?
+
+Ground Truth:
+SELECT count(*) FROM singer
+
+Predicted:
+SELECT COUNT(*) FROM singer;
+</code></pre></div>
+<p>This is the kind of pattern I expected the model to know already: use the <code>singer</code> table and count the rows.</p>
+<p>It also did well on this ordering example:</p>
+<div class="highlight"><pre><span></span><code>Question:
+Show name, country, age for all singers ordered by age from the oldest to the youngest.
+
+Ground Truth:
+SELECT name ,  country ,  age FROM singer ORDER BY age DESC
+
+Predicted:
+SELECT
+    singer.Name,
+    singer.Country,
+    singer.Age
+FROM
+    singer
+ORDER BY
+    age DESC;
+</code></pre></div>
+<p>The model selected the right fields from the right table and used descending order for age.</p>
+<p>The model also handled the distinct-country examples well:</p>
+<div class="highlight"><pre><span></span><code>Question:
+What are all distinct countries where singers above age 20 are from?
+
+Ground Truth:
+SELECT DISTINCT country FROM singer WHERE age  &gt;  20
+
+Predicted:
+SELECT DISTINCT country
+FROM "singer"
+WHERE age &gt; 20;
+</code></pre></div>
+<p>And similarly:</p>
+<div class="highlight"><pre><span></span><code>Question:
+What are  the different countries with singers above age 20?
+
+Ground Truth:
+SELECT DISTINCT country FROM singer WHERE age  &gt;  20
+
+Predicted:
+SELECT DISTINCT Country
+FROM "singer"
+WHERE Age &gt; 20;
+</code></pre></div>
+<p>These examples are encouraging because the model found the table, the <code>DISTINCT</code> operation, and the age filter.</p>
+<h1 id="failed-examples">Failed examples</h1>
+<p>Some other outputs were clearly wrong.</p>
+<p>For the first count example, the model added a filter that should not be there:</p>
+<div class="highlight"><pre><span></span><code>Question:
+How many singers do we have?
+
+Ground Truth:
+SELECT count(*) FROM singer
+
+Predicted:
+SELECT COUNT(*)
+FROM singer
+WHERE Singer_ID = 1;
+</code></pre></div>
+<p>The model understood that it needed <code>COUNT(*)</code>, but <code>WHERE Singer_ID = 1</code> changes the meaning. The question asks for all singers, not one specific singer.</p>
+<p>For this example, the model invented a column name and did not return all requested fields:</p>
+<div class="highlight"><pre><span></span><code>Question:
+What are the names, countries, and ages for every singer in descending order of age?
+
+Ground Truth:
+SELECT name ,  country ,  age FROM singer ORDER BY age DESC
+
+Predicted:
+SELECT DISTINCT "Singer_Name"
+FROM "singer"
+ORDER BY age DESC;
+</code></pre></div>
+<p>There is no <code>"Singer_Name"</code> column in the schema. The expected fields are <code>Name</code>, <code>Country</code>, and <code>Age</code>.</p>
+<p>The aggregation examples were also weak:</p>
+<div class="highlight"><pre><span></span><code>Question:
+What is the average, minimum, and maximum age of all singers from France?
+
+Ground Truth:
+SELECT avg(age) ,  min(age) ,  max(age) FROM singer WHERE country  =  'France'
+
+Predicted:
+SELECT
+    singer.Singer_ID,
+    AVG(singer.Age) AS AverageAge,
+    MIN(singer.Age) AS MinimumAge,
+    MAX(singer.Age) AS MaximumAge
+FROM
+    singer AS singer
+GROUP BY
+    singer.Singer_ID;
+</code></pre></div>
+<p>The model used the aggregate functions, but it missed the France condition and added <code>GROUP BY singer.Singer_ID</code>. That changes the query from one aggregate result for French singers into one aggregate row per singer.</p>
+<p>The second France example had a similar problem:</p>
+<div class="highlight"><pre><span></span><code>Question:
+What is the average, minimum, and maximum age for all French singers?
+
+Ground Truth:
+SELECT avg(age) ,  min(age) ,  max(age) FROM singer WHERE country  =  'France'
+
+Predicted:
+SELECT
+    singer.Singer_ID,
+    AVG(singer.Age) AS AverageAge,
+    MIN(singer.Age) AS MinimumAge,
+    MAX(singer.Age) AS MaximumAge
+FROM
+    singer AS singer
+GROUP BY
+    singer.Singer_ID
+ORDER BY
+    AverageAge DESC
+LIMIT 10;
+</code></pre></div>
+<p>Again, the model missed the country filter and added extra operations that were not requested.</p>
+<p>The youngest-singer examples also failed:</p>
+<div class="highlight"><pre><span></span><code>Question:
+Show the name and the release year of the song by the youngest singer.
+
+Ground Truth:
+SELECT song_name ,  song_release_year FROM singer ORDER BY age LIMIT 1
+
+Predicted:
+SELECT "Singer_ID", "Name"
+FROM "singer"
+WHERE "Age" = 1;
+</code></pre></div>
+<p>The model should have selected <code>Song_Name</code> and <code>Song_release_year</code>, then ordered by <code>Age</code> and used <code>LIMIT 1</code>. Instead, it selected different columns and assumed the youngest singer has <code>Age = 1</code>.</p>
+<p>The next version was also wrong:</p>
+<div class="highlight"><pre><span></span><code>Question:
+What are the names and release years for all the songs of the youngest singer?
+
+Ground Truth:
+SELECT song_name ,  song_release_year FROM singer ORDER BY age LIMIT 1
+
+Predicted:
+SELECT DISTINCT "Name"
+FROM "singer_in_concert";
+</code></pre></div>
+<p>This output used the wrong table and did not return the requested song name and release year.</p>
+<h1 id="result-summary">Result summary</h1>
+<p>Here is the manual review of the first 10 examples.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Sample</th>
+<th>Question type</th>
+<th>Result</th>
+<th>What happened</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">1</td>
+<td>Count singers</td>
+<td>Failed</td>
+<td>Added <code>WHERE Singer_ID = 1</code></td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td>Count singers</td>
+<td>Good</td>
+<td>Used <code>COUNT(*)</code> on the <code>singer</code> table</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td>Select name, country, age ordered by age</td>
+<td>Good</td>
+<td>Selected the right fields and used <code>ORDER BY age DESC</code></td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td>Select name, country, age ordered by age</td>
+<td>Failed</td>
+<td>Invented <code>Singer_Name</code> and missed <code>Country</code> and <code>Age</code></td>
+</tr>
+<tr>
+<td style="text-align: right;">5</td>
+<td>Aggregate ages for France</td>
+<td>Failed</td>
+<td>Missed <code>WHERE country = 'France'</code> and grouped by singer</td>
+</tr>
+<tr>
+<td style="text-align: right;">6</td>
+<td>Aggregate ages for French singers</td>
+<td>Failed</td>
+<td>Missed the France filter and added extra ordering and limit</td>
+</tr>
+<tr>
+<td style="text-align: right;">7</td>
+<td>Youngest singer song info</td>
+<td>Failed</td>
+<td>Selected wrong columns and used <code>Age = 1</code></td>
+</tr>
+<tr>
+<td style="text-align: right;">8</td>
+<td>Youngest singer song info</td>
+<td>Failed</td>
+<td>Used the wrong table and selected the wrong field</td>
+</tr>
+<tr>
+<td style="text-align: right;">9</td>
+<td>Distinct countries where age &gt; 20</td>
+<td>Good</td>
+<td>Used <code>DISTINCT</code>, the <code>singer</code> table, and the age filter</td>
+</tr>
+<tr>
+<td style="text-align: right;">10</td>
+<td>Distinct countries where age &gt; 20</td>
+<td>Good</td>
+<td>Used <code>DISTINCT</code>, the <code>singer</code> table, and the age filter</td>
+</tr>
+</tbody>
+</table>
+<p>This is a useful baseline. The model already knows some SQL structure, especially simple aggregation, ordering, and filtering patterns. But it is not reliable for this task yet.</p>
+<p>The most common mistakes in these examples are:</p>
+<ol>
+<li>inventing columns,</li>
+<li>missing filters,</li>
+<li>adding unnecessary <code>GROUP BY</code>,</li>
+<li>adding unnecessary <code>LIMIT</code>,</li>
+<li>selecting the wrong fields,</li>
+<li>misunderstanding phrases like "youngest singer".</li>
+</ol>
+<p>These are exactly the types of errors I want to reduce with fine-tuning.</p>
+    <!-- <div class="aspect-w-16 aspect-h-9 mx-auto"></div> CSS placeholder -->
+  </div>
+  <footer class="flex flex-col mt-10 ">
+    <ul class="flex flex-wrap">
+        <li
+          class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
+          <a href="./tag/applied-ai.html">Applied AI</a>
+        </li>
+        <li
+          class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
+          <a href="./tag/gemma.html">Gemma</a>
+        </li>
+        <li
+          class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
+          <a href="./tag/jax.html">Jax</a>
+        </li>
+        <li
+          class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
+          <a href="./tag/llm.html">LLM</a>
+        </li>
+        <li
+          class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
+          <a href="./tag/nima-moradi.html">Nima Moradi</a>
+        </li>
+        <li
+          class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
+          <a href="./tag/python.html">Python</a>
+        </li>
+        <li
+          class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
+          <a href="./tag/sql.html">SQL</a>
+        </li>
+    </ul>
+    <div class="flex w-full my-2 bg-zinc-200 dark:bg-zinc-700 rounded-lg">
+      <div class="w-1/2 rounded-l-lg"></div>
+      <div class="w-1/2 hover:bg-zinc-300 dark:hover:bg-zinc-800 rounded-r-lg ">
+        <a class="flex flex-col" href="./fine-tuning-the-text-to-sql-using-jax-echo-system-part-1.html">
+          <div class="text-right mx-4 py-2">
+            <p class="text-zinc-600 dark:text-zinc-300 text-sm">NEXT PAGE »</p>
+            <p class="text-right py-1 hover:underline">Fine tuning the text to SQL using JAX echo System - Part 1</p>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="flex bg-zinc-200 dark:bg-zinc-700 py-2 rounded-lg justify-center space-x-2 text-xs">
+      <ul>
+        <li class="bg-gray-900 p-1 text-white rounded-md">
+          <a target="_blank" rel="noopener noreferrer" title="twitter" aria-label="share Features on twitter"
+            href="https://twitter.com/intent/tweet/?text=Features&amp;url=./fine-tuning-text-to-sql-using-the-jax-ecosystem-part-2.html">
+            <i class="fab fa-twitter fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+      </ul>
+      <ul>
+        <li class="bg-gray-900 p-1 text-white rounded-md">
+          <a target="_blank" rel="noopener noreferrer" title="linkedin" aria-label="share Features on linkedin"
+            href="https://www.linkedin.com/sharing/share-offsite/?url=./fine-tuning-text-to-sql-using-the-jax-ecosystem-part-2.html">
+            <i class="fab fa-linkedin fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+      </ul>
+      <ul>
+        <li class="bg-gray-900 p-1 text-white rounded-md">
+          <a target="_blank" rel="noopener noreferrer" title="reddit" aria-label="share Features on reddit"
+            href="https://reddit.com/submit?url=./fine-tuning-text-to-sql-using-the-jax-ecosystem-part-2.html">
+            <i class="fab fa-reddit fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+      </ul>
+      <ul>
+        <li class="bg-gray-900 p-1 text-white rounded-md">
+          <a target="_blank" rel="noopener noreferrer" title="facebook" aria-label="share Features on facebook"
+            href="https://facebook.com/sharer/sharer.php?u=./fine-tuning-text-to-sql-using-the-jax-ecosystem-part-2.html">
+            <i class="fab fa-facebook fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+      </ul>
+      <ul>
+        <li class="bg-gray-900 p-1 text-white rounded-md">
+          <a target="_blank" rel="noopener noreferrer" title="whatsapp" aria-label="share Features on whatsapp"
+            href="https://api.whatsapp.com/send?text=Features - ./fine-tuning-text-to-sql-using-the-jax-ecosystem-part-2.html">
+            <i class="fab fa-whatsapp fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+      </ul>
+      <ul>
+        <li class="bg-gray-900 p-1 text-white rounded-md">
+          <a target="_blank" rel="noopener noreferrer" title="telegram" aria-label="share Features on telegram"
+            href="https://telegram.me/share/url?text=Features&amp;url=./fine-tuning-text-to-sql-using-the-jax-ecosystem-part-2.html">
+            <i class="fab fa-telegram fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </footer>
+  <div>
+  </div>
+</main>
+
+    </div>
+    <footer class="flex w-full text-xs justify-center mt-10 mb-6 text-zinc-600 dark:text-zinc-400">
+        <div class="px-4">
+            <span></span>Powered by
+            <a class="underline" href="https://getpelican.com/">Pelican</a>&nbsp;&
+            <a class="underline" href="https://github.com/aleylara/Papyrus">Papyrus</a>
+        </div>
+    </footer>
+
+
+    <script>
+        let themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+        let themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia(
+                '(prefers-color-scheme: dark)').matches)) {
+            themeToggleLightIcon.classList.remove('hidden');
+        } else {
+            themeToggleDarkIcon.classList.remove('hidden');
+        }
+        let themeToggleBtn = document.getElementById('theme-toggle');
+        themeToggleBtn.addEventListener('click', function () {
+            themeToggleDarkIcon.classList.toggle('hidden');
+            themeToggleLightIcon.classList.toggle('hidden');
+            if (localStorage.getItem('color-theme')) {
+                if (localStorage.getItem('color-theme') === 'light') {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
+                }
+            } else {
+                if (document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
+                } else {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
