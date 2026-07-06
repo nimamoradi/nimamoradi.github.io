@@ -63,6 +63,12 @@
             </button>
         </div>
         <ul class="flex flex-wrap lg:mr-24 md:pt-0">
+            <li class="mr-4 pt-6"><a  href="./pages/about-me.html">About me</a></li>
+            <li class="mr-4 pt-6"><a  href="./archives.html">Archive</a></li>
+            <li class="mr-4 pt-6"><a                     href="./categories.html">Categories</a></li>
+            <li class="mr-4 pt-6"><a  class="border-b-2 border-zinc-800 dark:border-zinc-300"
+ href="./tags.html">Tags</a></li>
+            <li class="mr-4 pt-6"><a  href="./search.html">Search</a></li>
         </ul>
     </nav>
     <div class="flex-grow md:max-w-screen-md md:mx-auto md:w-3/4 px-4">
@@ -403,23 +409,6 @@
             }
         });
 
-        const contactFab = document.getElementById('contact-fab');
-        const contactModal = document.getElementById('contact-modal');
-        const closeModal = document.getElementById('close-modal');
-
-        contactFab.addEventListener('click', () => {
-            contactModal.style.display = 'flex';
-        });
-
-        closeModal.addEventListener('click', () => {
-            contactModal.style.display = 'none';
-        });
-
-        window.addEventListener('click', (event) => {
-            if (event.target == contactModal) {
-                contactModal.style.display = 'none';
-            }
-        });
     </script>
 
     <button id="contact-fab" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-3 px-4 rounded-full shadow-lg">
@@ -457,6 +446,26 @@
             </form>
         </div>
     </div>
+
+    <script>
+        const contactFab = document.getElementById('contact-fab');
+        const contactModal = document.getElementById('contact-modal');
+        const closeModal = document.getElementById('close-modal');
+
+        contactFab.addEventListener('click', () => {
+            contactModal.style.display = 'flex';
+        });
+
+        closeModal.addEventListener('click', () => {
+            contactModal.style.display = 'none';
+        });
+
+        window.addEventListener('click', (event) => {
+            if (event.target == contactModal) {
+                contactModal.style.display = 'none';
+            }
+        });
+    </script>
 </body>
 
 </html>
