@@ -8,11 +8,6 @@ url = "/pages/about-me.html"
 title = "About me"
 
 [[input.files]]
-path = "pages/contact.html"
-url = "/pages/contact.html"
-title = "Contact"
-
-[[input.files]]
 path = "pages/portfolio.html"
 url = "/pages/portfolio.html"
 title = "Portfolio"
