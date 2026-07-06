@@ -12,11 +12,12 @@ replaced with Spider 2, but I will use the older version for our example since i
 
 # Steps
 Here is the current plan for this series,
+
 1. show the data structure and load the data using Grain
-2. Prompting + tokenization + zero-shot generation
-3. LoRA fine-tuning with Tunix
-4. SQL fine tune evaluation with examples
-5. Execute generated SQL on SQLite and compare results
+1. Prompting + tokenization + zero-shot generation
+1. LoRA fine-tuning with Tunix
+1. SQL fine tune evaluation with examples
+1. Execute generated SQL on SQLite and compare results
 
 # Spider dataset
 

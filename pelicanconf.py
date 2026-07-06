@@ -50,7 +50,7 @@ SITEMAP = {
         "pages": "monthly"
     }
 }
-SUBTITLE = 'Nima Moradi'
+SUBTITLE = 'Nima(Nick) Moradi'
 SUBTEXT = '''
 <details>
   <summary><b>About Me</b></summary>

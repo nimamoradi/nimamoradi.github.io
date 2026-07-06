@@ -1,71 +1,81 @@
-Title: Fine tuning the text to SQL using JAX echo System - Part 2
+Title: Fine tuning Text-to-SQL using the JAX Ecosystem - Part 2
 Date: 2026-05-05
 Tags: Python, Nima Moradi, Jax, Applied AI, SQL, LLM, Gemma
 Category: Guide
-Summary: Loading a small Gemma model, preparing prompts, tokenizing text, and running the first zero-shot text-to-SQL examples
+Summary: Loading a small Gemma model, preparing prompts, downloading weights, and running the first zero-shot text-to-SQL baseline
 
 # Introduction
 
-In the previous part, I loaded the Spider dataset, inspected a few samples, and attached the database schema definition to each record. That gave me the three main pieces I need for text-to-SQL:
+In the previous part, I inspected the Spider dataset and created a Grain data loader that returns the fields I need for text-to-SQL:
 
-1. the user question,
-1. the target SQL query,
-1. the database schema.
+1. `db_id`,
+1. `question`,
+1. `query`,
+1. `db_definitions`.
+![Quick overview of part 2(ai-generated image)](../images/part2_sql.png)
 
-In this part, I move from data loading to model loading and zero-shot generation.
+In this part, I use those loaded records to run the first model generation step.
 
-The goal is not fine-tuning yet. Before changing the model weights, I want to check the full path from a Spider sample to a prompt, from a prompt to tokens, and from the model output back to text. This gives me a baseline and also makes sure the model, tokenizer, and data loader are connected correctly.
+The goal here is not to fine-tune yet. I first want a simple baseline:
 
-# Why Gemma and JAX
+1. load a small Gemma model,
+1. load the tokenizer,
+1. prepare a prompt from the database schema and the user question,
+1. run zero-shot generation,
+1. compare the generated SQL with the Spider ground truth.
 
-At first I experimented with models from Hugging Face Transformers. That path is very flexible because it gives access to many decoder-only and encoder-decoder models, and it is easy to switch between model families.
+This gives me a starting point before LoRA fine-tuning.
 
-But for this series I want to keep the project inside the JAX ecosystem as much as possible. Since the rest of the project already uses JAX-related tools, it is better if the model loading, sampling, and later fine-tuning also follow the same direction.
+# Why I started with a very small model
 
-I looked at Flax and the JAX model-loading options, and for this project I selected the Gemma library from Google DeepMind. The Gemma package gives a simple way to load Gemma model definitions, load checkpoint parameters, initialize tokenizers, and then sample from the model.
+Before using Gemma directly, I experimented a little with models from Hugging Face Transformers. That path is very open. It lets you try many model families, including decoder-only models and encoder-decoder models.
 
-For this experiment I use a very small Gemma model. The important reason is iteration speed. A small model will not give the best text-to-SQL accuracy, but it is much easier to load, inspect, debug, and fine-tune on limited hardware.
+But for this series, I want to keep the project close to the JAX ecosystem. The data side already uses JAX-related tools, and the fine-tuning part will also be built around JAX. So I looked at Flax and the Gemma JAX library.
 
-# Model weights and Kaggle
+For this part, I selected Gemma 3 270M instruction-tuned. The reason is not that I expect a 270M model to solve Spider perfectly. The reason is that I want something small enough to load, inspect, and fine-tune quickly.
 
-To use Gemma weights, I need to download the checkpoint. In my setup this means using Kaggle.
+A bigger model will probably handle many of these examples better in zero-shot mode. But the question I want to test in this series is different:
 
-There are two important steps before the code can load the model:
+> Can I improve a very small model enough with fine-tuning so it becomes useful for SQL generation?
 
-1. accept the Gemma model license on Kaggle,
-1. make the checkpoint available locally or in the path expected by the code.
+I do not know the final answer yet. This part only creates the baseline.
 
-This is an important practical step. The code can define the model architecture, but it cannot use the trained model until the model parameters are available. So the checkpoint path in the configuration must point to the downloaded weights.
+# Getting the model weights
 
-For local development, the setup usually looks like this:
+The Gemma model architecture can be created from code, but the trained weights must still be downloaded.
 
-```bash
-mkdir -p ~/.kaggle
-cp kaggle.json ~/.kaggle/kaggle.json
-chmod 600 ~/.kaggle/kaggle.json
+For this experiment I used Kaggle to get the Gemma weights. You need to accept the model license first, then authenticate Kaggle in your environment.
+
+I used this setup:
+
+```python
+import os
+
+os.environ["XLA_PYTHON_CLIENT_MEM_FRACTION"] = "1.0"
+
+# This will prompt you to enter your Kaggle API token.
+import kagglehub
+kagglehub.login()
 ```
 
-After that, the model can be downloaded with the Kaggle tools or by following the download instructions from the Gemma page. In my code I keep the final checkpoint path as a configuration value, so the rest of the project does not need to know where the model came from.
+After login, I downloaded the model with:
+
+```python
+path = kagglehub.model_download("google/gemma-3/flax/gemma-3-270m-it")
+print(path)
+```
+
+You can also download the weights from the Kaggle UI directly or use a command-line download option. You can learn more about them on the kaggle gemma 3 page.
+
+I used Gemma 3 for this run. Gemma 4 exists, but when I started wiring this project, I wanted to avoid adding another moving target since most of this repo is still under active development, so I stayed with `gemma-3-270m-it` for this part.
 
 # Factory pattern for model loading
 
-I wanted the model-loading code to be replaceable. Today I am using a small Gemma model, but later I may want to try another Gemma size, another tokenizer, or even a different encoder/decoder setup.
+I wanted to avoid hard-coding one model in the main training script. Today I am using Gemma 3 270M, but later I may want to try another Gemma size, another tokenizer, or another model-loading path.
 
-For that reason I used a factory pattern.
+For that reason, I created a small factory around the model-loading code.
 
-The main model-loading logic is placed in:
-
-```text
-src/model_loading/llm_factory.py
-```
-
-The configuration is created in:
-
-```text
-src/main.py
-```
-
-The simplified version of the configuration looks like this:
+The configuration contains the parts that may change:
 
 ```python
 config = LLMFactoryConfig(
@@ -76,25 +86,23 @@ config = LLMFactoryConfig(
 )
 ```
 
-The exact fields can change as the code evolves, but the idea is the same: `main.py` decides *what* model and tokenizer to use, and the factory decides *how* to build them.
-
-The factory then builds the model module:
+Then the model is built with:
 
 ```python
 factory = LLMModuleFactory(config)
 modules = factory.build()
 ```
 
-Inside `build()`, the flow is:
+The factory has one main job: return a small group of objects that the rest of the code can use.
 
-1. instantiate the model architecture,
-1. load the trained parameters from the checkpoint path,
+The build process is:
+
+1. create the model architecture,
+1. load the model parameters from the checkpoint,
 1. initialize the tokenizer,
-1. wrap the model and parameters in a sampler.
+1. create a sampler for text generation.
 
-The sampler is the object I use later for generation.
-
-A shortened version of the idea is:
+A simplified version looks like this:
 
 ```python
 class LLMModuleFactory:
@@ -106,7 +114,9 @@ class LLMModuleFactory:
 
         params = load_params(self.config.ckpt_path)
 
-        tokenizer = self.config.tokenizer_cls()
+        tokenizer = self.config.tokenizer_cls(
+            self.config.tokenizer_path,
+        )
 
         sampler = gm.text.Sampler(
             model=model,
@@ -122,15 +132,15 @@ class LLMModuleFactory:
         )
 ```
 
-This is not meant to be the complete source code. It only shows the structure. The important part is that the caller does not need to manually load parameters, construct tokenizers, and wire the sampler every time.
+This is only the structure. The exact implementation can change, but the idea is the same: the rest of the project should not need to know all the details of checkpoint loading.
 
 # Tokenization
 
-Before sending text to the model, I need to understand how the tokenizer sees the prompt.
+The model does not read normal Python strings directly. It reads token ids.
 
-The Gemma tokenizer can encode text into token ids and decode token ids back into text. For debugging, this is useful because the model never sees the original Python string directly. It sees token ids.
+I looked at the Gemma tokenizer methods for encoding and decoding text. The tokenizer gives methods to encode a string into tokens and decode tokens back into text. That is useful for debugging because I can inspect what the model receives and what the generated ids become after decoding.
 
-A simple check looks like this:
+A small check can look like this:
 
 ```python
 tokenizer = modules.tokenizer
@@ -142,85 +152,49 @@ print(token_ids)
 print(tokenizer.decode(token_ids))
 ```
 
-For text-to-SQL, this matters because the prompt can become long after adding the database schema. Even a small natural language question can turn into a large input once we include all table definitions.
+For this part, I kept tokenization simple. I did not yet build the full training tokenization pipeline with masks, labels, padding, and end-of-sequence handling, the sampler will handle this for us.
 
-I also checked the more manual tokenizer methods from the Gemma tokenizer documentation. For now I keep the tokenization path simple because Part 2 is mainly about connecting the full pipeline. Later, when fine-tuning starts, tokenization will become more important because I need to prepare labels, masks, padding, and end-of-sequence behavior.
+That will matter more in the fine-tuning part.
 
 # Prompt format
 
-The Spider sample gives me the question, the SQL query, and the schema.
+The prompt uses two fields from the Spider example:
 
-For zero-shot generation I only give the model the schema and the question. The target SQL query is kept for comparison.
+1. the database schema,
+1. the natural language question.
 
-A simple prompt builder can look like this:
+The target SQL query is not included in the prompt during zero-shot generation. It is only used later for comparison.
+
+The prompt follow this pattern:
 
 ```python
-def build_text_to_sql_prompt(record):
-    return f"""You are a text-to-SQL assistant.
+f"""<start_of_turn>user
+Based on this database schema:
 
-Given the database schema and a user question, write one valid SQLite SQL query.
-Only use the tables and columns shown in the schema.
-Return only the SQL query.
-
-Database schema:
 {record["db_definitions"]}
 
-Question:
-{record["question"]}
+Write a SQL query to answer this question. Output ONLY the SQL query, nothing else.
 
-SQL:
+Question: {record["question"]}<end_of_turn>
+<start_of_turn>model
 """
 ```
 
-The main idea is to make the task explicit:
+This prompt is intentionally direct. I tell the model to output only SQL because I want the result to be easy to compare and later execute.
 
-1. the model should generate SQL,
-1. the SQL should match the provided schema,
-1. the output should contain only the SQL query.
+In practice, the model still sometimes returns Markdown code blocks, such as:
 
-This prompt is still simple. I am not adding few-shot examples yet because I want to see how the model behaves before adding training examples or fine-tuning.
-
-# Loading one Spider sample
-
-The data loader from Part 1 already gives me records like this:
-
-```python
-sample = next(iter(dev_loader))
-```
-
-With `batch_size=1`, the values are wrapped in arrays, so I usually extract the first item before building the prompt:
-
-```python
-record = {
-    "db_id": sample["db_id"][0],
-    "question": sample["question"][0],
-    "query": sample["query"][0],
-    "db_definitions": sample["db_definitions"][0],
-}
-
-prompt = build_text_to_sql_prompt(record)
-print(prompt)
-```
-
-For the first sample from the development split, the question is:
-
-```text
-How many singers do we have?
-```
-
-The target SQL is:
-
+````text
 ```sql
-SELECT count(*) FROM singer
-```
+SELECT COUNT(*) FROM singer;
+```<end_of_turn>
+````
 
-This is a good first example because the correct query is short and uses one table.
+This means I will need a cleanup step before real evaluation.
 
-# Zero-shot generation
+# Running zero-shot generation
 
-After loading the model and preparing the prompt, I can call the sampler.
-
-In `src/main.py`, the flow is:
+After the model is loaded and the data loader is ready, the main script calls an evaluation function:
 
 ```python
 modules = factory.build()
@@ -233,123 +207,231 @@ evaluate_text_to_sql(
 )
 ```
 
-The evaluation function loops over a few samples, builds the prompt, generates SQL, and compares it with the ground-truth query.
+I used `temperature=0.0` because I want deterministic output during debugging. If the output changes every run, it becomes harder to compare prompt changes and model changes.
 
-A simplified version is:
+# First zero-shot results
 
-```python
-def evaluate_text_to_sql(sampler, loader, max_new_tokens=128, temperature=0.0):
-    for sample in loader:
-        record = {
-            "db_id": sample["db_id"][0],
-            "question": sample["question"][0],
-            "query": sample["query"][0],
-            "db_definitions": sample["db_definitions"][0],
-        }
+Here are the first 10 examples from the `concert_singer` database.
 
-        prompt = build_text_to_sql_prompt(record)
+I manually checked the generated SQL from these examples. The model did not behave randomly. It handled a few simple patterns well, but it also failed on several examples where it had to understand filters, selected columns, or ordering logic more carefully.
 
-        generated_sql = sampler.sample(
-            prompt,
-            max_new_tokens=max_new_tokens,
-            temperature=temperature,
-        )
+# Good examples
 
-        print("Question:")
-        print(record["question"])
+The model did well on the direct counting example:
 
-        print("Expected SQL:")
-        print(record["query"])
+```text
+Question:
+What is the total number of singers?
 
-        print("Generated SQL:")
-        print(generated_sql)
+Ground Truth:
+SELECT count(*) FROM singer
 
-        break
+Predicted:
+SELECT COUNT(*) FROM singer;
 ```
 
-I use `temperature=0.0` for this stage because I want deterministic generation. For evaluation, randomness makes debugging harder. If the output changes every run, it is more difficult to know whether a change came from the model, the prompt, or the sampling settings.
+This is the kind of pattern I expected the model to know already: use the `singer` table and count the rows.
 
-# Comparing generated SQL with the target query
+It also did well on this ordering example:
 
-For now the comparison is simple. I print the generated SQL next to the expected SQL.
+```text
+Question:
+Show name, country, age for all singers ordered by age from the oldest to the youngest.
+
+Ground Truth:
+SELECT name ,  country ,  age FROM singer ORDER BY age DESC
+
+Predicted:
+SELECT
+    singer.Name,
+    singer.Country,
+    singer.Age
+FROM
+    singer
+ORDER BY
+    age DESC;
+```
+
+The model selected the right fields from the right table and used descending order for age.
+
+The model also handled the distinct-country examples well:
+
+```text
+Question:
+What are all distinct countries where singers above age 20 are from?
+
+Ground Truth:
+SELECT DISTINCT country FROM singer WHERE age  >  20
+
+Predicted:
+SELECT DISTINCT country
+FROM "singer"
+WHERE age > 20;
+```
+
+And similarly:
+
+```text
+Question:
+What are  the different countries with singers above age 20?
+
+Ground Truth:
+SELECT DISTINCT country FROM singer WHERE age  >  20
+
+Predicted:
+SELECT DISTINCT Country
+FROM "singer"
+WHERE Age > 20;
+```
+
+These examples are encouraging because the model found the table, the `DISTINCT` operation, and the age filter.
+
+# Failed examples
+
+Some other outputs were clearly wrong.
+
+For the first count example, the model added a filter that should not be there:
 
 ```text
 Question:
 How many singers do we have?
 
-Expected SQL:
+Ground Truth:
 SELECT count(*) FROM singer
 
-Generated SQL:
-...
+Predicted:
+SELECT COUNT(*)
+FROM singer
+WHERE Singer_ID = 1;
 ```
 
-This is not a full text-to-SQL evaluation yet.
+The model understood that it needed `COUNT(*)`, but `WHERE Singer_ID = 1` changes the meaning. The question asks for all singers, not one specific singer.
 
-SQL evaluation is more complicated than normal string comparison because two SQL queries can be written differently and still return the same result. For example:
-
-```sql
-SELECT count(*) FROM singer
-```
-
-and:
-
-```sql
-SELECT COUNT(Singer_ID) FROM singer
-```
-
-may be equivalent depending on the database and the data.
-
-So in this part I only use the output for inspection. Later in the series I will add a better evaluation step by executing generated SQL on SQLite and comparing the result with the expected query result.
-
-# What I learned from this step
-
-This step is mainly about making the project runnable end to end.
-
-At this point, I have:
-
-1. loaded Spider examples with schema definitions,
-1. loaded a small Gemma model,
-1. initialized the tokenizer,
-1. created a prompt for text-to-SQL,
-1. generated SQL in a zero-shot setting,
-1. printed the generated SQL next to the target query.
-
-The zero-shot result is only a baseline. I do not expect a very small model to solve Spider reliably without fine-tuning. But that is exactly why this baseline is useful. It shows the starting point before training.
-
-# Notes and limitations
-
-There are a few limitations in this version:
-
-1. The prompt is simple and does not include examples.
-1. The tokenizer path is kept simple.
-1. I am not yet masking labels or preparing training batches.
-1. The comparison is not execution-based.
-1. The model may produce extra text around the SQL query.
-
-These are acceptable for Part 2 because the goal is to test model loading and generation, not to claim strong accuracy.
-
-# Next step
-
-In the next part, I will start fine-tuning the model with LoRA.
-
-The main change will be that the target SQL query will become part of the training example. Instead of only asking the model to generate SQL, I will prepare supervised examples where the model learns the mapping from:
+For this example, the model invented a column name and did not return all requested fields:
 
 ```text
-schema + question
+Question:
+What are the names, countries, and ages for every singer in descending order of age?
+
+Ground Truth:
+SELECT name ,  country ,  age FROM singer ORDER BY age DESC
+
+Predicted:
+SELECT DISTINCT "Singer_Name"
+FROM "singer"
+ORDER BY age DESC;
 ```
 
-to:
+There is no `"Singer_Name"` column in the schema. The expected fields are `Name`, `Country`, and `Age`.
+
+The aggregation examples were also weak:
 
 ```text
-SQL query
+Question:
+What is the average, minimum, and maximum age of all singers from France?
+
+Ground Truth:
+SELECT avg(age) ,  min(age) ,  max(age) FROM singer WHERE country  =  'France'
+
+Predicted:
+SELECT
+    singer.Singer_ID,
+    AVG(singer.Age) AS AverageAge,
+    MIN(singer.Age) AS MinimumAge,
+    MAX(singer.Age) AS MaximumAge
+FROM
+    singer AS singer
+GROUP BY
+    singer.Singer_ID;
 ```
 
-This will also require a more careful tokenization pipeline, because the model should learn from the SQL answer while not treating every part of the prompt in the same way during training.
+The model used the aggregate functions, but it missed the France condition and added `GROUP BY singer.Singer_ID`. That changes the query from one aggregate result for French singers into one aggregate row per singer.
 
-# References
+The second France example had a similar problem:
 
-- Gemma official overview: https://ai.google.dev/gemma/docs
-- Gemma GitHub repository: https://github.com/google-deepmind/gemma
-- Gemma tokenizer documentation: https://gemma-llm.readthedocs.io/en/latest/colab_tokenizer.html
-- Gemma on Kaggle: https://www.kaggle.com/models/google/gemma
+```text
+Question:
+What is the average, minimum, and maximum age for all French singers?
+
+Ground Truth:
+SELECT avg(age) ,  min(age) ,  max(age) FROM singer WHERE country  =  'France'
+
+Predicted:
+SELECT
+    singer.Singer_ID,
+    AVG(singer.Age) AS AverageAge,
+    MIN(singer.Age) AS MinimumAge,
+    MAX(singer.Age) AS MaximumAge
+FROM
+    singer AS singer
+GROUP BY
+    singer.Singer_ID
+ORDER BY
+    AverageAge DESC
+LIMIT 10;
+```
+
+Again, the model missed the country filter and added extra operations that were not requested.
+
+The youngest-singer examples also failed:
+
+```text
+Question:
+Show the name and the release year of the song by the youngest singer.
+
+Ground Truth:
+SELECT song_name ,  song_release_year FROM singer ORDER BY age LIMIT 1
+
+Predicted:
+SELECT "Singer_ID", "Name"
+FROM "singer"
+WHERE "Age" = 1;
+```
+
+The model should have selected `Song_Name` and `Song_release_year`, then ordered by `Age` and used `LIMIT 1`. Instead, it selected different columns and assumed the youngest singer has `Age = 1`.
+
+The next version was also wrong:
+
+```text
+Question:
+What are the names and release years for all the songs of the youngest singer?
+
+Ground Truth:
+SELECT song_name ,  song_release_year FROM singer ORDER BY age LIMIT 1
+
+Predicted:
+SELECT DISTINCT "Name"
+FROM "singer_in_concert";
+```
+
+This output used the wrong table and did not return the requested song name and release year.
+
+# Result summary
+
+Here is the manual review of the first 10 examples.
+
+| Sample | Question type | Result | What happened |
+|---:|---|---|---|
+| 1 | Count singers | Failed | Added `WHERE Singer_ID = 1` |
+| 2 | Count singers | Good | Used `COUNT(*)` on the `singer` table |
+| 3 | Select name, country, age ordered by age | Good | Selected the right fields and used `ORDER BY age DESC` |
+| 4 | Select name, country, age ordered by age | Failed | Invented `Singer_Name` and missed `Country` and `Age` |
+| 5 | Aggregate ages for France | Failed | Missed `WHERE country = 'France'` and grouped by singer |
+| 6 | Aggregate ages for French singers | Failed | Missed the France filter and added extra ordering and limit |
+| 7 | Youngest singer song info | Failed | Selected wrong columns and used `Age = 1` |
+| 8 | Youngest singer song info | Failed | Used the wrong table and selected the wrong field |
+| 9 | Distinct countries where age > 20 | Good | Used `DISTINCT`, the `singer` table, and the age filter |
+| 10 | Distinct countries where age > 20 | Good | Used `DISTINCT`, the `singer` table, and the age filter |
+
+This is a useful baseline. The model already knows some SQL structure, especially simple aggregation, ordering, and filtering patterns. But it is not reliable for this task yet.
+
+The most common mistakes in these examples are:
+
+1. inventing columns,
+1. missing filters,
+1. adding unnecessary `GROUP BY`,
+1. adding unnecessary `LIMIT`,
+1. selecting the wrong fields,
+1. misunderstanding phrases like "youngest singer".
+
+These are exactly the types of errors I want to reduce with fine-tuning.

@@ -1,9 +1,9 @@
 Title: About me
 Date: 2026-03-18
 Tags: software, AI, Android, cloud, backend, distributed systems, bio, Nima Moradi, CV
-Description: Software engineer with 6+ years of experience across distributed backend systems, Android, cloud infrastructure, and AI.
+Description: Software engineer with experience across distributed backend systems, Android, cloud infrastructure, and AI.
 
-I am a software engineer with 6+ years of experience across distributed backend systems, AWS serverless architecture, Android engineering, WebRTC-based real-time systems, APK instrumentation, and AI/data tooling. My work spans backend infrastructure, mobile platforms, cloud gaming, and developer tooling.
+I am a software engineer with experience across distributed backend systems, AWS serverless architecture, Android engineering, WebRTC-based real-time systems, APK instrumentation, and AI/data tooling. My work spans backend infrastructure, mobile platforms, cloud gaming, and developer tooling.
 
 **Location:** Montréal, QC, Canada
 **Profiles:** [GitHub](https://github.com/nimamoradi) · [LinkedIn](https://www.linkedin.com/in/nima-moradi/)
