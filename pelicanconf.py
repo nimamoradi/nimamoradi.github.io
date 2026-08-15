@@ -1,6 +1,9 @@
 AUTHOR = 'Nima Moradi'
-SITENAME = 'Nima Moradi Personal blog'
+SITENAME = 'Nima Moradi | Software Engineer & AI Developer'
 SITEURL = 'https://ni-moradi.com'
+
+# Public endpoint used by the contact widget on every page.
+CONTACT_FORM_ENDPOINT = 'https://formspree.io/f/xvzjllra'
 
 PATH = 'content'
 
@@ -28,9 +31,10 @@ SOCIAL = (
     ('medium', 'https://medium.com/@ni.moradi96'),
 )
 
-# Uncomment following line if you want document-relative URLs when developing
-RELATIVE_URLS = True
-THEME = 'themes/Papyrus'
+# The public site has one HTTPS canonical origin. Relative canonical URLs caused
+# Google to receive conflicting canonical signals from the sitemap and pages.
+RELATIVE_URLS = False
+THEME = 'site-theme'
 THEME_STATIC_PATHS = ['static']
 PLUGIN_PATHS = ['pelican-plugins']
 PLUGINS = ['readtime', 'search', 'neighbors', 'pelican-toc', 'sitemap']
@@ -39,14 +43,22 @@ PLUGINS = ['readtime', 'search', 'neighbors', 'pelican-toc', 'sitemap']
 
 SITEMAP = {
     "format": "xml",
+    # Taxonomy, search and pagination pages are useful for visitors but are thin
+    # discovery pages. Keep the sitemap focused on the pages that should rank.
+    "exclude": [
+        r"^author[0-9]*\.html$",
+        r"^category/",
+        r"^tag/",
+        r"^(archives|categories|tags|search|index[0-9]+)\.html$",
+    ],
     "priorities": {
-        "articles": 0.5,
-        "indexes": 0.5,
-        "pages": 0.5
+        "articles": 0.8,
+        "indexes": 0.4,
+        "pages": 0.7
     },
     "changefreqs": {
-        "articles": "monthly",
-        "indexes": "daily",
+        "articles": "weekly",
+        "indexes": "monthly",
         "pages": "monthly"
     }
 }
@@ -76,6 +88,10 @@ SUBTEXT = '''
 DISPLAY_PAGES_ON_MENU = True
 DIRECT_TEMPLATES = (('index', 'search', 'tags', 'categories', 'archives',))
 PAGINATED_TEMPLATES = {'index': None, 'tag': None, 'category': None, 'author': None, 'archives': 24, }
+
+# The older Pelican release in this project requires an author output path.
+# Normalized author metadata now produces this single archive (not in sitemap).
+AUTHOR_SAVE_AS = 'author.html'
 
 # Site search plugin
 SEARCH_MODE = "output"
