@@ -1,7 +1,9 @@
 Title: Create a Simple AI Assistant Using LLama 3: A Proof of Concept
 Date: 2024-08-02
-Tags: Python, Machine Learning, LLM, Large Language Model, LLama 3, Nima Moradi
+Tags: Llama 3, LLMs, Python, AI Assistants, Generative AI
 Category: Guide
+Summary: A practical proof of concept for building a simple Llama 3 coding assistant with Python.
+Image: images/llama3-ai-assistant-workflow.jpg
 
 ### The Code
 In this guide, we'll explore how to create a simple AI assistant using LLama 3,

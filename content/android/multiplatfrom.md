@@ -1,7 +1,10 @@
 Title: Kotlin Multiplatform Quick Start Guide (macOS)
 Date: 2025-04-14
-Tags: kotlin, multiplatform, android, ios, compose, jetbrains
+Category: Programming
+Tags: Kotlin Multiplatform, Kotlin, Android, iOS, Compose
 Description: A concise guide to setting up and running a Kotlin Multiplatform project on macOS with Android and iOS targets
+Image: images/kotlin-multiplatform-web-wizard.png
+Image_Fit: contain
 
 # Getting Started with Kotlin Multiplatform on macOS
 
@@ -28,14 +31,12 @@ You can create the project using one of the following options:
 - Supports Android, iOS, Desktop, and Web.
 - Allows more flexible configuration options.
 
-![Image Placeholder: KMP Web Wizard](../images/kmp_web_wizard.png)
-
 ### Option 2: Android Studio
 
 - File → New Project → **Kotlin Multiplatform Application**
 - Select Android and iOS targets
 
-![Image Placeholder: Android Studio iOS Option](../images/kmp_ios_option.png)  
+![Android Studio Kotlin Multiplatform iOS preview](../images/kotlin-multiplatform-ios-preview.png)
 *If you do not see the iOS option, install the `Kotlin Multiplatform` plugin or update Android Studio and Xcode.*
 
 ## Running the Project
@@ -74,4 +75,3 @@ _Android and iOS resource/image files are omitted for brevity._
 ## Next Steps
 
 This setup provides the foundation for multiplatform development. In the next guide, we’ll explore writing shared UI logic using Jetpack Compose and handling platform-specific integrations.
-

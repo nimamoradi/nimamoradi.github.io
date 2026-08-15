@@ -1,8 +1,9 @@
 Title: OverView of Coroutines
 Date: 2024-04-27
-Tags: Python,Kotlin, process, Nima Moradi
+Tags: Coroutines, Async Programming, Python, Kotlin, Concurrency
 Category: Guide
 Summary: An overView of Coroutines in Python and Kotlin
+Image: images/python-kotlin-coroutines-event-loop.jpg
 
 # Introduction
 

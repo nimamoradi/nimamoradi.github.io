@@ -1,10 +1,12 @@
 Title: JAX vs NumPy: A Performance Comparison
 Date: 2024-08-15 10:00
 Category: Programming
-Tags: python, scientific computing, jax, numpy
+Tags: Python, JAX, NumPy, Scientific Computing, Performance Benchmarking
 Slug: jax-vs-numpy-performance
-Authors: Nima Moradi
+Author: Nima Moradi
 Summary: An analysis of JAX performance compared to NumPy for common array operations.
+Image: images/jax-vs-numpy-performance-chart.png
+Image_Fit: contain
 
 # JAX vs NumPy: A Performance Comparison
 

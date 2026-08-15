@@ -1,8 +1,9 @@
 Title: Fine tuning Text-to-SQL using the JAX Ecosystem - Part 2
 Date: 2026-05-05
-Tags: Python, Nima Moradi, Jax, Applied AI, SQL, LLM, Gemma
+Tags: Text-to-SQL, JAX, Gemma, LLMs, Zero-Shot Learning
 Category: Guide
 Summary: Loading a small Gemma model, preparing prompts, downloading weights, and running the first zero-shot text-to-SQL baseline
+Image: images/text-to-sql-jax-part-2-overview.png
 
 # Introduction
 
@@ -12,8 +13,6 @@ In the previous part, I inspected the Spider dataset and created a Grain data lo
 1. `question`,
 1. `query`,
 1. `db_definitions`.
-![Quick overview of part 2(ai-generated image)](../images/part2_sql.png)
-
 In this part, I use those loaded records to run the first model generation step.
 
 The goal here is not to fine-tune yet. I first want a simple baseline:

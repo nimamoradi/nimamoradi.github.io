@@ -1,8 +1,9 @@
 Title: Tacotron 2 For Persian language
 Date: 2021-01-09
-Tags: TTS, Python, AI, Persian, Tacotron 2, Nima Moradi
+Tags: Text to Speech, Tacotron 2, Persian NLP, PyTorch, Deep Learning
 Category: Research
 Summary: Pytorch implementation of DeepMind's Tacotron-2 for Persian
+Image: images/tacotron2-persian-speech-synthesis.jpg
 
 # Tacotron 2 
 
@@ -27,7 +28,7 @@ Pytorch implementation of DeepMind's Tacotron-2 : [Natural TTS synthesis by cond
 - Step **(0.1)**:note you can use our own dataset too here is [kaggle link](https://www.kaggle.com/moradi/persian-texttospeech-audio)
 
 - Step **(1)**: add your own test and train data parameters in ```filelists/```.
-because mozilla audio is more than 211 h of audio we procced only small portion of it, convert to wave and remove files more than 10 seconds in length, you can see them in [filelists](/tacotron2/filelists).
+Because Mozilla audio is more than 211 hours, we processed a small subset, converted it to WAV, and removed files longer than 10 seconds before training. The original [filelists](https://github.com/nimamoradi/tts-engine/tree/master/tacotron2/filelists) are available in the project repository.
 - Step **(2)**:  Install python requirements or build docker image 
     - Install python requirements: `pip install -r requirements.txt`
 - Step **(3)**: Install cuda and pytorch 1.0 .
@@ -42,11 +43,9 @@ because mozilla audio is more than 211 h of audio we procced only small portion 
 I listed some of audio the model genarated you can listen them in [soundcloud](https://soundcloud.com/nima-moradi-78715897/sets/tacotron-2-audio-persian).
 ## Model
 <p align="center">
- <img width="75%" src="images/arc.png">
 </p>
 
 
 The model described by the authors can be divided in two parts:
 - Spectrogram prediction network
 - Wavenet vocoder
-

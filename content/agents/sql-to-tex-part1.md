@@ -1,15 +1,14 @@
 Title: Fine tuning the text to SQL using JAX echo System - Part 1
 Date: 2026-04-30
-Tags: Python, Nima Moradi, Jax, Applied AI, SQL, LLM
+Tags: Text-to-SQL, JAX, LLMs, Python, Spider Dataset
 Category: Guide
 Summary: Inspecting Our dataset and loading it
+Image: images/text-to-sql-jax-part-1-overview.png
 
 # Introduction
 In this series, I will use a small LLM model and fine tune it to answer the request by users by creating the right sql query,
 I will use Spider1 dataset, this dataset have a ranking and benchmarks for showing the effectiveness of each method, and now have been
 replaced with Spider 2, but I will use the older version for our example since it smaller dataset and more established
-![Quick overview of part 1(ai-generated image)](../images/part1_sql.png)
-
 # Steps
 Here is the current plan for this series,
 

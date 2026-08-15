@@ -1,8 +1,9 @@
 Title: How does Android implement Compose Jetpack
 Date: 2024-07-12
-Tags: Android,Kotlin, Java, Nima Moradi
+Tags: Jetpack Compose, Android, Kotlin, UI Development, Declarative UI
 Category: Guide
 Summary: An overView of Compose Jetpack
+Image: images/android-jetpack-compose-ui-models.jpg
 
 # Introduction
 

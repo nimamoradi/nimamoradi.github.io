@@ -1,8 +1,9 @@
 Title: Bag of Words Example
 Date: 2019-07-21
-Tags: Python,Machine Learning,BOG, Nima Moradi
+Tags: Python, NLP, Bag of Words, Text Vectorization, Machine Learning
 Category: Research
 Summary: An example of Bag of Words using python
+Image: images/bag-of-words-vectorization-illustration.jpg
 
 Bag of Words bag of words is one of the most basic ways to represent a word, it is simply a word counter. let us look at an example
 ```
@@ -154,4 +155,4 @@ print( X_train.shape )
 
 3. sparseness each word vector is a super long vector with only 1 bit and all other zeros which cause memory inefficiency
 
-nima moradi 21/7/2019  [My page twitter](https://twitter.com/ni_moradi "twitter page nima moradi")
+nima moradi 21/7/2019

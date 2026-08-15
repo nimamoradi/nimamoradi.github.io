@@ -1,6 +1,6 @@
 Title: About me
 Date: 2026-03-18
-Tags: software, AI, Android, cloud, backend, distributed systems, bio, Nima Moradi, CV
+Tags: Software Engineering, Cloud Architecture, Android, Backend Development, AI
 Description: Software engineer with experience across distributed backend systems, Android, cloud infrastructure, and AI.
 
 I am a software engineer with experience across distributed backend systems, AWS serverless architecture, Android engineering, WebRTC-based real-time systems, APK instrumentation, and AI/data tooling. My work spans backend infrastructure, mobile platforms, cloud gaming, and developer tooling.
@@ -63,7 +63,7 @@ Developed and optimized the native Android client and storefront experience for 
 
 _Tech stack:_ Kotlin, Java, Android UI/UX, client architecture
 
-![INAGRAL Cloud Gaming Store - Prototype](../images/game_store.jpeg)
+![INAGRAL Cloud Gaming Store - Prototype](../images/cloud-gaming-store-screen.jpeg)
 
 ### Android Virtual Gamepad
 Built an Android virtual gamepad for cloud gaming use cases.
@@ -73,8 +73,8 @@ Built an Android virtual gamepad for cloud gaming use cases.
 
 _Tech stack:_ Kotlin, Java, Android, Bluetooth, custom views, input handling
 
-![INAGRAL overlay Android gamepad](../images/gamepad.jpeg)
-![INAGRAL fullscreen Android gamepad](../images/gamepad_blank.jpeg)
+![INAGRAL overlay Android gamepad](../images/cloud-gaming-overlay-gamepad.jpeg)
+![INAGRAL fullscreen Android gamepad](../images/cloud-gaming-fullscreen-gamepad.jpeg)
 
 ### Android DRM & RASP Security Wrapper / APK Instrumentation Pipeline
 Built a wrapper and automation pipeline that modifies compiled Android APKs without source-code access.
@@ -86,7 +86,7 @@ Built a wrapper and automation pipeline that modifies compiled Android APKs with
 
 _Tech stack:_ Python, Kotlin, Java, Smali, apktool, DexClassLoader, Android resource and manifest tooling
 
-![Android DRM Wrapper](../images/drm_image.jpeg)
+![Android DRM Wrapper](../images/android-drm-wrapper-screen.jpeg)
 
 ### Financial LLM Market Analysis Tool
 Built financial news and sentiment analysis pipelines around LLM workflows.

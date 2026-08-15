@@ -1,9 +1,10 @@
 Title: Building a Local AI Audiobook Pipeline with Python and Kokoro
 Date: 2025-12-28 10:00
 Category: Engineering
-Tags: Python, AI, MLX, PDF, Audio
+Tags: Audiobook Generation, Text to Speech, Python, Kokoro, Local AI
 Slug: building-local-ai-audiobook-pipeline
 Summary: How I used PyMuPDF and the Kokoro-82M model to create a high-quality, local text-to-speech engine for converting PDFs to audiobooks.
+Image: images/local-ai-audiobook-pipeline.jpg
 
 During the holidays, I wanted to listen to a specific book series. However, I found myself in a common predicament: there were no official audiobooks available, and the existing mobile text-to-speech accessibility tools sounded too robotic for a novel.
 

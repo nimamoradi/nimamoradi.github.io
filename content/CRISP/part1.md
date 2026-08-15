@@ -1,12 +1,11 @@
 Title: CRISP-DM Series: Mastering Data Mining in Football Analytics
 Date: 2024-02-4
-Tags: Python,Machine Learning, CRISP, Data Mining, Nima Moradi
+Tags: Python, Machine Learning, Data Mining, Football Analytics, CRISP-DM
 Category: Guide
 Summary: An example of CRISP-Data Mining using python
+Image: images/crisp-dm-football-analytics-overview.png
 
 Welcome to our CRISP-DM series, where we explore the Cross-Industry Standard Process for Data Mining through the lens of football analytics. This series is designed for aspiring data scientists and analytics enthusiasts who wish to deepen their understanding of data mining processes, from business understanding to deployment, using the exciting world of football as a case study.
-![Image Placeholder: CRISP](../images/crisp.png)
-
 ## What is CRISP-DM?
 The CRISP-DM (Cross-Industry Standard Process for Data Mining) framework offers a structured methodology to navigate data analysts and scientists through the entirety of a project, from inception to completion. Originating from a seminal paper in 2000, its adoption and utility have remained steadfast. Numerous discussions, such as certain articles, attest to its effectiveness in refining the capabilities of data scientists. Its significance extends beyond the technical team, advocating for a comprehensive understanding among all project participants, including stakeholders and managers. For those intrigued by the domain, delving into CRISP-DM is highly recommended as a foundational resource.
 ## Introduction to CRISP-DM

@@ -1,8 +1,9 @@
 Title: A look at Jinja templates
 Date: 2025-02-16
-Tags: Python,Jinja, templates, Nima Moradi
+Tags: Jinja2, Python, Templating, LaTeX, Automation
 Category: Guide
 Summary: Some examples of Jinja templates using for loop and if
+Image: images/jinja-template-rendering.jpg
 
 # A look at Jinja templates
 Just started playing around with Jinja2 templates, and I have to say—it’s pretty cool. I knew it could be used to fill in variables, kind of like Python string formatting, but what really surprised me was that you can also include basic logic like loops and conditionals right inside the template.

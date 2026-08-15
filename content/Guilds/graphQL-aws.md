@@ -1,10 +1,11 @@
 Title: REST API vs. GraphQL on AWS: A Simple Comparison Using API Gateway and AppSync
 Date: 2025-06-01
-Category: guide, Cloud Architecture
-Tags: AWS, AppSync, GraphQL, REST, API Gateway, DynamoDB
+Category: Cloud Architecture
+Tags: AWS, GraphQL, REST APIs, API Gateway, AppSync, DynamoDB
 Slug: rest-vs-graphql-api-aws
 Author: Nima Moradi
 Summary: A focused comparison of REST APIs using API Gateway and GraphQL using AppSync on AWS, illustrated with a simple shopping example involving Users, ShoppingCarts, and Items.
+Image: images/rest-vs-graphql-aws-architecture.jpg
 
 ---
 

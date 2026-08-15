@@ -1,10 +1,11 @@
 Title: Building a Todo App with GCP: Part 1 - Setting Up Infrastructure
 Date: 2024-09-28 10:00
 Category: Programming
-Tags: python, GCP
+Tags: Google Cloud, Terraform, Cloud Functions, Firestore, Serverless
 Slug: Todo app
-Authors: Nima Moradi
+Author: Nima Moradi
 Summary: An todo app using GCP tech stack
+Image: images/gcp-todo-app-infrastructure.jpg
 
 
 Welcome to the first part of our journey in building a todo app using the Google Cloud Platform (GCP) tech stack. In this multi-part series, we'll explore how to leverage various GCP services to create a robust and scalable todo application. Our goal is to provide users with the ability to register tasks and receive email notifications when the task due time approaches.

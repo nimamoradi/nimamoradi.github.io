@@ -1,8 +1,9 @@
 Title: Easy subtitle translation using google api
 Date: 2024-07-13
-Tags: Python, translate, subtitles, Nima Moradi
+Tags: Subtitle Translation, Google Cloud Translation, Python, Machine Translation
 Category: Guide
 Summary: Easy subtitle translation using google api
+Image: images/subtitle-translation-pipeline.jpg
 
 ## Breaking Language Barriers: Translating Subtitles with Google API
 

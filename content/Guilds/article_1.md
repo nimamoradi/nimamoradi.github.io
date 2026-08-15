@@ -1,8 +1,9 @@
 Title: K-Means Clustering Example
 Date: 2019-06-4
-Tags: Python,Machine Learning, Clustering, K-Means, Nima Moradi
+Tags: Python, Machine Learning, K-Means Clustering, Unsupervised Learning, Data Science
 Category: Guide
 Summary: An example of K-Means using python
+Image: images/k-means-clustering-illustration.jpg
 
 
 ## K-Means Clustering
@@ -57,7 +58,6 @@ plt.show()
 
 
     
-![png](Copy%20of%20K-Means%20Clustering_files/Copy%20of%20K-Means%20Clustering_5_0.png)
     
 
 
@@ -113,7 +113,6 @@ plt.legend()
 
 
     
-![png](Copy%20of%20K-Means%20Clustering_files/Copy%20of%20K-Means%20Clustering_8_1.png)
     
 
 

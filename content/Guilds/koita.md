@@ -1,8 +1,9 @@
 Title: Streamlining API Integration with Kiota
 Date: 2023-05-09
-Tags: API, Kiota, swagger, Nima Moradi
+Tags: API Integration, OpenAPI, Kiota, SDK Generation, Software Development
 Category: Review
 Summary: a short review of Kiota
+Image: images/kiota-openapi-sdk-generation.jpg
 
 In the fast-paced world of software development, one thing is certain: time is precious.
 The ability to quickly and seamlessly integrate external APIs can make or break a project.
@@ -64,4 +65,3 @@ during serialization.
 Kiota represents a paradigm shift in API integration. By simplifying the discovery of OpenAPI definitions and automating
 the generation of SDKs, Kiota empowers developers to streamline their workflow, reduce development cycles, and deliver
 applications faster. Say hello to a more productive and enjoyable development process with Kiota.
-
