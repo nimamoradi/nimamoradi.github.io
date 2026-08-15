@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
     <link rel="stylesheet" type="text/css" href="./theme/css/main.css" />
     <link rel="stylesheet" type="text/css" href="./theme/css/contact-widget.css" />
+    <link rel="stylesheet" type="text/css" href="./theme/css/article-images.css" />
     <link rel="stylesheet" type="text/css" href="./theme/css/pygment.css" />
     <link rel="shortcut icon" href="./favicon.jpg" type="image/x-icon">
     <link rel="stylesheet" href="./theme/css/stork.css">
@@ -107,13 +108,17 @@
       </div>
     </footer>
   </header>
+  <figure class="article-hero">
+    <img class="article-hero__image article-hero__image--contain"
+      src="./images/kotlin-multiplatform-web-wizard.png" alt="Kotlin Multiplatform Quick Start Guide (macOS)" fetchpriority="high">
+  </figure>
   <details class="flex flex-col my-6 p-4 bg-zinc-200 dark:bg-zinc-800 rounded-lg">
     <summary class="text-lg font-bold">Table of contents</summary>
     <div class="mx-4 px-4 underline">
       <div id="toc"><ul><li><a class="toc-href" href="#getting-started-with-kotlin-multiplatform-on-macos" title="Getting Started with Kotlin Multiplatform on macOS">Getting Started with Kotlin Multiplatform on macOS</a><ul><li><a class="toc-href" href="#system-requirements" title="System Requirements">System Requirements</a></li><li><a class="toc-href" href="#project-creation" title="Project Creation">Project Creation</a><ul><li><a class="toc-href" href="#option-1-jetbrains-kmp-project-wizard" title="Option 1: JetBrains KMP Project Wizard">Option 1: JetBrains KMP Project Wizard</a></li><li><a class="toc-href" href="#option-2-android-studio" title="Option 2: Android Studio">Option 2: Android Studio</a></li></ul></li><li><a class="toc-href" href="#running-the-project_1" title="Running the Project">Running the Project</a></li><li><a class="toc-href" href="#project-structure" title="Project Structure">Project Structure</a></li><li><a class="toc-href" href="#next-steps" title="Next Steps">Next Steps</a></li></ul></li></ul></div>
     </div>
   </details>
-  <div class="max-w-7xl container mx-auto my-8 text-zinc-800 dark:text-zinc-300  
+  <div class="article-content max-w-7xl container mx-auto my-8 text-zinc-800 dark:text-zinc-300  
               prose lg:max-w-none prose-headings:text-zinc-800 prose-headings:dark:text-zinc-300 
               prose-h1:text-3xl lg:prose-h1:text-3xl prose-headings:font-semibold 
               prose-pre:bg-zinc-200 prose-pre:text-zinc-800
@@ -150,13 +155,12 @@ Open Android Studio &rarr; <code>Preferences</code> &rarr; <code>Plugins</code> 
 <li>Supports Android, iOS, Desktop, and Web.</li>
 <li>Allows more flexible configuration options.</li>
 </ul>
-<p><img alt="Image Placeholder: KMP Web Wizard" src="../images/kmp_web_wizard.png"/></p>
 <h3 id="option-2-android-studio">Option 2: Android Studio</h3>
 <ul>
 <li>File &rarr; New Project &rarr; <strong>Kotlin Multiplatform Application</strong></li>
 <li>Select Android and iOS targets</li>
 </ul>
-<p><img alt="Image Placeholder: Android Studio iOS Option" src="../images/kmp_ios_option.png"/><br/>
+<p><img alt="Android Studio Kotlin Multiplatform iOS preview" src="../images/kotlin-multiplatform-ios-preview.png"/><br/>
 <em>If you do not see the iOS option, install the <code>Kotlin Multiplatform</code> plugin or update Android Studio and Xcode.</em></p>
 <h2 id="running-the-project_1">Running the Project</h2>
 <p>After generating the project:</p>
@@ -364,8 +368,8 @@ Open Android Studio &rarr; <code>Preferences</code> &rarr; <code>Plugins</code> 
 
     <button class="contact-widget__toggle" id="contact-toggle" type="button" aria-controls="contact-panel"
         aria-expanded="false" aria-label="Open contact form">
-        <span class="contact-widget__mail" aria-hidden="true">✉</span>
-        <span class="contact-widget__close" aria-hidden="true">×</span>
+        <span class="contact-widget__mail" aria-hidden="true"><i class="fas fa-paper-plane"></i></span>
+        <span class="contact-widget__close" aria-hidden="true"><i class="fas fa-times"></i></span>
     </button>
 </div>    <script src="./theme/js/contact-widget.js" defer></script>
 </body>

@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
     <link rel="stylesheet" type="text/css" href="./theme/css/main.css" />
     <link rel="stylesheet" type="text/css" href="./theme/css/contact-widget.css" />
+    <link rel="stylesheet" type="text/css" href="./theme/css/article-images.css" />
     <link rel="stylesheet" type="text/css" href="./theme/css/pygment.css" />
     <link rel="shortcut icon" href="./favicon.jpg" type="image/x-icon">
     <link rel="stylesheet" href="./theme/css/stork.css">
@@ -107,13 +108,17 @@
       </div>
     </footer>
   </header>
+  <figure class="article-hero">
+    <img class="article-hero__image"
+      src="./images/text-to-sql-jax-part-2-overview.png" alt="Fine tuning Text-to-SQL using the JAX Ecosystem - Part 2" fetchpriority="high">
+  </figure>
   <details class="flex flex-col my-6 p-4 bg-zinc-200 dark:bg-zinc-800 rounded-lg">
     <summary class="text-lg font-bold">Table of contents</summary>
     <div class="mx-4 px-4 underline">
       <div id="toc"><ul><li><a class="toc-href" href="#introduction" title="Introduction">Introduction</a></li><li><a class="toc-href" href="#why-i-started-with-a-very-small-model" title="Why I started with a very small model">Why I started with a very small model</a></li><li><a class="toc-href" href="#getting-the-model-weights" title="Getting the model weights">Getting the model weights</a></li><li><a class="toc-href" href="#factory-pattern-for-model-loading" title="Factory pattern for model loading">Factory pattern for model loading</a></li><li><a class="toc-href" href="#tokenization" title="Tokenization">Tokenization</a></li><li><a class="toc-href" href="#prompt-format" title="Prompt format">Prompt format</a></li><li><a class="toc-href" href="#running-zero-shot-generation" title="Running zero-shot generation">Running zero-shot generation</a></li><li><a class="toc-href" href="#first-zero-shot-results" title="First zero-shot results">First zero-shot results</a></li><li><a class="toc-href" href="#good-examples" title="Good examples">Good examples</a></li><li><a class="toc-href" href="#failed-examples" title="Failed examples">Failed examples</a></li><li><a class="toc-href" href="#result-summary" title="Result summary">Result summary</a></li></ul></div>
     </div>
   </details>
-  <div class="max-w-7xl container mx-auto my-8 text-zinc-800 dark:text-zinc-300  
+  <div class="article-content max-w-7xl container mx-auto my-8 text-zinc-800 dark:text-zinc-300  
               prose lg:max-w-none prose-headings:text-zinc-800 prose-headings:dark:text-zinc-300 
               prose-h1:text-3xl lg:prose-h1:text-3xl prose-headings:font-semibold 
               prose-pre:bg-zinc-200 prose-pre:text-zinc-800
@@ -137,9 +142,8 @@
 <li><code>question</code>,</li>
 <li><code>query</code>,</li>
 <li><code>db_definitions</code>.
-<img alt="Quick overview of part 2(ai-generated image)" src="../images/part2_sql.png"/></li>
+In this part, I use those loaded records to run the first model generation step.</li>
 </ol>
-<p>In this part, I use those loaded records to run the first model generation step.</p>
 <p>The goal here is not to fine-tune yet. I first want a simple baseline:</p>
 <ol>
 <li>load a small Gemma model,</li>
@@ -691,8 +695,8 @@ FROM "singer_in_concert";
 
     <button class="contact-widget__toggle" id="contact-toggle" type="button" aria-controls="contact-panel"
         aria-expanded="false" aria-label="Open contact form">
-        <span class="contact-widget__mail" aria-hidden="true">✉</span>
-        <span class="contact-widget__close" aria-hidden="true">×</span>
+        <span class="contact-widget__mail" aria-hidden="true"><i class="fas fa-paper-plane"></i></span>
+        <span class="contact-widget__close" aria-hidden="true"><i class="fas fa-times"></i></span>
     </button>
 </div>    <script src="./theme/js/contact-widget.js" defer></script>
 </body>

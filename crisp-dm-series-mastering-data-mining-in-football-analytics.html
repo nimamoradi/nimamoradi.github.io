@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
     <link rel="stylesheet" type="text/css" href="./theme/css/main.css" />
     <link rel="stylesheet" type="text/css" href="./theme/css/contact-widget.css" />
+    <link rel="stylesheet" type="text/css" href="./theme/css/article-images.css" />
     <link rel="stylesheet" type="text/css" href="./theme/css/pygment.css" />
     <link rel="shortcut icon" href="./favicon.jpg" type="image/x-icon">
     <link rel="stylesheet" href="./theme/css/stork.css">
@@ -107,13 +108,17 @@
       </div>
     </footer>
   </header>
+  <figure class="article-hero">
+    <img class="article-hero__image"
+      src="./images/crisp-dm-football-analytics-overview.png" alt="CRISP-DM Series: Mastering Data Mining in Football Analytics" fetchpriority="high">
+  </figure>
   <details class="flex flex-col my-6 p-4 bg-zinc-200 dark:bg-zinc-800 rounded-lg">
     <summary class="text-lg font-bold">Table of contents</summary>
     <div class="mx-4 px-4 underline">
       <div id="toc"><ul><li><a class="toc-href" href="#what-is-crisp-dm" title="What is CRISP-DM?">What is CRISP-DM?</a></li><li><a class="toc-href" href="#introduction-to-crisp-dm" title="Introduction to CRISP-DM">Introduction to CRISP-DM</a><ul><li><a class="toc-href" href="#defining-the-objective-business-understanding" title="Defining the Objective (Business Understanding)">Defining the Objective (Business Understanding)</a></li><li><a class="toc-href" href="#gathering-data" title="Gathering Data">Gathering Data</a></li></ul></li></ul></div>
     </div>
   </details>
-  <div class="max-w-7xl container mx-auto my-8 text-zinc-800 dark:text-zinc-300  
+  <div class="article-content max-w-7xl container mx-auto my-8 text-zinc-800 dark:text-zinc-300  
               prose lg:max-w-none prose-headings:text-zinc-800 prose-headings:dark:text-zinc-300 
               prose-h1:text-3xl lg:prose-h1:text-3xl prose-headings:font-semibold 
               prose-pre:bg-zinc-200 prose-pre:text-zinc-800
@@ -130,8 +135,7 @@
               prose-img:rounded-md
               sm:text-left md:text-justify
               ">
-    <p>Welcome to our CRISP-DM series, where we explore the Cross-Industry Standard Process for Data Mining through the lens of football analytics. This series is designed for aspiring data scientists and analytics enthusiasts who wish to deepen their understanding of data mining processes, from business understanding to deployment, using the exciting world of football as a case study.
-<img alt="Image Placeholder: CRISP" src="../images/crisp.png"/></p>
+    <p>Welcome to our CRISP-DM series, where we explore the Cross-Industry Standard Process for Data Mining through the lens of football analytics. This series is designed for aspiring data scientists and analytics enthusiasts who wish to deepen their understanding of data mining processes, from business understanding to deployment, using the exciting world of football as a case study.</p>
 <h2 id="what-is-crisp-dm">What is CRISP-DM?</h2>
 <p>The CRISP-DM (Cross-Industry Standard Process for Data Mining) framework offers a structured methodology to navigate data analysts and scientists through the entirety of a project, from inception to completion. Originating from a seminal paper in 2000, its adoption and utility have remained steadfast. Numerous discussions, such as certain articles, attest to its effectiveness in refining the capabilities of data scientists. Its significance extends beyond the technical team, advocating for a comprehensive understanding among all project participants, including stakeholders and managers. For those intrigued by the domain, delving into CRISP-DM is highly recommended as a foundational resource.</p>
 <h2 id="introduction-to-crisp-dm">Introduction to CRISP-DM</h2>
@@ -371,8 +375,8 @@ from each cell, ensuring no data point is overlooked:</p>
 
     <button class="contact-widget__toggle" id="contact-toggle" type="button" aria-controls="contact-panel"
         aria-expanded="false" aria-label="Open contact form">
-        <span class="contact-widget__mail" aria-hidden="true">✉</span>
-        <span class="contact-widget__close" aria-hidden="true">×</span>
+        <span class="contact-widget__mail" aria-hidden="true"><i class="fas fa-paper-plane"></i></span>
+        <span class="contact-widget__close" aria-hidden="true"><i class="fas fa-times"></i></span>
     </button>
 </div>    <script src="./theme/js/contact-widget.js" defer></script>
 </body>

@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
     <link rel="stylesheet" type="text/css" href="./theme/css/main.css" />
     <link rel="stylesheet" type="text/css" href="./theme/css/contact-widget.css" />
+    <link rel="stylesheet" type="text/css" href="./theme/css/article-images.css" />
     <link rel="stylesheet" type="text/css" href="./theme/css/pygment.css" />
     <link rel="shortcut icon" href="./favicon.jpg" type="image/x-icon">
     <link rel="stylesheet" href="./theme/css/stork.css">
@@ -107,13 +108,17 @@
       </div>
     </footer>
   </header>
+  <figure class="article-hero">
+    <img class="article-hero__image"
+      src="./images/subtitle-translation-pipeline.jpg" alt="Easy subtitle translation using google api" fetchpriority="high">
+  </figure>
   <details class="flex flex-col my-6 p-4 bg-zinc-200 dark:bg-zinc-800 rounded-lg">
     <summary class="text-lg font-bold">Table of contents</summary>
     <div class="mx-4 px-4 underline">
       <div id="toc"><ul><li><a class="toc-href" href="#breaking-language-barriers-translating-subtitles-with-google-api" title="Breaking Language Barriers: Translating Subtitles with Google API">Breaking Language Barriers: Translating Subtitles with Google API</a><ul><li><a class="toc-href" href="#setting-up-google-translate-api" title="Setting Up Google Translate API">Setting Up Google Translate API</a></li><li><a class="toc-href" href="#the-script" title="The Script">The Script</a></li></ul></li></ul></div>
     </div>
   </details>
-  <div class="max-w-7xl container mx-auto my-8 text-zinc-800 dark:text-zinc-300  
+  <div class="article-content max-w-7xl container mx-auto my-8 text-zinc-800 dark:text-zinc-300  
               prose lg:max-w-none prose-headings:text-zinc-800 prose-headings:dark:text-zinc-300 
               prose-h1:text-3xl lg:prose-h1:text-3xl prose-headings:font-semibold 
               prose-pre:bg-zinc-200 prose-pre:text-zinc-800
@@ -378,8 +383,8 @@
 
     <button class="contact-widget__toggle" id="contact-toggle" type="button" aria-controls="contact-panel"
         aria-expanded="false" aria-label="Open contact form">
-        <span class="contact-widget__mail" aria-hidden="true">✉</span>
-        <span class="contact-widget__close" aria-hidden="true">×</span>
+        <span class="contact-widget__mail" aria-hidden="true"><i class="fas fa-paper-plane"></i></span>
+        <span class="contact-widget__close" aria-hidden="true"><i class="fas fa-times"></i></span>
     </button>
 </div>    <script src="./theme/js/contact-widget.js" defer></script>
 </body>

@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
     <link rel="stylesheet" type="text/css" href="./theme/css/main.css" />
     <link rel="stylesheet" type="text/css" href="./theme/css/contact-widget.css" />
+    <link rel="stylesheet" type="text/css" href="./theme/css/article-images.css" />
     <link rel="stylesheet" type="text/css" href="./theme/css/pygment.css" />
     <link rel="shortcut icon" href="./favicon.jpg" type="image/x-icon">
     <link rel="stylesheet" href="./theme/css/stork.css">
@@ -107,13 +108,17 @@
       </div>
     </footer>
   </header>
+  <figure class="article-hero">
+    <img class="article-hero__image article-hero__image--contain"
+      src="./images/logistic-regression-line-example.jpg" alt="Logistic Regression Example" fetchpriority="high">
+  </figure>
   <details class="flex flex-col my-6 p-4 bg-zinc-200 dark:bg-zinc-800 rounded-lg">
     <summary class="text-lg font-bold">Table of contents</summary>
     <div class="mx-4 px-4 underline">
       <div id="toc"><ul><li><a class="toc-href" href="#logistic-regression" title="Logistic Regression">Logistic Regression</a><ul><li><a class="toc-href" href="#we-will-classifiy-liris-with-logistic-regression" title="we will classifiy liris with logistic regression">we will classifiy liris with logistic regression</a></li><li><a class="toc-href" href="#for-working-better-with-data" title="For working better with data">For working better with data</a></li><li><a class="toc-href" href="#for-visualizeing-data" title="For visualizeing data">For visualizeing data</a></li><li><a class="toc-href" href="#loading-dataset" title="Loading dataset">Loading dataset</a></li><li><a class="toc-href" href="#splitting-dataset-into-training-and-testing" title="Splitting dataset into training and testing">Splitting dataset into training and testing</a></li><li><a class="toc-href" href="#define-and-fit-model" title="define and fit model">define and fit model</a></li><li><a class="toc-href" href="#predicting-the-test-set-results" title="Predicting the Test set results">Predicting the Test set results</a></li></ul></li></ul></div>
     </div>
   </details>
-  <div class="max-w-7xl container mx-auto my-8 text-zinc-800 dark:text-zinc-300  
+  <div class="article-content max-w-7xl container mx-auto my-8 text-zinc-800 dark:text-zinc-300  
               prose lg:max-w-none prose-headings:text-zinc-800 prose-headings:dark:text-zinc-300 
               prose-h1:text-3xl lg:prose-h1:text-3xl prose-headings:font-semibold 
               prose-pre:bg-zinc-200 prose-pre:text-zinc-800
@@ -133,14 +138,13 @@
     <h1 id="logistic-regression">Logistic Regression</h1>
 <p>Logistic Regression is a binary classification algorithm that predicts with the given input how much is probable that output is either 1 or 0. Regression analysis is a method that wants to find a relation between one independent variable and one dependent variable.</p>
 <p>for instance, we are the owner of a gym club and we want to have weight loss program for are attendants we have gathered data of exercise hour and weight loss in a single month and we want to predict how much time is a need for our newcomer john to loss 5 pounds in a month.
-<img alt="here is an approach to the problem" src="https://raw.githubusercontent.com/nimamoradi/ML-notebook/5fb934ad6fd19a4f17e96be2dd7a72b33d323851/classification/images/linear-regression.jpg"/>
 gym owner will try to draw a line we yield to least sum of squares to find a pattern to between weight loss and exercise hour
 as we can we this equation can be modeled using a linear equation</p>
 <p>&ycirc; = b0 + b1x
 <br/>
 <br/>
 the problem that we have is gym owner wants to predict that John could achieve more than 5-pound loss with 20 hours a month for probability value should be always between 0 up to 1 whereas weight loss can be any number here we look logistic regression that uses sigmoid function in order to bound linear regression to 0 or 1</p>
-<p><img alt="sigmoid function diagram" src="https://github.com/nimamoradi/ML-notebook/blob/master/classification/images/sigmoid.jpg?raw=1"/></p>
+<p><img alt="Sigmoid function diagram" src="../images/logistic-regression-sigmoid-curve.jpg"/></p>
 <p>&ycirc; = &sigma;(b0 + b1x)</p>
 <h3 id="we-will-classifiy-liris-with-logistic-regression">we will classifiy liris with logistic regression</h3>
 <pre>
@@ -374,8 +378,8 @@ accuracy_score(y_test, y_pred, normalize=True, sample_weight=None)
 
     <button class="contact-widget__toggle" id="contact-toggle" type="button" aria-controls="contact-panel"
         aria-expanded="false" aria-label="Open contact form">
-        <span class="contact-widget__mail" aria-hidden="true">✉</span>
-        <span class="contact-widget__close" aria-hidden="true">×</span>
+        <span class="contact-widget__mail" aria-hidden="true"><i class="fas fa-paper-plane"></i></span>
+        <span class="contact-widget__close" aria-hidden="true"><i class="fas fa-times"></i></span>
     </button>
 </div>    <script src="./theme/js/contact-widget.js" defer></script>
 </body>
