@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %} Authors | {{ SITENAME }}{% endblock %}
+
+{% block content %}
+<main class="my-12 text-zinc-800 dark:text-zinc-300">
+    <h1 class="text-3xl font-semibold mb-6">Authors</h1>
+    <ul>
+        {% for author, articles in authors|sort %}
+        <li class="mb-2"><a class="underline" href="{{ SITEURL }}/{{ author.url }}">{{ author }}</a>
+            <span>({{ articles|count }})</span>
+        </li>
+        {% endfor %}
+    </ul>
+</main>
+{% endblock %}

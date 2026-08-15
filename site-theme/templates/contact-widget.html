@@ -1,0 +1,36 @@
+<div class="contact-widget" id="contact-widget" data-open="false">
+    <section class="contact-widget__panel" id="contact-panel" role="dialog"
+        aria-labelledby="contact-title" aria-describedby="contact-description" aria-hidden="true">
+        <div class="contact-widget__content">
+            <h2 id="contact-title">Got a Question?</h2>
+            <p id="contact-description">I’m here to help—just drop me a message.</p>
+
+            <form id="contact-form" action="{{ CONTACT_FORM_ENDPOINT | default('https://formspree.io/f/xvzjllra', true) }}"
+                method="POST">
+                <input type="hidden" name="_subject" value="New message from ni-moradi.com">
+
+                <label class="contact-widget__sr-only" for="contact-name">Name</label>
+                <input id="contact-name" name="name" type="text" placeholder="Name" autocomplete="name" required>
+
+                <label class="contact-widget__sr-only" for="contact-email">Email</label>
+                <input id="contact-email" name="email" type="email" placeholder="Email" autocomplete="email" required>
+
+                <label class="contact-widget__sr-only" for="contact-message">Message</label>
+                <textarea id="contact-message" name="message" rows="5" placeholder="Message" required></textarea>
+
+                <label class="contact-widget__trap" for="contact-website">Leave this field empty</label>
+                <input class="contact-widget__trap" id="contact-website" name="_gotcha" type="text"
+                    tabindex="-1" autocomplete="off">
+
+                <button class="contact-widget__submit" type="submit">Send Message</button>
+                <p class="contact-widget__status" id="contact-status" role="status" aria-live="polite"></p>
+            </form>
+        </div>
+    </section>
+
+    <button class="contact-widget__toggle" id="contact-toggle" type="button" aria-controls="contact-panel"
+        aria-expanded="false" aria-label="Open contact form">
+        <span class="contact-widget__mail" aria-hidden="true"><i class="fas fa-envelope"></i></span>
+        <span class="contact-widget__close" aria-hidden="true"><i class="fas fa-times"></i></span>
+    </button>
+</div>
