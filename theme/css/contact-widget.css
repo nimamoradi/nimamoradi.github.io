@@ -1,29 +1,29 @@
 :root {
-    --contact-accent: #27272a;
-    --contact-accent-hover: #09090b;
-    --contact-panel: #fafafa;
-    --contact-panel-border: #d4d4d8;
-    --contact-text: #27272a;
-    --contact-muted: #52525b;
-    --contact-field: #ffffff;
-    --contact-field-border: #d4d4d8;
-    --contact-submit: #27272a;
+    --contact-accent: linear-gradient(145deg, #f8fafc 0%, #b8c2cc 48%, #64748b 100%);
+    --contact-accent-hover: linear-gradient(145deg, #ffffff 0%, #cbd5e1 48%, #475569 100%);
+    --contact-panel: linear-gradient(145deg, #f8fafc 0%, #e2e8f0 100%);
+    --contact-panel-border: #94a3b8;
+    --contact-text: #172033;
+    --contact-muted: #475569;
+    --contact-field: rgba(255, 255, 255, 0.96);
+    --contact-field-border: #a8b4c2;
+    --contact-submit: #1e293b;
     --contact-submit-text: #ffffff;
-    --contact-focus: #71717a;
+    --contact-focus: #64748b;
 }
 
 html.dark {
-    --contact-accent: #e4e4e7;
-    --contact-accent-hover: #ffffff;
-    --contact-panel: #18181b;
-    --contact-panel-border: #3f3f46;
-    --contact-text: #f4f4f5;
-    --contact-muted: #a1a1aa;
-    --contact-field: #27272a;
-    --contact-field-border: #52525b;
-    --contact-submit: #f4f4f5;
-    --contact-submit-text: #18181b;
-    --contact-focus: #d4d4d8;
+    --contact-accent: linear-gradient(145deg, #274c77 0%, #132f54 52%, #071b33 100%);
+    --contact-accent-hover: linear-gradient(145deg, #35699f 0%, #173f70 52%, #0a2340 100%);
+    --contact-panel: linear-gradient(145deg, #132f54 0%, #0b1f3a 100%);
+    --contact-panel-border: #386796;
+    --contact-text: #eff6ff;
+    --contact-muted: #bfdbfe;
+    --contact-field: #f8fafc;
+    --contact-field-border: #7ba8d7;
+    --contact-submit: #dbeafe;
+    --contact-submit-text: #0b1f3a;
+    --contact-focus: #93c5fd;
 }
 
 .contact-widget,
@@ -33,28 +33,30 @@ html.dark {
 
 .contact-widget {
     position: fixed;
-    right: max(1rem, env(safe-area-inset-right));
-    bottom: max(1rem, env(safe-area-inset-bottom));
+    right: max(1.25rem, env(safe-area-inset-right));
+    bottom: max(1.25rem, env(safe-area-inset-bottom));
     z-index: 1100;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 .contact-widget__panel {
     position: fixed;
-    left: 50%;
-    bottom: 6rem;
-    width: min(28rem, calc(100vw - 2rem));
-    padding: 1.5rem;
+    right: max(0.875rem, env(safe-area-inset-right));
+    bottom: calc(max(1.25rem, env(safe-area-inset-bottom)) + 5.75rem);
+    width: min(25rem, calc(100vw - 1.75rem));
+    max-height: calc(100dvh - 7.5rem);
+    padding: clamp(1rem, 2.5vw, 1.35rem);
     color: var(--contact-text);
     background: var(--contact-panel);
     border: 1px solid var(--contact-panel-border);
     border-radius: 1.25rem;
-    box-shadow: 0 24px 64px rgba(24, 24, 27, 0.22);
+    box-shadow: 0 20px 48px rgba(15, 23, 42, 0.26);
+    overflow: hidden;
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-    transform: translate(-50%, 0.75rem) scale(0.98);
-    transform-origin: bottom center;
+    transform: translateY(0.75rem) scale(0.98);
+    transform-origin: bottom right;
     transition: opacity 180ms ease, transform 180ms ease, visibility 180ms ease;
 }
 
@@ -62,7 +64,7 @@ html.dark {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
-    transform: translate(-50%, 0) scale(1);
+    transform: translateY(0) scale(1);
 }
 
 .contact-widget__content {
@@ -72,13 +74,13 @@ html.dark {
 .contact-widget__panel h2 {
     margin: 0;
     color: var(--contact-text);
-    font-size: clamp(1.55rem, 5vw, 1.9rem);
+    font-size: clamp(1.4rem, 5vw, 1.8rem);
     font-weight: 750;
     line-height: 1.15;
 }
 
 .contact-widget__panel p {
-    margin: 0.5rem 0 1.15rem;
+    margin: 0.4rem 0 0.85rem;
     color: var(--contact-muted);
     font-size: 0.95rem;
     line-height: 1.5;
@@ -94,8 +96,8 @@ html.dark {
 .contact-widget__panel textarea {
     display: block;
     width: 100%;
-    margin: 0 0 0.7rem;
-    padding: 0.78rem 0.9rem;
+    margin: 0 0 0.55rem;
+    padding: 0.68rem 0.8rem;
     color: var(--contact-text);
     font: inherit;
     font-size: 0.9rem;
@@ -108,8 +110,9 @@ html.dark {
 }
 
 .contact-widget__panel textarea {
-    min-height: 6.5rem;
-    resize: vertical;
+    height: clamp(4.75rem, 12dvh, 6rem);
+    min-height: 0;
+    resize: none;
 }
 
 .contact-widget__panel input::placeholder,
@@ -126,7 +129,7 @@ html.dark {
 
 .contact-widget__submit {
     width: 100%;
-    padding: 0.85rem 1rem;
+    padding: 0.72rem 1rem;
     color: var(--contact-submit-text);
     font: inherit;
     font-size: 0.95rem;
@@ -152,8 +155,8 @@ html.dark {
 }
 
 .contact-widget__status {
-    min-height: 1.35rem;
-    margin: 0.65rem 0 0 !important;
+    min-height: 1.1rem;
+    margin: 0.45rem 0 0 !important;
     font-size: 0.85rem !important;
 }
 
@@ -175,8 +178,8 @@ html.dark .contact-widget__status[data-state="error"] {
 
 .contact-widget__toggle {
     display: grid;
-    width: 4.5rem;
-    height: 4.5rem;
+    width: 4.75rem;
+    height: 4.75rem;
     margin-left: auto;
     color: #fff;
     font: inherit;
@@ -208,13 +211,13 @@ html.dark .contact-widget__toggle {
 .contact-widget__mail,
 .contact-widget__close {
     grid-area: 1 / 1;
-    font-size: 1.9rem;
+    font-size: 2.15rem;
     line-height: 1;
     transition: opacity 150ms ease, transform 150ms ease;
 }
 
 .contact-widget__close {
-    font-size: 2rem;
+    font-size: 2.2rem;
     opacity: 0;
     transform: rotate(-45deg) scale(0.75);
 }
@@ -243,9 +246,17 @@ html.dark .contact-widget__toggle {
 }
 
 @media (max-width: 480px) {
+    .contact-widget {
+        right: max(0.875rem, env(safe-area-inset-right));
+        bottom: max(0.875rem, env(safe-area-inset-bottom));
+    }
+
     .contact-widget__panel {
-        bottom: 5.75rem;
-        padding: 1.1rem;
+        right: max(0.625rem, env(safe-area-inset-right));
+        bottom: calc(max(0.875rem, env(safe-area-inset-bottom)) + 5rem);
+        width: min(25rem, calc(100vw - 1.25rem));
+        max-height: calc(100dvh - 6.5rem);
+        padding: 1rem;
     }
 
     .contact-widget__toggle {
@@ -256,8 +267,8 @@ html.dark .contact-widget__toggle {
 
 @media (max-height: 620px) {
     .contact-widget__panel {
-        bottom: 5rem;
-        padding: 0.9rem 1.1rem;
+        max-height: calc(100dvh - 6.5rem);
+        padding: 0.8rem 1rem;
     }
 
     .contact-widget__panel h2 {
@@ -265,17 +276,17 @@ html.dark .contact-widget__toggle {
     }
 
     .contact-widget__panel p {
-        margin: 0.3rem 0 0.7rem;
+        margin: 0.25rem 0 0.55rem;
     }
 
     .contact-widget__panel input,
     .contact-widget__panel textarea {
-        margin-bottom: 0.5rem;
-        padding: 0.6rem 0.75rem;
+        margin-bottom: 0.4rem;
+        padding: 0.55rem 0.7rem;
     }
 
     .contact-widget__panel textarea {
-        min-height: 4.5rem;
+        height: 3.75rem;
     }
 }
 

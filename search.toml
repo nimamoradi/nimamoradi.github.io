@@ -8,6 +8,11 @@ url = "/pages/about-me.html"
 title = "About me"
 
 [[input.files]]
+path = "tacotron2/filelists/index.html"
+url = "/tacotron2/filelists/"
+title = "Tacotron 2 Persian training file lists"
+
+[[input.files]]
 path = "fine-tuning-text-to-sql-using-the-jax-ecosystem-part-2.html"
 url = "/fine-tuning-text-to-sql-using-the-jax-ecosystem-part-2.html"
 title = "Fine tuning Text-to-SQL using the JAX Ecosystem - Part 2"

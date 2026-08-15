@@ -5,20 +5,27 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content="Pelican" />
-    <meta name="description" content="Nima Moradi Personal blog Blog Posts">
-    <title>How does Android implement Compose Jetpack</title>
-    <link rel="canonical" href="./how-does-android-implement-compose-jetpack.html">
+    <title>How does Android implement Compose Jetpack | Nima Moradi | Software Engineer & AI Developer</title>
+    <meta name="description" content="An overView of Compose Jetpack">
+    <meta name="robots" content="index,follow,max-image-preview:large">
+    <link rel="canonical" href="https://ni-moradi.com/how-does-android-implement-compose-jetpack.html">
+    <meta property="og:site_name" content="Nima Moradi | Software Engineer & AI Developer">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="How does Android implement Compose Jetpack">
+    <meta property="og:description" content="An overView of Compose Jetpack">
+    <meta property="og:url" content="https://ni-moradi.com/how-does-android-implement-compose-jetpack.html">
+    <meta property="og:image" content="https://ni-moradi.com/images/android-jetpack-compose-ui-models.jpg">
+    <meta name="twitter:card" content="summary_large_image">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
-    <link rel="stylesheet" type="text/css" href="./theme/css/main.css" />
-    <link rel="stylesheet" type="text/css" href="./theme/css/contact-widget.css" />
-    <link rel="stylesheet" type="text/css" href="./theme/css/article-images.css" />
-    <link rel="stylesheet" type="text/css" href="./theme/css/pygment.css" />
-    <link rel="shortcut icon" href="./favicon.jpg" type="image/x-icon">
-    <link rel="stylesheet" href="./theme/css/stork.css">
+    <link rel="stylesheet" type="text/css" href="https://ni-moradi.com/theme/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="https://ni-moradi.com/theme/css/contact-widget.css" />
+    <link rel="stylesheet" type="text/css" href="https://ni-moradi.com/theme/css/article-images.css" />
+    <link rel="stylesheet" type="text/css" href="https://ni-moradi.com/theme/css/pygment.css" />
+    <link rel="shortcut icon" href="https://ni-moradi.com/favicon.jpg" type="image/x-icon">
+    <link rel="stylesheet" href="https://ni-moradi.com/theme/css/stork.css">
     <link rel="stylesheet" media="screen and (prefers-color-scheme: dark)"
-        href="./theme/css/stork-dark.css">
-<meta name="description" content="An overView of Compose Jetpack" />
+        href="https://ni-moradi.com/theme/css/stork-dark.css">
 </head>
 
 <body class="min-h-screen flex flex-col max-w-7xl lg:max-w-none text-zinc-800 bg-neutral-100 
@@ -33,7 +40,7 @@
     </script>
     <nav class="sm:flex sm:justify-between xl:ml-32 pl-4 items-center">
         <div class="flex pt-4">
-            <h1 class="font-semibold text-2xl"><a href="./">Nima Moradi Personal blog</a></h1>
+            <h1 class="font-semibold text-2xl"><a href="https://ni-moradi.com/">Nima Moradi | Software Engineer & AI Developer</a></h1>
             <button id="theme-toggle" type="button" aria-label="Light|Dark"
                 class="text-zinc-700 dark:text-zinc-400 rounded-full focus:outline-none text-sm ml-2 p-1">
                 <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20"
@@ -49,18 +56,19 @@
             </button>
         </div>
         <ul class="flex flex-wrap lg:mr-24 md:pt-0">
-            <li class="mr-4 pt-6"><a  href="./pages/about-me.html">About me</a></li>
-            <li class="mr-4 pt-6"><a  href="./archives.html">Archive</a></li>
-            <li class="mr-4 pt-6"><a                     href="./categories.html">Categories</a></li>
-            <li class="mr-4 pt-6"><a  href="./tags.html">Tags</a></li>
-            <li class="mr-4 pt-6"><a  href="./search.html">Search</a></li>
+            <li class="mr-4 pt-6"><a  href="https://ni-moradi.com/pages/about-me.html">About me</a></li>
+            <li class="mr-4 pt-6"><a  href="https://ni-moradi.com/tacotron2/filelists/">Tacotron 2 Persian training file lists</a></li>
+            <li class="mr-4 pt-6"><a  href="https://ni-moradi.com/archives.html">Archive</a></li>
+            <li class="mr-4 pt-6"><a                     href="https://ni-moradi.com/categories.html">Categories</a></li>
+            <li class="mr-4 pt-6"><a  href="https://ni-moradi.com/tags.html">Tags</a></li>
+            <li class="mr-4 pt-6"><a  href="https://ni-moradi.com/search.html">Search</a></li>
         </ul>
     </nav>
     <div class="flex-grow md:max-w-screen-md md:mx-auto md:w-3/4 px-4">
         <nav class="text-zinc-800 dark:text-zinc-300 mt-12 pb-2 md:mt-16" aria-label="Breadcrumb">
             <ul class="p-0 inline-flex items-center">
                 <li class="flex items-center">
-                    <a href="./" class="text-zinc-800 dark:text-zinc-300 inline-flex items-center">
+                    <a href="https://ni-moradi.com/" class="text-zinc-800 dark:text-zinc-300 inline-flex items-center">
                         <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"
                             xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -76,7 +84,7 @@
                     </svg>
                 </li>
                 <li class="flex items-center">
-                    <a href="./categories.html">Categories</a>
+                    <a href="https://ni-moradi.com/categories.html">Categories</a>
                     <svg class="fill-current w-3 h-3 mr-2 ml-1" xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 320 512">
                         <path
@@ -84,7 +92,7 @@
                     </svg>
                 </li>
                 <li class="flex items-center">
-                    <a href="./category/guide.html">Guide</a>
+                    <a href="https://ni-moradi.com/category/guide.html">Guide</a>
                     <svg class="fill-current w-3 h-3 mr-2 ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
                         <path
                             d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z" />
@@ -110,7 +118,7 @@
   </header>
   <figure class="article-hero">
     <img class="article-hero__image"
-      src="./images/android-jetpack-compose-ui-models.jpg" alt="How does Android implement Compose Jetpack" fetchpriority="high">
+      src="https://ni-moradi.com/images/android-jetpack-compose-ui-models.jpg" alt="How does Android implement Compose Jetpack" fetchpriority="high">
   </figure>
   <details class="flex flex-col my-6 p-4 bg-zinc-200 dark:bg-zinc-800 rounded-lg">
     <summary class="text-lg font-bold">Table of contents</summary>
@@ -226,24 +234,28 @@ As you are new to Compose, here are a few more points that can help you understa
     <ul class="flex flex-wrap">
         <li
           class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
-          <a href="./tag/android.html">Android</a>
+          <a href="https://ni-moradi.com/tag/android.html" rel="tag">Android</a>
         </li>
         <li
           class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
-          <a href="./tag/java.html">Java</a>
+          <a href="https://ni-moradi.com/tag/declarative-ui.html" rel="tag">Declarative UI</a>
         </li>
         <li
           class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
-          <a href="./tag/kotlin.html">Kotlin</a>
+          <a href="https://ni-moradi.com/tag/jetpack-compose.html" rel="tag">Jetpack Compose</a>
         </li>
         <li
           class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
-          <a href="./tag/nima-moradi.html">Nima Moradi</a>
+          <a href="https://ni-moradi.com/tag/kotlin.html" rel="tag">Kotlin</a>
+        </li>
+        <li
+          class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
+          <a href="https://ni-moradi.com/tag/ui-development.html" rel="tag">UI Development</a>
         </li>
     </ul>
     <div class="flex w-full my-2 bg-zinc-200 dark:bg-zinc-700 rounded-lg">
       <div class="w-1/2 hover:bg-zinc-300 dark:hover:bg-zinc-800 rounded-l-lg">
-        <a class="flex flex-col pr-2" href="./easy-subtitle-translation-using-google-api.html">
+        <a class="flex flex-col pr-2" href="https://ni-moradi.com/easy-subtitle-translation-using-google-api.html">
           <div class="mx-4 py-2 text-left">
             <p class="text-zinc-600 dark:text-zinc-300 text-sm">« PREV PAGE</p>
             <p class="text-left py-1 hover:underline">Easy subtitle translation using google api</p>
@@ -251,7 +263,7 @@ As you are new to Compose, here are a few more points that can help you understa
         </a>
       </div>
       <div class="w-1/2 hover:bg-zinc-300 dark:hover:bg-zinc-800 rounded-r-lg ">
-        <a class="flex flex-col" href="./overview-of-coroutines.html">
+        <a class="flex flex-col" href="https://ni-moradi.com/overview-of-coroutines.html">
           <div class="text-right mx-4 py-2">
             <p class="text-zinc-600 dark:text-zinc-300 text-sm">NEXT PAGE »</p>
             <p class="text-right py-1 hover:underline">OverView of Coroutines</p>
@@ -263,7 +275,7 @@ As you are new to Compose, here are a few more points that can help you understa
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="twitter" aria-label="share Features on twitter"
-            href="https://twitter.com/intent/tweet/?text=Features&amp;url=./how-does-android-implement-compose-jetpack.html">
+            href="https://twitter.com/intent/tweet/?text=Features&amp;url=https://ni-moradi.com/how-does-android-implement-compose-jetpack.html">
             <i class="fab fa-twitter fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -271,7 +283,7 @@ As you are new to Compose, here are a few more points that can help you understa
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="linkedin" aria-label="share Features on linkedin"
-            href="https://www.linkedin.com/sharing/share-offsite/?url=./how-does-android-implement-compose-jetpack.html">
+            href="https://www.linkedin.com/sharing/share-offsite/?url=https://ni-moradi.com/how-does-android-implement-compose-jetpack.html">
             <i class="fab fa-linkedin fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -279,7 +291,7 @@ As you are new to Compose, here are a few more points that can help you understa
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="reddit" aria-label="share Features on reddit"
-            href="https://reddit.com/submit?url=./how-does-android-implement-compose-jetpack.html">
+            href="https://reddit.com/submit?url=https://ni-moradi.com/how-does-android-implement-compose-jetpack.html">
             <i class="fab fa-reddit fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -287,7 +299,7 @@ As you are new to Compose, here are a few more points that can help you understa
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="facebook" aria-label="share Features on facebook"
-            href="https://facebook.com/sharer/sharer.php?u=./how-does-android-implement-compose-jetpack.html">
+            href="https://facebook.com/sharer/sharer.php?u=https://ni-moradi.com/how-does-android-implement-compose-jetpack.html">
             <i class="fab fa-facebook fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -295,7 +307,7 @@ As you are new to Compose, here are a few more points that can help you understa
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="whatsapp" aria-label="share Features on whatsapp"
-            href="https://api.whatsapp.com/send?text=Features - ./how-does-android-implement-compose-jetpack.html">
+            href="https://api.whatsapp.com/send?text=Features - https://ni-moradi.com/how-does-android-implement-compose-jetpack.html">
             <i class="fab fa-whatsapp fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -303,7 +315,7 @@ As you are new to Compose, here are a few more points that can help you understa
       <ul>
         <li class="bg-gray-900 p-1 text-white rounded-md">
           <a target="_blank" rel="noopener noreferrer" title="telegram" aria-label="share Features on telegram"
-            href="https://telegram.me/share/url?text=Features&amp;url=./how-does-android-implement-compose-jetpack.html">
+            href="https://telegram.me/share/url?text=Features&amp;url=https://ni-moradi.com/how-does-android-implement-compose-jetpack.html">
             <i class="fab fa-telegram fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -390,10 +402,10 @@ As you are new to Compose, here are a few more points that can help you understa
 
     <button class="contact-widget__toggle" id="contact-toggle" type="button" aria-controls="contact-panel"
         aria-expanded="false" aria-label="Open contact form">
-        <span class="contact-widget__mail" aria-hidden="true"><i class="fas fa-paper-plane"></i></span>
+        <span class="contact-widget__mail" aria-hidden="true"><i class="fas fa-envelope"></i></span>
         <span class="contact-widget__close" aria-hidden="true"><i class="fas fa-times"></i></span>
     </button>
-</div>    <script src="./theme/js/contact-widget.js" defer></script>
+</div>    <script src="https://ni-moradi.com/theme/js/contact-widget.js" defer></script>
 </body>
 
 </html>
