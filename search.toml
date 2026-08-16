@@ -50,12 +50,12 @@ title = "JAX vs NumPy: A Performance Comparison"
 [[input.files]]
 path = "create-a-simple-ai-assistant-using-llama-3-a-proof-of-concept.html"
 url = "/create-a-simple-ai-assistant-using-llama-3-a-proof-of-concept.html"
-title = "Create a Simple AI Assistant Using LLama 3: A Proof of Concept"
+title = "Create a Simple AI Assistant Using Llama 3: A Proof of Concept"
 
 [[input.files]]
 path = "easy-subtitle-translation-using-google-api.html"
 url = "/easy-subtitle-translation-using-google-api.html"
-title = "Easy subtitle translation using google api"
+title = "Easy Subtitle Translation Using Google API"
 
 [[input.files]]
 path = "how-does-android-implement-compose-jetpack.html"
@@ -65,7 +65,7 @@ title = "How does Android implement Compose Jetpack"
 [[input.files]]
 path = "overview-of-coroutines.html"
 url = "/overview-of-coroutines.html"
-title = "OverView of Coroutines"
+title = "Overview of Coroutines"
 
 [[input.files]]
 path = "crisp-dm-series-mastering-data-mining-in-football-analytics.html"

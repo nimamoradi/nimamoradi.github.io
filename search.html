@@ -5,15 +5,15 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content="Pelican" />
-    <title> Search | Nima Moradi | Software Engineer & AI Developer</title>
+    <title>Search | Nima Moradi</title>
     <meta name="description" content="Technical articles on software engineering, AI, cloud architecture, Android, and developer tools by Nima Moradi.">
-    <meta name="robots" content="index,follow,max-image-preview:large">
-    <link rel="canonical" href="https://ni-moradi.com/">
+    <meta name="robots" content="noindex,follow">
+    <link rel="canonical" href="https://ni-moradi.com/search.html">
     <meta property="og:site_name" content="Nima Moradi | Software Engineer & AI Developer">
     <meta property="og:type" content="website">
     <meta property="og:title" content="Nima Moradi | Software Engineer & AI Developer">
     <meta property="og:description" content="Technical articles on software engineering, AI, cloud architecture, Android, and developer tools by Nima Moradi.">
-    <meta property="og:url" content="https://ni-moradi.com/">
+    <meta property="og:url" content="https://ni-moradi.com/search.html">
     <meta name="twitter:card" content="summary">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
@@ -59,7 +59,8 @@
             <li class="mr-4 pt-6"><a  href="https://ni-moradi.com/archives.html">Archive</a></li>
             <li class="mr-4 pt-6"><a                     href="https://ni-moradi.com/categories.html">Categories</a></li>
             <li class="mr-4 pt-6"><a  href="https://ni-moradi.com/tags.html">Tags</a></li>
-            <li class="mr-4 pt-6"><a  href="https://ni-moradi.com/search.html">Search</a></li>
+            <li class="mr-4 pt-6"><a  class="border-b-2 border-zinc-800 dark:border-zinc-300"
+ href="https://ni-moradi.com/search.html">Search</a></li>
         </ul>
     </nav>
     <div class="flex-grow md:max-w-screen-md md:mx-auto md:w-3/4 px-4">
@@ -112,6 +113,10 @@
             }
         });
 
+    </script>
+    <script src="https://files.stork-search.net/releases/v1.5.0/stork.js"></script>
+    <script>
+        stork.register("sitesearch", "https://ni-moradi.com/search-index.st")
     </script>
 
 <div class="contact-widget" id="contact-widget" data-open="false">
