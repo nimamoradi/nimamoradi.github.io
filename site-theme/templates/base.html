@@ -40,7 +40,7 @@
     {% set canonical_url = SITEURL ~ '/' %}
     {% endif %}
     <meta name="description" content="{{ meta_description | striptags | truncate(160, True, '') }}">
-    {% if current == "archive" or current == "categories" or current == "category" or current == "tags" or current == "tag" or current == "author" or current == "search" %}
+    {% if current == "archive" or current == "categories" or current == "category" or current == "tags" or current == "tag" or current == "author" or current == "search" or (articles_page and articles_page.number > 1) %}
     <meta name="robots" content="noindex,follow">
     {% else %}
     <meta name="robots" content="index,follow,max-image-preview:large">
@@ -55,6 +55,26 @@
     <meta property="og:image" content="{{ SITEURL }}/{{ article.image }}">
     {% endif %}
     <meta name="twitter:card" content="{% if article and article.image %}summary_large_image{% else %}summary{% endif %}">
+    {% if article %}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": {{ article.title | striptags | tojson }},
+      "description": {{ meta_description | striptags | truncate(160, True, '') | tojson }},
+      "url": {{ canonical_url | tojson }},
+      "mainEntityOfPage": {{ canonical_url | tojson }},
+      "datePublished": {{ article.date.isoformat() | tojson }},
+      "dateModified": {{ (article.modified or article.date).isoformat() | tojson }},
+      "author": {
+        "@type": "Person",
+        "name": {{ AUTHOR | tojson }},
+        "url": {{ (SITEURL ~ '/pages/about-me.html') | tojson }}
+      }{% if article.image %},
+      "image": {{ (SITEURL ~ '/' ~ article.image) | tojson }}{% endif %}
+    }
+    </script>
+    {% endif %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
     <link rel="stylesheet" type="text/css" href="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/css/main.css" />

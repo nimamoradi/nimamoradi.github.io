@@ -1,8 +1,8 @@
-Title: Easy subtitle translation using google api
+Title: Easy Subtitle Translation Using Google API
 Date: 2024-07-13
 Tags: Subtitle Translation, Google Cloud Translation, Python, Machine Translation
 Category: Guide
-Summary: Easy subtitle translation using google api
+Summary: Build a Python workflow that parses SRT subtitle files, translates their dialogue with the Google Cloud Translation API, and writes a new subtitle file.
 Image: images/subtitle-translation-pipeline.jpg
 
 ## Breaking Language Barriers: Translating Subtitles with Google API

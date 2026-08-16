@@ -2,7 +2,7 @@ Title: Bag of Words Example
 Date: 2019-07-21
 Tags: Python, NLP, Bag of Words, Text Vectorization, Machine Learning
 Category: Research
-Summary: An example of Bag of Words using python
+Summary: Learn the bag-of-words text representation with Python and scikit-learn CountVectorizer, from token counts to document-term vectors.
 Image: images/bag-of-words-vectorization-illustration.jpg
 
 Bag of Words bag of words is one of the most basic ways to represent a word, it is simply a word counter. let us look at an example

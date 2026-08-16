@@ -2,7 +2,7 @@ Title: K-Means Clustering Example
 Date: 2019-06-4
 Tags: Python, Machine Learning, K-Means Clustering, Unsupervised Learning, Data Science
 Category: Guide
-Summary: An example of K-Means using python
+Summary: Learn K-means clustering in Python with scikit-learn, the Iris dataset, the elbow method, reproducible training, predictions, and 3D visualization.
 Image: images/k-means-clustering-illustration.jpg
 
 

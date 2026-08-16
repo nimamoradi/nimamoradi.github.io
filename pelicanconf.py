@@ -1,11 +1,13 @@
 AUTHOR = 'Nima Moradi'
 SITENAME = 'Nima Moradi | Software Engineer & AI Developer'
+SITE_BRAND = 'Nima Moradi'
 SITEURL = 'https://ni-moradi.com'
 
 # Public endpoint used by the contact widget on every page.
 CONTACT_FORM_ENDPOINT = 'https://formspree.io/f/xvzjllra'
 
 PATH = 'content'
+STATIC_PATHS = ['images', 'extra']
 
 TIMEZONE = 'America/New_York'
 
@@ -92,6 +94,7 @@ PAGINATED_TEMPLATES = {'index': None, 'tag': None, 'category': None, 'author': N
 # The older Pelican release in this project requires an author output path.
 # Normalized author metadata now produces this single archive (not in sitemap).
 AUTHOR_SAVE_AS = 'author.html'
+AUTHOR_URL = 'author.html'
 
 # Site search plugin
 SEARCH_MODE = "output"
@@ -119,5 +122,6 @@ SHARE = (
 EXTRA_PATH_METADATA = {
     'extra/favicon.jpg': {'path': './content/images/favicon.jpg'},  # and this
     'extra/CNAME': {'path': 'CNAME'},
-    'extra/LICENSE': {'path': 'LICENSE'}
+    'extra/LICENSE': {'path': 'LICENSE'},
+    'extra/robots.txt': {'path': 'robots.txt'},
 }

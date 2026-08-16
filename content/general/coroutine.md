@@ -1,11 +1,11 @@
-Title: OverView of Coroutines
+Title: Overview of Coroutines
 Date: 2024-04-27
 Tags: Coroutines, Async Programming, Python, Kotlin, Concurrency
 Category: Guide
-Summary: An overView of Coroutines in Python and Kotlin
+Summary: Compare coroutine concepts in Python and Kotlin with practical asyncio and Android examples for non-blocking database and background work.
 Image: images/python-kotlin-coroutines-event-loop.jpg
 
-# Introduction
+## Introduction
 
 Coroutines are a powerful control flow mechanism that enable asynchronous programming without dramatically restructuring code like traditional callback-based approaches.
 Both Python and Kotlin provide native support for coroutines, offering developers elegant solutions for tasks like:

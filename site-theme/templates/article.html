@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block html_lang %}{{ article.lang }}{% endblock %}
-{% block title %}{{ article.title|striptags }} | {{ SITENAME }}{% endblock %}
+{% block title %}{{ article.title|striptags }} | {{ SITE_BRAND }}{% endblock %}
 {% block extra_head %}
 {% import 'translations.html' as translations with context %}
 {% if translations.entry_hreflang(article) %}
